@@ -1,0 +1,514 @@
+{
+  "users": [
+    [
+      "admin-user-0001",
+      {
+        "id": "admin-user-0001",
+        "name": "EasyX Admin",
+        "email": "subamcollection@gmail.com",
+        "phone": "+910000000001",
+        "password_hash": "$2a$10$dgGZcK/9I.wb0GhJFH9S1uiRwv29Of7OeisLQ0l/r4mPYtFdQsXfu",
+        "role": "admin",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "ADMINEX1",
+        "referred_by": null,
+        "created_at": "2026-08-23T03:42:00.733Z",
+        "last_login_at": "2026-08-23T03:42:00.733Z"
+      }
+    ],
+    [
+      "14834792-8434-4f60-8b11-afc87e51bad3",
+      {
+        "id": "14834792-8434-4f60-8b11-afc87e51bad3",
+        "name": "Investor 1787456504765",
+        "email": "persistent_user_1787456504765@easyx.com",
+        "phone": "+919886560384",
+        "password_hash": "$2a$10$G2Fmczb/Hg.aWs3.7L7tlOENQMB.MvljaiSOc9oA8HdVDfPHM52V6",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "pending",
+        "status": "active",
+        "referral_code": "NQECG06R",
+        "referred_by": null,
+        "created_at": "2026-08-23T03:41:44.887Z",
+        "last_login_at": null
+      }
+    ],
+    [
+      "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+      {
+        "id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+        "name": "Investor 1787456515316",
+        "email": "persistent_user_1787456515316@easyx.com",
+        "phone": "+919825505667",
+        "password_hash": "$2a$10$/9Xd1FGmU95mavS9LMZorutoPEHdIAC3MKKhqQQgapfEcXwAoWLtm",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "pending",
+        "status": "active",
+        "referral_code": "IW1PCAXV",
+        "referred_by": null,
+        "created_at": "2026-08-23T03:41:55.424Z",
+        "last_login_at": "2026-08-23T03:41:55.646Z"
+      }
+    ],
+    [
+      "b4d75460-6769-4875-9479-8a86a96c67da",
+      {
+        "id": "b4d75460-6769-4875-9479-8a86a96c67da",
+        "name": "Reboot Tester 1787456520494",
+        "email": "reboot_test_1787456520494@easyx.com",
+        "phone": "+919787239579",
+        "password_hash": "$2a$10$ZwsB/iSlY5DjE4jNxJpKguErFnEzBqyeXQJmC.gR4llgL3zQotp7.",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "none",
+        "status": "active",
+        "referral_code": "5AQS9UBB",
+        "referred_by": null,
+        "created_at": "2026-08-23T03:42:00.621Z",
+        "last_login_at": null
+      }
+    ]
+  ],
+  "wallets": [
+    [
+      "admin-user-0001",
+      {
+        "id": "04f1e26b-a7fc-4832-b0ab-2d619fdabae1",
+        "user_id": "admin-user-0001",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "0.00",
+        "total_earned": "0.00",
+        "version": 1,
+        "created_at": "2026-08-23T03:41:36.436Z",
+        "updated_at": "2026-08-23T03:41:36.436Z"
+      }
+    ],
+    [
+      "14834792-8434-4f60-8b11-afc87e51bad3",
+      {
+        "id": "91baeb95-6aa8-41be-bdac-23ca5616a17d",
+        "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "0.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-23T03:41:44.888Z",
+        "updated_at": "2026-08-23T03:41:44.888Z"
+      }
+    ],
+    [
+      "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+      {
+        "id": "44adea1e-674f-4b02-8acf-7e0b5cbac485",
+        "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "0.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-23T03:41:55.424Z",
+        "updated_at": "2026-08-23T03:41:55.424Z"
+      }
+    ],
+    [
+      "b4d75460-6769-4875-9479-8a86a96c67da",
+      {
+        "id": "b15591c0-6342-4a0e-b2c3-e92818594691",
+        "user_id": "b4d75460-6769-4875-9479-8a86a96c67da",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "0.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-23T03:42:00.621Z",
+        "updated_at": "2026-08-23T03:42:00.621Z"
+      }
+    ]
+  ],
+  "wallet_transactions": [],
+  "investment_plans": [
+    [
+      "silver",
+      {
+        "id": "2a84d24b-095e-4315-89a1-05a49499bd40",
+        "key": "silver",
+        "name": "Silver",
+        "price": "300.00",
+        "lock_days": 60,
+        "profit_percentage": "60.00",
+        "maturity_percentage": "160.00",
+        "display_order": 1,
+        "is_active": true,
+        "version": 1,
+        "created_at": "2026-08-23T03:41:36.436Z",
+        "updated_at": "2026-08-23T03:41:36.436Z"
+      }
+    ],
+    [
+      "gold",
+      {
+        "id": "7371a571-c087-4be6-a014-530ec745ba52",
+        "key": "gold",
+        "name": "Gold",
+        "price": "1000.00",
+        "lock_days": 60,
+        "profit_percentage": "60.00",
+        "maturity_percentage": "160.00",
+        "display_order": 2,
+        "is_active": true,
+        "version": 1,
+        "created_at": "2026-08-23T03:41:36.436Z",
+        "updated_at": "2026-08-23T03:41:36.436Z"
+      }
+    ],
+    [
+      "platinum",
+      {
+        "id": "90584317-6dae-429e-ad8e-74891533a91e",
+        "key": "platinum",
+        "name": "Platinum",
+        "price": "5000.00",
+        "lock_days": 60,
+        "profit_percentage": "100.00",
+        "maturity_percentage": "200.00",
+        "display_order": 3,
+        "is_active": true,
+        "version": 1,
+        "created_at": "2026-08-23T03:41:36.436Z",
+        "updated_at": "2026-08-23T03:41:36.436Z"
+      }
+    ],
+    [
+      "diamond",
+      {
+        "id": "70ed4fb4-bb40-4b72-9706-9b2a9c1a27c8",
+        "key": "diamond",
+        "name": "Diamond",
+        "price": "10000.00",
+        "lock_days": 60,
+        "profit_percentage": "100.00",
+        "maturity_percentage": "200.00",
+        "display_order": 4,
+        "is_active": true,
+        "version": 1,
+        "created_at": "2026-08-23T03:41:36.436Z",
+        "updated_at": "2026-08-23T03:41:36.436Z"
+      }
+    ]
+  ],
+  "plan_history": [],
+  "investments": [],
+  "deposits": [
+    [
+      "b6838918-8995-41c4-ac34-71cd4fd2ab38",
+      {
+        "id": "b6838918-8995-41c4-ac34-71cd4fd2ab38",
+        "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
+        "network": "TRC20",
+        "amount": "500.00",
+        "approved_amount": null,
+        "status": "pending",
+        "tx_hash": "0x_test_tx_1787456504765",
+        "admin_id": null,
+        "admin_note": null,
+        "created_at": "2026-08-23T03:41:44.908Z",
+        "decided_at": null,
+        "updated_at": "2026-08-23T03:41:44.908Z"
+      }
+    ],
+    [
+      "c36ac555-026f-4f10-ab6f-e9a0072bdf94",
+      {
+        "id": "c36ac555-026f-4f10-ab6f-e9a0072bdf94",
+        "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+        "network": "TRC20",
+        "amount": "500.00",
+        "approved_amount": null,
+        "status": "pending",
+        "tx_hash": "0x_test_tx_1787456515316",
+        "admin_id": null,
+        "admin_note": null,
+        "created_at": "2026-08-23T03:41:55.437Z",
+        "decided_at": null,
+        "updated_at": "2026-08-23T03:41:55.437Z"
+      }
+    ],
+    [
+      "b1168be1-d304-4e43-ad79-3030f5c68e54",
+      {
+        "id": "b1168be1-d304-4e43-ad79-3030f5c68e54",
+        "user_id": "b4d75460-6769-4875-9479-8a86a96c67da",
+        "network": "BEP20",
+        "amount": "1200.00",
+        "approved_amount": null,
+        "status": "pending",
+        "tx_hash": "0x_reboot_tx_1787456520494",
+        "admin_id": null,
+        "admin_note": null,
+        "created_at": "2026-08-23T03:42:00.632Z",
+        "decided_at": null,
+        "updated_at": "2026-08-23T03:42:00.632Z"
+      }
+    ]
+  ],
+  "withdrawals": [],
+  "referrals": [],
+  "referral_commissions": [],
+  "kyc_records": [
+    [
+      "14834792-8434-4f60-8b11-afc87e51bad3",
+      {
+        "id": "f286330f-f93e-4fca-980a-094fcacaf51f",
+        "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
+        "status": "pending",
+        "id_type": "national_id",
+        "id_number_encrypted": "encrypted",
+        "reject_reason": null,
+        "admin_id": null,
+        "liveness_metadata": null,
+        "submitted_at": "2026-08-23T03:41:44.918Z",
+        "reviewed_at": null,
+        "created_at": "2026-08-23T03:41:44.918Z",
+        "updated_at": "2026-08-23T03:41:44.918Z"
+      }
+    ],
+    [
+      "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+      {
+        "id": "dea25008-26d2-4891-987a-2a53a940887b",
+        "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+        "status": "pending",
+        "id_type": "national_id",
+        "id_number_encrypted": "encrypted",
+        "reject_reason": null,
+        "admin_id": null,
+        "liveness_metadata": null,
+        "submitted_at": "2026-08-23T03:41:55.443Z",
+        "reviewed_at": null,
+        "created_at": "2026-08-23T03:41:55.443Z",
+        "updated_at": "2026-08-23T03:41:55.443Z"
+      }
+    ]
+  ],
+  "kyc_documents": [
+    [
+      "dec2ced7-24cc-491a-b9de-eff650099f02",
+      {
+        "id": "dec2ced7-24cc-491a-b9de-eff650099f02",
+        "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
+        "kyc_record_id": "f286330f-f93e-4fca-980a-094fcacaf51f",
+        "doc_type": "id_front",
+        "mime": "image/png",
+        "size": 21,
+        "data": "ZmFrZSBuYXRpb25hbCBpZCBmaWxl",
+        "created_at": "2026-08-23T03:41:44.918Z",
+        "_is_b64": true
+      }
+    ],
+    [
+      "7866f2f7-07c8-4049-99c9-c8332287568f",
+      {
+        "id": "7866f2f7-07c8-4049-99c9-c8332287568f",
+        "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
+        "kyc_record_id": "f286330f-f93e-4fca-980a-094fcacaf51f",
+        "doc_type": "selfie",
+        "mime": "image/jpeg",
+        "size": 16,
+        "data": "ZmFrZSBzZWxmaWUgZmlsZQ==",
+        "created_at": "2026-08-23T03:41:44.918Z",
+        "_is_b64": true
+      }
+    ],
+    [
+      "cf1fc11c-cc0d-4eb8-87eb-a6ed58495c2a",
+      {
+        "id": "cf1fc11c-cc0d-4eb8-87eb-a6ed58495c2a",
+        "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+        "kyc_record_id": "dea25008-26d2-4891-987a-2a53a940887b",
+        "doc_type": "id_front",
+        "mime": "image/png",
+        "size": 21,
+        "data": "ZmFrZSBuYXRpb25hbCBpZCBmaWxl",
+        "created_at": "2026-08-23T03:41:55.443Z",
+        "_is_b64": true
+      }
+    ],
+    [
+      "e5499f0d-637c-4004-82ac-c140c13b9e0b",
+      {
+        "id": "e5499f0d-637c-4004-82ac-c140c13b9e0b",
+        "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+        "kyc_record_id": "dea25008-26d2-4891-987a-2a53a940887b",
+        "doc_type": "selfie",
+        "mime": "image/jpeg",
+        "size": 16,
+        "data": "ZmFrZSBzZWxmaWUgZmlsZQ==",
+        "created_at": "2026-08-23T03:41:55.443Z",
+        "_is_b64": true
+      }
+    ]
+  ],
+  "liveness_sessions": [],
+  "notifications": [
+    {
+      "id": "02a295e5-2fb6-4dc1-bffc-44d6dee9836c",
+      "user_id": "b4d75460-6769-4875-9479-8a86a96c67da",
+      "channel": "in_app",
+      "type": "deposit_submitted",
+      "title": "Deposit submitted",
+      "body": "Your BEP20 deposit of 1200.00 USDT was submitted and is pending admin approval.",
+      "is_read": false,
+      "investment_id": null,
+      "dedupe_key": "deposit-submitted:b1168be1-d304-4e43-ad79-3030f5c68e54",
+      "created_at": "2026-08-23T03:42:00.632Z",
+      "read_at": null
+    },
+    {
+      "id": "5b978ec2-9656-4e56-9d05-bd81897eedcc",
+      "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+      "channel": "in_app",
+      "type": "kyc_submitted",
+      "title": "KYC submitted",
+      "body": "Your identity verification documents and camera selfie were submitted and are pending manual admin review.",
+      "is_read": false,
+      "investment_id": null,
+      "dedupe_key": "kyc_submitted:dea25008-26d2-4891-987a-2a53a940887b:2026-08-23T03:41:55.443Z",
+      "created_at": "2026-08-23T03:41:55.444Z",
+      "read_at": null
+    },
+    {
+      "id": "154ebdf1-1664-45f7-83bb-ff1deb6bf606",
+      "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+      "channel": "in_app",
+      "type": "deposit_submitted",
+      "title": "Deposit submitted",
+      "body": "Your TRC20 deposit of 500.00 USDT was submitted and is pending admin approval.",
+      "is_read": false,
+      "investment_id": null,
+      "dedupe_key": "deposit-submitted:c36ac555-026f-4f10-ab6f-e9a0072bdf94",
+      "created_at": "2026-08-23T03:41:55.437Z",
+      "read_at": null
+    },
+    {
+      "id": "d53cb65b-77e5-469c-a944-292fad39f1ca",
+      "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
+      "channel": "in_app",
+      "type": "kyc_submitted",
+      "title": "KYC submitted",
+      "body": "Your identity verification documents and camera selfie were submitted and are pending manual admin review.",
+      "is_read": false,
+      "investment_id": null,
+      "dedupe_key": "kyc_submitted:f286330f-f93e-4fca-980a-094fcacaf51f:2026-08-23T03:41:44.918Z",
+      "created_at": "2026-08-23T03:41:44.918Z",
+      "read_at": null
+    },
+    {
+      "id": "70d27e8c-ebc5-466d-ac91-37e92442b3c4",
+      "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
+      "channel": "in_app",
+      "type": "deposit_submitted",
+      "title": "Deposit submitted",
+      "body": "Your TRC20 deposit of 500.00 USDT was submitted and is pending admin approval.",
+      "is_read": false,
+      "investment_id": null,
+      "dedupe_key": "deposit-submitted:b6838918-8995-41c4-ac34-71cd4fd2ab38",
+      "created_at": "2026-08-23T03:41:44.908Z",
+      "read_at": null
+    }
+  ],
+  "audit_logs": [
+    {
+      "id": "e0504a0f-c636-4ca5-aa4e-a39483f9cf01",
+      "action": "admin.login",
+      "actor_id": "admin-user-0001",
+      "actor_role": "admin",
+      "actor_email": "subamcollection@gmail.com",
+      "actor_name": "EasyX Admin",
+      "entity_type": "user",
+      "entity_id": "admin-user-0001",
+      "amount": null,
+      "reason": null,
+      "meta": {
+        "ip": "127.0.0.1"
+      },
+      "created_at": "2026-08-23T03:42:00.734Z"
+    },
+    {
+      "id": "c7efdb92-4045-4640-a758-0e8b0d2ad7fd",
+      "action": "admin.login",
+      "actor_id": "admin-user-0001",
+      "actor_role": "admin",
+      "actor_email": "subamcollection@gmail.com",
+      "actor_name": "EasyX Admin",
+      "entity_type": "user",
+      "entity_id": "admin-user-0001",
+      "amount": null,
+      "reason": null,
+      "meta": {
+        "ip": "127.0.0.1"
+      },
+      "created_at": "2026-08-23T03:41:55.543Z"
+    },
+    {
+      "id": "ac821c5d-4a5e-4623-8907-e6333414aed8",
+      "action": "admin.login",
+      "actor_id": "admin-user-0001",
+      "actor_role": "admin",
+      "actor_email": "subamcollection@gmail.com",
+      "actor_name": "EasyX Admin",
+      "entity_type": "user",
+      "entity_id": "admin-user-0001",
+      "amount": null,
+      "reason": null,
+      "meta": {
+        "ip": "127.0.0.1"
+      },
+      "created_at": "2026-08-23T03:41:45.016Z"
+    },
+    {
+      "id": "b216e977-51aa-4c14-9259-d91e6d4aa9fd",
+      "action": "system.init",
+      "actor_id": "admin-user-0001",
+      "actor_role": "admin",
+      "actor_email": "subamcollection@gmail.com",
+      "actor_name": "EasyX Super Admin",
+      "entity_type": "system",
+      "entity_id": "platform",
+      "amount": null,
+      "reason": "Production system initialized in clean state",
+      "meta": {
+        "version": "1.0.0"
+      },
+      "created_at": "2026-08-23T03:41:36.436Z"
+    }
+  ],
+  "platform_settings": {
+    "id": "platform",
+    "currency": "USDT",
+    "supported_networks": [
+      "TRC20",
+      "BEP20"
+    ],
+    "deposit_addresses": {
+      "TRC20": "TX7EasyXDepositTRC20OfficialWalletAddress99",
+      "BEP20": "0x7EasyXDepositBEP20OfficialWalletAddress99"
+    },
+    "deposit_addresses_configured": true,
+    "referral_percentage": "10.00"
+  },
+  "maintenance_settings": {
+    "id": "maintenance",
+    "is_enabled": false,
+    "message": "EasyX is under scheduled maintenance. Please check back soon.",
+    "registration_enabled": true,
+    "deposits_enabled": true,
+    "investments_enabled": true,
+    "withdrawals_enabled": true
+  }
+}
