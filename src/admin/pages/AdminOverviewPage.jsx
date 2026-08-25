@@ -27,6 +27,8 @@ import {
   useAdminKyc,
   useAdminAuditLogs,
 } from "@/admin/adminApi";
+import AdminActivityLog from "@/admin/components/AdminActivityLog";
+import AdminGrowthDashboard from "@/admin/components/AdminGrowthDashboard";
 import { PageHeading, EasyXCard, EasyXLoader, EasyXEmptyState } from "@/design/EasyX";
 
 function StatCard({ label, value, sub, icon: Icon, accent, testId, linkTo }) {
@@ -367,6 +369,9 @@ export default function AdminOverviewPage() {
         </div>
       </section>
 
+      {/* PLATFORM GROWTH & RECHARTS ANALYTICS DASHBOARD */}
+      <AdminGrowthDashboard />
+
       {/* RECENT ACTIVITY SECTION */}
       <section className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -591,47 +596,40 @@ export default function AdminOverviewPage() {
           )}
 
           {activeTab === "actions" && (
-            <div>
-              {auditLogs.length === 0 ? (
-                <div className="p-8">
-                  <EasyXEmptyState
-                    icon={FileText}
-                    title="No admin audit actions"
-                    description="Administrative actions such as approvals, rejections, or plan updates will be logged here."
-                  />
-                </div>
-              ) : (
-                <div className="divide-y divide-white/6 overflow-x-auto">
-                  {auditLogs.slice(0, 6).map((log) => (
-                    <div key={log.id} className="p-4 flex items-center justify-between gap-4 text-sm hover:bg-white/[0.02] transition">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="grid h-8 w-8 shrink-0 place-items-center rounded-ex-ctrl bg-white/5 text-ex-lav-300">
-                          <FileText className="h-4 w-4" />
-                        </div>
-                        <div className="min-w-0">
-                          <div className="font-semibold text-ex-text truncate">
-                            {log.action}
-                          </div>
-                          <div className="text-xs text-ex-muted truncate">
-                            Actor: {log.actor_email || "Admin"} · Entity: {log.entity_type || "system"}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-right shrink-0 text-xs text-ex-muted">
-                        {new Date(log.created_at).toLocaleString([], {
-                          month: "short",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div className="p-2 sm:p-4">
+              <AdminActivityLog
+                limit={8}
+                compact={false}
+                showFilters={true}
+                showSearch={true}
+                linkToFull="/admin/audit"
+                className="border-0 bg-transparent p-0"
+              />
             </div>
           )}
         </EasyXCard>
+      </section>
+
+      {/* DEDICATED AUDIT & DECISION TRAIL SECTION */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="text-xs font-bold uppercase tracking-wider text-ex-muted">
+            Decision Audit Trail &amp; Verification Logs
+          </div>
+          <Link
+            to="/admin/audit"
+            className="text-xs text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1"
+          >
+            <span>Full Audit Database</span>
+            <ChevronRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+        <AdminActivityLog
+          title="Recent Approval &amp; Rejection Audit Trail"
+          subtitle="Real-time log of administrative decisions with verification details and user impacts."
+          limit={6}
+          linkToFull="/admin/audit"
+        />
       </section>
     </div>
   );

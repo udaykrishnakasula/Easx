@@ -24,6 +24,7 @@ import {
   ArrowUpRight,
   ShieldCheck,
   SlidersHorizontal,
+  TrendingUp,
 } from "lucide-react";
 
 import {
@@ -31,6 +32,7 @@ import {
   downloadReport,
   useAdminAuditLogs,
 } from "@/admin/adminApi";
+import AdminGrowthDashboard from "@/admin/components/AdminGrowthDashboard";
 import {
   PageHeading,
   EasyXCard,
@@ -151,6 +153,7 @@ export default function AdminReportsPage() {
   const [toDate, setToDate] = useState("");
   const [exportingFormat, setExportingFormat] = useState(null); // "csv" | "xlsx" | null
   const [showAuditLogs, setShowAuditLogs] = useState(false);
+  const [showGrowthCharts, setShowGrowthCharts] = useState(false);
   const [auditActionFilter, setAuditActionFilter] = useState("");
 
   // Query Real Backend Data
@@ -254,7 +257,17 @@ export default function AdminReportsPage() {
         />
 
         {/* Global Export Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <EasyXButton
+            variant={showGrowthCharts ? "primary" : "secondary"}
+            onClick={() => setShowGrowthCharts(!showGrowthCharts)}
+            data-testid="btn-toggle-growth-charts"
+            className="text-xs !bg-purple-600 hover:!bg-purple-500 text-white"
+          >
+            <TrendingUp className="h-4 w-4 mr-1.5" />
+            {showGrowthCharts ? "Hide Visual Trends" : "Visual Growth Analytics"}
+          </EasyXButton>
+
           <EasyXButton
             variant="secondary"
             onClick={() => handleExport("csv")}
@@ -276,6 +289,13 @@ export default function AdminReportsPage() {
           </EasyXButton>
         </div>
       </div>
+
+      {/* EXPANDABLE GROWTH VISUALIZER */}
+      {showGrowthCharts && (
+        <div className="p-4 rounded-xl border border-purple-500/20 bg-purple-950/10 backdrop-blur-md">
+          <AdminGrowthDashboard />
+        </div>
+      )}
 
       {/* Dataset Selection Tabs */}
       <div className="flex overflow-x-auto gap-2 pb-2 scrollbar-thin">

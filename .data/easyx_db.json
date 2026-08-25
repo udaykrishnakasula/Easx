@@ -5,71 +5,503 @@
       {
         "id": "admin-user-0001",
         "name": "EasyX Admin",
-        "email": "subamcollection@gmail.com",
+        "email": "admin@easyx.com",
         "phone": "+910000000001",
-        "password_hash": "$2a$10$dgGZcK/9I.wb0GhJFH9S1uiRwv29Of7OeisLQ0l/r4mPYtFdQsXfu",
+        "password_hash": "$2a$10$ynwOrQnCdifMYAGqdajDKOS9IFUUB50aikkHFpNMa2WnQscIOePh.",
         "role": "admin",
         "email_verified": true,
         "kyc_status": "approved",
         "status": "active",
         "referral_code": "ADMINEX1",
         "referred_by": null,
-        "created_at": "2026-08-23T03:42:00.733Z",
-        "last_login_at": "2026-08-23T03:42:00.733Z"
-      }
-    ],
-    [
-      "14834792-8434-4f60-8b11-afc87e51bad3",
-      {
-        "id": "14834792-8434-4f60-8b11-afc87e51bad3",
-        "name": "Investor 1787456504765",
-        "email": "persistent_user_1787456504765@easyx.com",
-        "phone": "+919886560384",
-        "password_hash": "$2a$10$G2Fmczb/Hg.aWs3.7L7tlOENQMB.MvljaiSOc9oA8HdVDfPHM52V6",
-        "role": "user",
-        "email_verified": true,
-        "kyc_status": "pending",
-        "status": "active",
-        "referral_code": "NQECG06R",
-        "referred_by": null,
-        "created_at": "2026-08-23T03:41:44.887Z",
+        "created_at": "2026-08-24T09:47:25.682Z",
         "last_login_at": null
       }
     ],
     [
-      "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+      "admin-owner-4be1858a",
       {
-        "id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
-        "name": "Investor 1787456515316",
-        "email": "persistent_user_1787456515316@easyx.com",
-        "phone": "+919825505667",
-        "password_hash": "$2a$10$/9Xd1FGmU95mavS9LMZorutoPEHdIAC3MKKhqQQgapfEcXwAoWLtm",
+        "id": "admin-owner-4be1858a",
+        "name": "Platform Owner Admin",
+        "email": "subamcollection@gmail.com",
+        "phone": "+919876500001",
+        "password_hash": "$2a$10$ynwOrQnCdifMYAGqdajDKOS9IFUUB50aikkHFpNMa2WnQscIOePh.",
+        "role": "admin",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "OWNEREX1",
+        "referred_by": null,
+        "created_at": "2026-08-24T09:47:25.682Z",
+        "last_login_at": "2026-08-24T09:57:46.583Z"
+      }
+    ],
+    [
+      "user-investor-2a1b0072",
+      {
+        "id": "user-investor-2a1b0072",
+        "name": "Investor (Colours Faction)",
+        "email": "coloursfaction@gmail.com",
+        "phone": "+919876500002",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "COLORSEX1",
+        "referred_by": null,
+        "created_at": "2026-08-24T09:47:25.682Z",
+        "last_login_at": "2026-08-24T09:55:52.644Z"
+      }
+    ],
+    [
+      "usr-demo-ff6f22c8",
+      {
+        "id": "usr-demo-ff6f22c8",
+        "name": "David Vance",
+        "email": "david.vance@investor.io",
+        "phone": "+14155552011",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "EXDAVID74",
+        "referred_by": null,
+        "created_at": "2026-07-13T08:14:38.726Z",
+        "last_login_at": "2026-07-13T08:14:38.726Z"
+      }
+    ],
+    [
+      "usr-demo-55020055",
+      {
+        "id": "usr-demo-55020055",
+        "name": "Sophia Chen",
+        "email": "sophia.chen@cryptoalpha.net",
+        "phone": "+6591234567",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "EXSOPHIA67",
+        "referred_by": null,
+        "created_at": "2026-07-17T07:28:32.596Z",
+        "last_login_at": "2026-07-17T07:28:32.596Z"
+      }
+    ],
+    [
+      "usr-demo-e062c8e7",
+      {
+        "id": "usr-demo-e062c8e7",
+        "name": "Elena Rostova",
+        "email": "elena.rostova@globalfin.org",
+        "phone": "+447700900142",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "EXELENA79",
+        "referred_by": null,
+        "created_at": "2026-07-20T09:02:25.167Z",
+        "last_login_at": "2026-07-20T09:02:25.167Z"
+      }
+    ],
+    [
+      "usr-demo-ccc56b27",
+      {
+        "id": "usr-demo-ccc56b27",
+        "name": "Marcus Thorne",
+        "email": "marcus.thorne@apexholdings.com",
+        "phone": "+13125558901",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "EXMARCUS45",
+        "referred_by": null,
+        "created_at": "2026-07-24T09:04:03.972Z",
+        "last_login_at": "2026-07-24T09:04:03.972Z"
+      }
+    ],
+    [
+      "usr-demo-060a3a8e",
+      {
+        "id": "usr-demo-060a3a8e",
+        "name": "Amara Diallo",
+        "email": "amara.diallo@africacapital.com",
+        "phone": "+33612345678",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "EXAMARA25",
+        "referred_by": null,
+        "created_at": "2026-07-28T09:42:52.477Z",
+        "last_login_at": "2026-07-28T09:42:52.477Z"
+      }
+    ],
+    [
+      "usr-demo-e8ca4b71",
+      {
+        "id": "usr-demo-e8ca4b71",
+        "name": "Liam O'Connor",
+        "email": "liam.oconnor@dublininvest.ie",
+        "phone": "+353871234567",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "EXLIAM94",
+        "referred_by": null,
+        "created_at": "2026-07-31T08:17:30.144Z",
+        "last_login_at": "2026-07-31T08:17:30.144Z"
+      }
+    ],
+    [
+      "usr-demo-c995efc9",
+      {
+        "id": "usr-demo-c995efc9",
+        "name": "Hiroshi Tanaka",
+        "email": "hiroshi.tanaka@tokyocapital.jp",
+        "phone": "+819012345678",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "EXHIROSHI34",
+        "referred_by": null,
+        "created_at": "2026-08-03T07:05:44.046Z",
+        "last_login_at": "2026-08-03T07:05:44.046Z"
+      }
+    ],
+    [
+      "usr-demo-4e576bd2",
+      {
+        "id": "usr-demo-4e576bd2",
+        "name": "Zara Al-Mansoor",
+        "email": "zara.mansoor@gulfwealth.ae",
+        "phone": "+971501234567",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "EXZARA90",
+        "referred_by": null,
+        "created_at": "2026-08-06T08:27:42.519Z",
+        "last_login_at": "2026-08-06T08:27:42.519Z"
+      }
+    ],
+    [
+      "usr-demo-aa003aa0",
+      {
+        "id": "usr-demo-aa003aa0",
+        "name": "Lucas Meyer",
+        "email": "lucas.meyer@berlinventures.de",
+        "phone": "+4915123456789",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "EXLUCAS74",
+        "referred_by": null,
+        "created_at": "2026-08-09T09:11:14.834Z",
+        "last_login_at": "2026-08-09T09:11:14.834Z"
+      }
+    ],
+    [
+      "usr-demo-2d37a0f1",
+      {
+        "id": "usr-demo-2d37a0f1",
+        "name": "Camila Santos",
+        "email": "camila.santos@saopaulocrypto.br",
+        "phone": "+5511987654321",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
         "role": "user",
         "email_verified": true,
         "kyc_status": "pending",
         "status": "active",
-        "referral_code": "IW1PCAXV",
+        "referral_code": "EXCAMILA74",
         "referred_by": null,
-        "created_at": "2026-08-23T03:41:55.424Z",
-        "last_login_at": "2026-08-23T03:41:55.646Z"
+        "created_at": "2026-08-12T08:54:00.282Z",
+        "last_login_at": "2026-08-12T08:54:00.282Z"
       }
     ],
     [
-      "b4d75460-6769-4875-9479-8a86a96c67da",
+      "usr-demo-7dfa27c3",
       {
-        "id": "b4d75460-6769-4875-9479-8a86a96c67da",
-        "name": "Reboot Tester 1787456520494",
-        "email": "reboot_test_1787456520494@easyx.com",
-        "phone": "+919787239579",
-        "password_hash": "$2a$10$ZwsB/iSlY5DjE4jNxJpKguErFnEzBqyeXQJmC.gR4llgL3zQotp7.",
+        "id": "usr-demo-7dfa27c3",
+        "name": "Vikram Malhotra",
+        "email": "vikram.malhotra@mumbaiwealth.in",
+        "phone": "+919811223344",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "EXVIKRAM17",
+        "referred_by": null,
+        "created_at": "2026-08-15T08:23:32.611Z",
+        "last_login_at": "2026-08-15T08:23:32.611Z"
+      }
+    ],
+    [
+      "usr-demo-950534eb",
+      {
+        "id": "usr-demo-950534eb",
+        "name": "Chloe Dupont",
+        "email": "chloe.dupont@parisinvest.fr",
+        "phone": "+33698765432",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "EXCHLOE93",
+        "referred_by": null,
+        "created_at": "2026-08-17T09:17:41.171Z",
+        "last_login_at": "2026-08-17T09:17:41.171Z"
+      }
+    ],
+    [
+      "usr-demo-d078c9c6",
+      {
+        "id": "usr-demo-d078c9c6",
+        "name": "Mateo Silva",
+        "email": "mateo.silva@madridholdings.es",
+        "phone": "+34612345678",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "pending",
+        "status": "active",
+        "referral_code": "EXMATEO58",
+        "referred_by": null,
+        "created_at": "2026-08-19T08:50:43.642Z",
+        "last_login_at": "2026-08-19T08:50:43.642Z"
+      }
+    ],
+    [
+      "usr-demo-9809a6b1",
+      {
+        "id": "usr-demo-9809a6b1",
+        "name": "Kavita Rao",
+        "email": "kavita.rao@bangalorefin.in",
+        "phone": "+919988776655",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "EXKAVITA45",
+        "referred_by": null,
+        "created_at": "2026-08-21T08:24:40.132Z",
+        "last_login_at": "2026-08-21T08:24:40.132Z"
+      }
+    ],
+    [
+      "usr-demo-b405e369",
+      {
+        "id": "usr-demo-b405e369",
+        "name": "Alexander Wright",
+        "email": "alex.wright@londoncapital.uk",
+        "phone": "+447911123456",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
         "role": "user",
         "email_verified": true,
         "kyc_status": "none",
         "status": "active",
-        "referral_code": "5AQS9UBB",
+        "referral_code": "EXALEXANDER32",
         "referred_by": null,
-        "created_at": "2026-08-23T03:42:00.621Z",
-        "last_login_at": null
+        "created_at": "2026-08-22T09:08:34.237Z",
+        "last_login_at": "2026-08-22T09:08:34.237Z"
+      }
+    ],
+    [
+      "usr-demo-2325e464",
+      {
+        "id": "usr-demo-2325e464",
+        "name": "Fatima Zahra",
+        "email": "fatima.zahra@casablancafund.ma",
+        "phone": "+212661234567",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "pending",
+        "status": "active",
+        "referral_code": "EXFATIMA95",
+        "referred_by": null,
+        "created_at": "2026-08-23T07:27:35.721Z",
+        "last_login_at": "2026-08-23T07:27:35.721Z"
+      }
+    ],
+    [
+      "usr-demo-f21e5cc9",
+      {
+        "id": "usr-demo-f21e5cc9",
+        "name": "Ethan Brooks",
+        "email": "ethan.brooks@austincap.io",
+        "phone": "+15125559876",
+        "password_hash": "$2a$10$Sq8m4dk8omit.UARNcSZd.j70xHA1nNMnPgzy72sAd2kyW21Ii5jS",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "approved",
+        "status": "active",
+        "referral_code": "EXETHAN87",
+        "referred_by": null,
+        "created_at": "2026-08-24T09:19:45.002Z",
+        "last_login_at": "2026-08-24T09:19:45.002Z"
+      }
+    ],
+    [
+      "a584153e-ed5d-482c-9c37-53f886e1c081",
+      {
+        "id": "a584153e-ed5d-482c-9c37-53f886e1c081",
+        "name": "Security Tester",
+        "email": "test_pwd_1787565121273_mt7pz@example.com",
+        "phone": "+914331212745",
+        "password_hash": "$2a$10$FUHvLUiDe5SLeF/H44rQyuylO.PWsBh520rfcGBwHV2F9jQhlrzWa",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "none",
+        "status": "active",
+        "referral_code": "SHWMEVAQ",
+        "referred_by": null,
+        "created_at": "2026-08-24T09:52:01.457Z",
+        "last_login_at": "2026-08-24T09:52:01.457Z"
+      }
+    ],
+    [
+      "f9163ed9-2f16-4a57-a9b8-a0ca13d70cee",
+      {
+        "id": "f9163ed9-2f16-4a57-a9b8-a0ca13d70cee",
+        "name": "Security Tester",
+        "email": "test_pwd_1787565121467_8kjtk@example.com",
+        "phone": "+915518086548",
+        "password_hash": "$2a$10$anKlnFje6DLpk0pSq41u7O2.kMfoSDPvs99ouUTlonkitZNE73lQi",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "none",
+        "status": "active",
+        "referral_code": "55FXK7BB",
+        "referred_by": null,
+        "created_at": "2026-08-24T09:52:01.559Z",
+        "last_login_at": "2026-08-24T09:52:01.559Z"
+      }
+    ],
+    [
+      "2f79ac8a-2844-435c-9496-b9850cf91837",
+      {
+        "id": "2f79ac8a-2844-435c-9496-b9850cf91837",
+        "name": "Security Tester",
+        "email": "test_pwd_1787565121563_pelli@example.com",
+        "phone": "+919335631684",
+        "password_hash": "$2a$10$zB8.pGV/fHXSIvXnP/zCCemkqnY8zKLhgDFKPN8neDw9ti1vfdF2K",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "none",
+        "status": "active",
+        "referral_code": "CN3AJA2L",
+        "referred_by": null,
+        "created_at": "2026-08-24T09:52:01.651Z",
+        "last_login_at": "2026-08-24T09:52:01.651Z"
+      }
+    ],
+    [
+      "8917ab83-3bc9-439a-85be-578d0500a0cd",
+      {
+        "id": "8917ab83-3bc9-439a-85be-578d0500a0cd",
+        "name": "Security Tester",
+        "email": "test_pwd_1787565121654_oisml@example.com",
+        "phone": "+913075250296",
+        "password_hash": "$2a$10$zptOyN8PxpkpVzhwKmfCfu1Qsj4R0M7gjmNBSurzXTDUsnrmJUguy",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "none",
+        "status": "active",
+        "referral_code": "FQ1EZD4H",
+        "referred_by": null,
+        "created_at": "2026-08-24T09:52:01.766Z",
+        "last_login_at": "2026-08-24T09:52:01.766Z"
+      }
+    ],
+    [
+      "2b20fe72-3df0-4de7-be66-a039837599a9",
+      {
+        "id": "2b20fe72-3df0-4de7-be66-a039837599a9",
+        "name": "Security Tester",
+        "email": "test_pwd_1787565121792_zwoo1@example.com",
+        "phone": "+914649004429",
+        "password_hash": "$2a$10$FNG3V1IsD3uvCJoH1l6e5OXebgjKI1jhDI64cA8RNmDifNs5qJ52i",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "none",
+        "status": "active",
+        "referral_code": "O8AVS6TH",
+        "referred_by": null,
+        "created_at": "2026-08-24T09:52:01.882Z",
+        "last_login_at": "2026-08-24T09:52:01.882Z"
+      }
+    ],
+    [
+      "09b68683-bd7c-4870-8790-9f8f69592857",
+      {
+        "id": "09b68683-bd7c-4870-8790-9f8f69592857",
+        "name": "Security Tester",
+        "email": "test_pwd_1787565121886_sffpu@example.com",
+        "phone": "+916669725351",
+        "password_hash": "$2a$10$CZ6OJUT7b1RV3VBgy9curOhCsaUBwlmJIZZ5ew8co7sIERVW/K64W",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "none",
+        "status": "active",
+        "referral_code": "Z0S3QKRS",
+        "referred_by": null,
+        "created_at": "2026-08-24T09:52:01.975Z",
+        "last_login_at": "2026-08-24T09:52:01.975Z"
+      }
+    ],
+    [
+      "f44cbdbd-f7ca-4ffb-a3cb-d603e035d295",
+      {
+        "id": "f44cbdbd-f7ca-4ffb-a3cb-d603e035d295",
+        "name": "Security Tester",
+        "email": "test_pwd_1787565133982_l0ryn@example.com",
+        "phone": "+912070118710",
+        "password_hash": "$2a$10$3geNbTuN1k7SB.AQ6QifbOvjqFb6oyx4wVmfefYLkxH62sPE4L0eW",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "none",
+        "status": "active",
+        "referral_code": "JI6GUXFR",
+        "referred_by": null,
+        "created_at": "2026-08-24T09:52:14.117Z",
+        "last_login_at": "2026-08-24T09:52:14.117Z"
+      }
+    ],
+    [
+      "83b699f1-33f4-4dba-a1e6-789798ded21a",
+      {
+        "id": "83b699f1-33f4-4dba-a1e6-789798ded21a",
+        "name": "Security Tester",
+        "email": "security_test_1787565715101@test.com",
+        "phone": "+917565715101",
+        "password_hash": "$2a$10$Clh/garxt502uXFtXD5XleX/uIm3XkM4AuTskbJxLJIUsY3MBXrVy",
+        "role": "user",
+        "email_verified": true,
+        "kyc_status": "none",
+        "status": "active",
+        "referral_code": "PMCO8N9I",
+        "referred_by": null,
+        "created_at": "2026-08-24T10:01:55.311Z",
+        "last_login_at": "2026-08-24T10:01:55.311Z"
       }
     ]
   ],
@@ -77,66 +509,726 @@
     [
       "admin-user-0001",
       {
-        "id": "04f1e26b-a7fc-4832-b0ab-2d619fdabae1",
+        "id": "b1fecc29-0344-47db-bf64-636aea88ec41",
         "user_id": "admin-user-0001",
         "currency": "USDT",
         "available_balance": "0.00",
         "total_invested": "0.00",
         "total_earned": "0.00",
         "version": 1,
-        "created_at": "2026-08-23T03:41:36.436Z",
-        "updated_at": "2026-08-23T03:41:36.436Z"
+        "created_at": "2026-08-24T09:47:25.682Z",
+        "updated_at": "2026-08-24T09:47:25.682Z"
       }
     ],
     [
-      "14834792-8434-4f60-8b11-afc87e51bad3",
+      "admin-owner-4be1858a",
       {
-        "id": "91baeb95-6aa8-41be-bdac-23ca5616a17d",
-        "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
+        "id": "62f6f27d-43e1-49e6-963f-0b58b4c0ac48",
+        "user_id": "admin-owner-4be1858a",
         "currency": "USDT",
         "available_balance": "0.00",
         "total_invested": "0.00",
         "total_earned": "0.00",
         "version": 0,
-        "created_at": "2026-08-23T03:41:44.888Z",
-        "updated_at": "2026-08-23T03:41:44.888Z"
+        "created_at": "2026-08-24T09:47:26.775Z",
+        "updated_at": "2026-08-24T09:47:26.775Z"
       }
     ],
     [
-      "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+      "user-investor-2a1b0072",
       {
-        "id": "44adea1e-674f-4b02-8acf-7e0b5cbac485",
-        "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+        "id": "82df275b-a98c-4643-95d7-2fb4d1789abb",
+        "user_id": "user-investor-2a1b0072",
         "currency": "USDT",
         "available_balance": "0.00",
         "total_invested": "0.00",
         "total_earned": "0.00",
         "version": 0,
-        "created_at": "2026-08-23T03:41:55.424Z",
-        "updated_at": "2026-08-23T03:41:55.424Z"
+        "created_at": "2026-08-24T09:47:26.853Z",
+        "updated_at": "2026-08-24T09:47:26.853Z"
       }
     ],
     [
-      "b4d75460-6769-4875-9479-8a86a96c67da",
+      "usr-demo-ff6f22c8",
       {
-        "id": "b15591c0-6342-4a0e-b2c3-e92818594691",
-        "user_id": "b4d75460-6769-4875-9479-8a86a96c67da",
+        "id": "e4dd90d6-32f1-47f2-8520-67b5042b2fc8",
+        "user_id": "usr-demo-ff6f22c8",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "5000.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-07-13T08:14:38.726Z",
+        "updated_at": "2026-07-13T08:14:38.726Z"
+      }
+    ],
+    [
+      "usr-demo-55020055",
+      {
+        "id": "53cd25cd-ee08-4c58-8aab-268155249eb7",
+        "user_id": "usr-demo-55020055",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "10000.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-07-17T07:28:32.596Z",
+        "updated_at": "2026-07-17T07:28:32.596Z"
+      }
+    ],
+    [
+      "usr-demo-e062c8e7",
+      {
+        "id": "039e5bcc-20f6-4728-be63-d94d39e1bec4",
+        "user_id": "usr-demo-e062c8e7",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "1000.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-07-20T09:02:25.167Z",
+        "updated_at": "2026-07-20T09:02:25.167Z"
+      }
+    ],
+    [
+      "usr-demo-ccc56b27",
+      {
+        "id": "aace88c5-ed6d-4f20-bdd3-e75ce7d1421b",
+        "user_id": "usr-demo-ccc56b27",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "3000.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-07-24T09:04:03.972Z",
+        "updated_at": "2026-07-24T09:04:03.972Z"
+      }
+    ],
+    [
+      "usr-demo-060a3a8e",
+      {
+        "id": "5347f12c-17cd-4e53-9d75-a76e760968c5",
+        "user_id": "usr-demo-060a3a8e",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "500.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-07-28T09:42:52.477Z",
+        "updated_at": "2026-07-28T09:42:52.477Z"
+      }
+    ],
+    [
+      "usr-demo-e8ca4b71",
+      {
+        "id": "4af7675b-6e4c-4745-bc45-a6e2011f66eb",
+        "user_id": "usr-demo-e8ca4b71",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "10000.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-07-31T08:17:30.144Z",
+        "updated_at": "2026-07-31T08:17:30.144Z"
+      }
+    ],
+    [
+      "usr-demo-c995efc9",
+      {
+        "id": "a068666e-91bd-43c5-8b97-ed0806052d58",
+        "user_id": "usr-demo-c995efc9",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "5000.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-03T07:05:44.046Z",
+        "updated_at": "2026-08-03T07:05:44.046Z"
+      }
+    ],
+    [
+      "usr-demo-4e576bd2",
+      {
+        "id": "01768458-0938-4f1e-ad0f-8a08814981e0",
+        "user_id": "usr-demo-4e576bd2",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "8500.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-06T08:27:42.519Z",
+        "updated_at": "2026-08-06T08:27:42.519Z"
+      }
+    ],
+    [
+      "usr-demo-aa003aa0",
+      {
+        "id": "332675b2-e301-4936-ab9f-b1ffaa688bf7",
+        "user_id": "usr-demo-aa003aa0",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "1000.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-09T09:11:14.834Z",
+        "updated_at": "2026-08-09T09:11:14.834Z"
+      }
+    ],
+    [
+      "usr-demo-2d37a0f1",
+      {
+        "id": "0e098e6d-1be8-48f1-b1bc-e7ae511cdee5",
+        "user_id": "usr-demo-2d37a0f1",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "300.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-12T08:54:00.282Z",
+        "updated_at": "2026-08-12T08:54:00.282Z"
+      }
+    ],
+    [
+      "usr-demo-7dfa27c3",
+      {
+        "id": "16eb54ea-a1e9-4fc8-9f68-ede4aff75817",
+        "user_id": "usr-demo-7dfa27c3",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "15000.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-15T08:23:32.611Z",
+        "updated_at": "2026-08-15T08:23:32.611Z"
+      }
+    ],
+    [
+      "usr-demo-950534eb",
+      {
+        "id": "92a6ae7f-0c1f-4e63-b970-5e4074bb28f7",
+        "user_id": "usr-demo-950534eb",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "2500.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-17T09:17:41.171Z",
+        "updated_at": "2026-08-17T09:17:41.171Z"
+      }
+    ],
+    [
+      "usr-demo-d078c9c6",
+      {
+        "id": "4b37fd4f-ddcd-4d27-ad1e-a0d13d7e0cec",
+        "user_id": "usr-demo-d078c9c6",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "1000.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-19T08:50:43.642Z",
+        "updated_at": "2026-08-19T08:50:43.642Z"
+      }
+    ],
+    [
+      "usr-demo-9809a6b1",
+      {
+        "id": "030024dd-12b3-435b-a4f3-8b2db19464ee",
+        "user_id": "usr-demo-9809a6b1",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "5000.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-21T08:24:40.132Z",
+        "updated_at": "2026-08-21T08:24:40.132Z"
+      }
+    ],
+    [
+      "usr-demo-b405e369",
+      {
+        "id": "de1e0dde-b0b1-4d5b-b780-2c2410bec0c8",
+        "user_id": "usr-demo-b405e369",
+        "currency": "USDT",
+        "available_balance": "300.00",
+        "total_invested": "0.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-22T09:08:34.237Z",
+        "updated_at": "2026-08-22T09:08:34.237Z"
+      }
+    ],
+    [
+      "usr-demo-2325e464",
+      {
+        "id": "44b2a323-85e5-42c7-a86c-71066f34184e",
+        "user_id": "usr-demo-2325e464",
+        "currency": "USDT",
+        "available_balance": "1200.00",
+        "total_invested": "0.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-23T07:27:35.721Z",
+        "updated_at": "2026-08-23T07:27:35.721Z"
+      }
+    ],
+    [
+      "usr-demo-f21e5cc9",
+      {
+        "id": "483fd8bb-3c1e-49a5-8d54-eb578e13e9a2",
+        "user_id": "usr-demo-f21e5cc9",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "6000.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-24T09:19:45.002Z",
+        "updated_at": "2026-08-24T09:19:45.002Z"
+      }
+    ],
+    [
+      "a584153e-ed5d-482c-9c37-53f886e1c081",
+      {
+        "id": "d4e9d8d8-c677-48be-95d8-1da193f14bd7",
+        "user_id": "a584153e-ed5d-482c-9c37-53f886e1c081",
         "currency": "USDT",
         "available_balance": "0.00",
         "total_invested": "0.00",
         "total_earned": "0.00",
         "version": 0,
-        "created_at": "2026-08-23T03:42:00.621Z",
-        "updated_at": "2026-08-23T03:42:00.621Z"
+        "created_at": "2026-08-24T09:52:01.457Z",
+        "updated_at": "2026-08-24T09:52:01.457Z"
+      }
+    ],
+    [
+      "f9163ed9-2f16-4a57-a9b8-a0ca13d70cee",
+      {
+        "id": "6967beff-7b41-47e8-9529-7c0de5166c95",
+        "user_id": "f9163ed9-2f16-4a57-a9b8-a0ca13d70cee",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "0.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-24T09:52:01.559Z",
+        "updated_at": "2026-08-24T09:52:01.559Z"
+      }
+    ],
+    [
+      "2f79ac8a-2844-435c-9496-b9850cf91837",
+      {
+        "id": "d37d2b5d-6c2f-4767-af7d-54e00a5695c4",
+        "user_id": "2f79ac8a-2844-435c-9496-b9850cf91837",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "0.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-24T09:52:01.651Z",
+        "updated_at": "2026-08-24T09:52:01.651Z"
+      }
+    ],
+    [
+      "8917ab83-3bc9-439a-85be-578d0500a0cd",
+      {
+        "id": "790612f5-2853-437a-b7ca-d9e85b9edb4a",
+        "user_id": "8917ab83-3bc9-439a-85be-578d0500a0cd",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "0.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-24T09:52:01.766Z",
+        "updated_at": "2026-08-24T09:52:01.766Z"
+      }
+    ],
+    [
+      "2b20fe72-3df0-4de7-be66-a039837599a9",
+      {
+        "id": "ccf04e8b-4489-41a8-97d0-7746deb12684",
+        "user_id": "2b20fe72-3df0-4de7-be66-a039837599a9",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "0.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-24T09:52:01.882Z",
+        "updated_at": "2026-08-24T09:52:01.882Z"
+      }
+    ],
+    [
+      "09b68683-bd7c-4870-8790-9f8f69592857",
+      {
+        "id": "3945bcba-cab0-48c8-8030-3b0b47a600c5",
+        "user_id": "09b68683-bd7c-4870-8790-9f8f69592857",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "0.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-24T09:52:01.975Z",
+        "updated_at": "2026-08-24T09:52:01.975Z"
+      }
+    ],
+    [
+      "f44cbdbd-f7ca-4ffb-a3cb-d603e035d295",
+      {
+        "id": "1d6a2217-4a45-4299-accc-ca6db6353b0a",
+        "user_id": "f44cbdbd-f7ca-4ffb-a3cb-d603e035d295",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "0.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-24T09:52:14.117Z",
+        "updated_at": "2026-08-24T09:52:14.117Z"
+      }
+    ],
+    [
+      "83b699f1-33f4-4dba-a1e6-789798ded21a",
+      {
+        "id": "e2904103-a7c2-43ad-8133-6c324027120d",
+        "user_id": "83b699f1-33f4-4dba-a1e6-789798ded21a",
+        "currency": "USDT",
+        "available_balance": "0.00",
+        "total_invested": "0.00",
+        "total_earned": "0.00",
+        "version": 0,
+        "created_at": "2026-08-24T10:01:55.311Z",
+        "updated_at": "2026-08-24T10:01:55.311Z"
       }
     ]
   ],
-  "wallet_transactions": [],
+  "wallet_transactions": [
+    [
+      "ce6a0b72-cb9d-4a53-b5a7-12a43f13cd13",
+      {
+        "id": "89f73075-c2c4-4672-bfe9-d22c4d2e19b8",
+        "wallet_id": "e4dd90d6-32f1-47f2-8520-67b5042b2fc8",
+        "user_id": "usr-demo-ff6f22c8",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "5000.00",
+        "balance_after": "5000.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-703d90cf",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-07-13T08:14:38.726Z",
+        "created_by": "usr-demo-ff6f22c8"
+      }
+    ],
+    [
+      "eb8b88af-7e50-4d25-800d-f19bdb9bf26f",
+      {
+        "id": "ae9cf142-c01b-4613-9636-ea0d0f163799",
+        "wallet_id": "53cd25cd-ee08-4c58-8aab-268155249eb7",
+        "user_id": "usr-demo-55020055",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "10000.00",
+        "balance_after": "10000.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-777a472f",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-07-17T07:28:32.596Z",
+        "created_by": "usr-demo-55020055"
+      }
+    ],
+    [
+      "4f4d86a5-458e-4f66-b712-81c36dc82ba4",
+      {
+        "id": "3ab9ef11-3b22-4919-b4d3-ef50e7d642aa",
+        "wallet_id": "039e5bcc-20f6-4728-be63-d94d39e1bec4",
+        "user_id": "usr-demo-e062c8e7",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "1000.00",
+        "balance_after": "1000.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-7198d617",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-07-20T09:02:25.167Z",
+        "created_by": "usr-demo-e062c8e7"
+      }
+    ],
+    [
+      "ddb3a3d8-f244-49c4-8305-b2f51c8de994",
+      {
+        "id": "0742d76e-3314-401c-a80c-345f60157865",
+        "wallet_id": "aace88c5-ed6d-4f20-bdd3-e75ce7d1421b",
+        "user_id": "usr-demo-ccc56b27",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "3000.00",
+        "balance_after": "3000.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-f34a9256",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-07-24T09:04:03.972Z",
+        "created_by": "usr-demo-ccc56b27"
+      }
+    ],
+    [
+      "bc91e65e-b215-4586-bc49-9740a765a0d9",
+      {
+        "id": "c16ac7ed-dac6-4909-9dd7-f4ba018fa48f",
+        "wallet_id": "5347f12c-17cd-4e53-9d75-a76e760968c5",
+        "user_id": "usr-demo-060a3a8e",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "500.00",
+        "balance_after": "500.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-fa5d5a99",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-07-28T09:42:52.477Z",
+        "created_by": "usr-demo-060a3a8e"
+      }
+    ],
+    [
+      "2628a9bb-f456-4517-b5a7-0ff3f21793bc",
+      {
+        "id": "11d86b84-3d68-49b7-84d9-e2b87c016b18",
+        "wallet_id": "4af7675b-6e4c-4745-bc45-a6e2011f66eb",
+        "user_id": "usr-demo-e8ca4b71",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "10000.00",
+        "balance_after": "10000.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-f839d194",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-07-31T08:17:30.144Z",
+        "created_by": "usr-demo-e8ca4b71"
+      }
+    ],
+    [
+      "d48897ce-9c82-4a6c-b0b5-2a0312bfb5b9",
+      {
+        "id": "b44bb396-2c0e-451b-b9c1-ce5d8cc61f59",
+        "wallet_id": "a068666e-91bd-43c5-8b97-ed0806052d58",
+        "user_id": "usr-demo-c995efc9",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "5000.00",
+        "balance_after": "5000.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-caf19258",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-08-03T07:05:44.046Z",
+        "created_by": "usr-demo-c995efc9"
+      }
+    ],
+    [
+      "b353554b-694a-4871-baff-2296e832f9be",
+      {
+        "id": "dda4d8d9-bf61-4d9b-85e6-50d8b871ba05",
+        "wallet_id": "01768458-0938-4f1e-ad0f-8a08814981e0",
+        "user_id": "usr-demo-4e576bd2",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "8500.00",
+        "balance_after": "8500.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-5784a379",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-08-06T08:27:42.519Z",
+        "created_by": "usr-demo-4e576bd2"
+      }
+    ],
+    [
+      "98f2c729-be6f-4f96-91c6-a0077e2d7170",
+      {
+        "id": "36b809ac-d1e3-4d30-9cf0-5adda37f2da7",
+        "wallet_id": "332675b2-e301-4936-ab9f-b1ffaa688bf7",
+        "user_id": "usr-demo-aa003aa0",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "1000.00",
+        "balance_after": "1000.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-45cf523b",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-08-09T09:11:14.834Z",
+        "created_by": "usr-demo-aa003aa0"
+      }
+    ],
+    [
+      "3761e886-e54d-40a4-a2cb-1297196fcd98",
+      {
+        "id": "40f34cbd-ffc6-449f-a8d7-a2fef25f97bc",
+        "wallet_id": "0e098e6d-1be8-48f1-b1bc-e7ae511cdee5",
+        "user_id": "usr-demo-2d37a0f1",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "300.00",
+        "balance_after": "300.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-14540c62",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-08-12T08:54:00.282Z",
+        "created_by": "usr-demo-2d37a0f1"
+      }
+    ],
+    [
+      "a559740a-fe1e-4dcf-addc-1e8e8c352b55",
+      {
+        "id": "9fa152ed-0007-43d8-8246-69ffa508614b",
+        "wallet_id": "16eb54ea-a1e9-4fc8-9f68-ede4aff75817",
+        "user_id": "usr-demo-7dfa27c3",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "15000.00",
+        "balance_after": "15000.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-f1fb181d",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-08-15T08:23:32.611Z",
+        "created_by": "usr-demo-7dfa27c3"
+      }
+    ],
+    [
+      "45ff7c42-fd5d-4c83-bd30-882609bf8d40",
+      {
+        "id": "e0940db2-17c6-439c-8d2f-9077c0866db9",
+        "wallet_id": "92a6ae7f-0c1f-4e63-b970-5e4074bb28f7",
+        "user_id": "usr-demo-950534eb",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "2500.00",
+        "balance_after": "2500.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-dd4d1a58",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-08-17T09:17:41.171Z",
+        "created_by": "usr-demo-950534eb"
+      }
+    ],
+    [
+      "121bad6a-f9ab-4a11-b75b-d340f181ace0",
+      {
+        "id": "8e42b25e-fffc-451f-91a7-12dd0de90a41",
+        "wallet_id": "4b37fd4f-ddcd-4d27-ad1e-a0d13d7e0cec",
+        "user_id": "usr-demo-d078c9c6",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "1000.00",
+        "balance_after": "1000.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-dc95b18a",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-08-19T08:50:43.642Z",
+        "created_by": "usr-demo-d078c9c6"
+      }
+    ],
+    [
+      "29aa762f-5aa6-45d7-a892-574351e6c80b",
+      {
+        "id": "81d40a8c-3fe3-40d4-b66f-6765e147aa5e",
+        "wallet_id": "030024dd-12b3-435b-a4f3-8b2db19464ee",
+        "user_id": "usr-demo-9809a6b1",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "5000.00",
+        "balance_after": "5000.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-65551c8f",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-08-21T08:24:40.132Z",
+        "created_by": "usr-demo-9809a6b1"
+      }
+    ],
+    [
+      "13c81fc3-196c-47e7-aa2f-887dcc5abd2e",
+      {
+        "id": "ce32c8e4-07fb-4b61-9c74-e832feab104d",
+        "wallet_id": "de1e0dde-b0b1-4d5b-b780-2c2410bec0c8",
+        "user_id": "usr-demo-b405e369",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "300.00",
+        "balance_after": "300.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-2d2f74b8",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-08-22T09:08:34.237Z",
+        "created_by": "usr-demo-b405e369"
+      }
+    ],
+    [
+      "97d14813-2deb-4a1f-804a-8b6621e36607",
+      {
+        "id": "65cb397e-c964-4659-a52a-56e5e140ddaf",
+        "wallet_id": "44b2a323-85e5-42c7-a86c-71066f34184e",
+        "user_id": "usr-demo-2325e464",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "1200.00",
+        "balance_after": "1200.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-071c0edb",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-08-23T07:27:35.721Z",
+        "created_by": "usr-demo-2325e464"
+      }
+    ],
+    [
+      "6bf94542-739f-41c9-b5e4-343bcf8db86e",
+      {
+        "id": "8c32b430-fd5f-4c99-84c3-6a9345e3be84",
+        "wallet_id": "483fd8bb-3c1e-49a5-8d54-eb578e13e9a2",
+        "user_id": "usr-demo-f21e5cc9",
+        "type": "DEPOSIT",
+        "direction": "credit",
+        "amount": "6000.00",
+        "balance_after": "6000.00",
+        "ref_type": "deposit",
+        "ref_id": "dep-f7dc001b",
+        "status": "completed",
+        "idempotency_key": null,
+        "note": "USDT Deposit credited",
+        "created_at": "2026-08-24T09:19:45.002Z",
+        "created_by": "usr-demo-f21e5cc9"
+      }
+    ]
+  ],
   "investment_plans": [
     [
       "silver",
       {
-        "id": "2a84d24b-095e-4315-89a1-05a49499bd40",
+        "id": "eafc97aa-68ea-4aff-b1cf-7499e77b894d",
         "key": "silver",
         "name": "Silver",
         "price": "300.00",
@@ -146,14 +1238,14 @@
         "display_order": 1,
         "is_active": true,
         "version": 1,
-        "created_at": "2026-08-23T03:41:36.436Z",
-        "updated_at": "2026-08-23T03:41:36.436Z"
+        "created_at": "2026-08-24T09:47:25.682Z",
+        "updated_at": "2026-08-24T09:47:25.682Z"
       }
     ],
     [
       "gold",
       {
-        "id": "7371a571-c087-4be6-a014-530ec745ba52",
+        "id": "633f4795-6fc4-4776-a775-5f4114b9400d",
         "key": "gold",
         "name": "Gold",
         "price": "1000.00",
@@ -163,14 +1255,14 @@
         "display_order": 2,
         "is_active": true,
         "version": 1,
-        "created_at": "2026-08-23T03:41:36.436Z",
-        "updated_at": "2026-08-23T03:41:36.436Z"
+        "created_at": "2026-08-24T09:47:25.682Z",
+        "updated_at": "2026-08-24T09:47:25.682Z"
       }
     ],
     [
       "platinum",
       {
-        "id": "90584317-6dae-429e-ad8e-74891533a91e",
+        "id": "6bbf567e-529a-496d-ac25-b4b5e483db44",
         "key": "platinum",
         "name": "Platinum",
         "price": "5000.00",
@@ -180,14 +1272,14 @@
         "display_order": 3,
         "is_active": true,
         "version": 1,
-        "created_at": "2026-08-23T03:41:36.436Z",
-        "updated_at": "2026-08-23T03:41:36.436Z"
+        "created_at": "2026-08-24T09:47:25.682Z",
+        "updated_at": "2026-08-24T09:47:25.682Z"
       }
     ],
     [
       "diamond",
       {
-        "id": "70ed4fb4-bb40-4b72-9706-9b2a9c1a27c8",
+        "id": "0c9e2f64-c50a-45de-9e5a-5bc84de2e1e2",
         "key": "diamond",
         "name": "Diamond",
         "price": "10000.00",
@@ -197,63 +1289,686 @@
         "display_order": 4,
         "is_active": true,
         "version": 1,
-        "created_at": "2026-08-23T03:41:36.436Z",
-        "updated_at": "2026-08-23T03:41:36.436Z"
+        "created_at": "2026-08-24T09:47:25.682Z",
+        "updated_at": "2026-08-24T09:47:25.682Z"
       }
     ]
   ],
   "plan_history": [],
-  "investments": [],
+  "investments": [
+    [
+      "inv-1ac92dc5",
+      {
+        "id": "inv-1ac92dc5",
+        "user_id": "usr-demo-ff6f22c8",
+        "plan_key": "platinum",
+        "plan_name": "Platinum",
+        "principal": "5000.00",
+        "lock_days": 60,
+        "profit_percentage": "100.00",
+        "maturity_percentage": "200.00",
+        "expected_profit": "5000.00",
+        "expected_payout": "10000.00",
+        "start_at": "2026-07-13T08:14:38.726Z",
+        "maturity_at": "2026-09-11T08:14:38.726Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-07-13T08:14:38.726Z",
+        "updated_at": "2026-07-13T08:14:38.726Z"
+      }
+    ],
+    [
+      "inv-64292d9b",
+      {
+        "id": "inv-64292d9b",
+        "user_id": "usr-demo-55020055",
+        "plan_key": "diamond",
+        "plan_name": "Diamond",
+        "principal": "10000.00",
+        "lock_days": 60,
+        "profit_percentage": "100.00",
+        "maturity_percentage": "200.00",
+        "expected_profit": "10000.00",
+        "expected_payout": "20000.00",
+        "start_at": "2026-07-17T07:28:32.596Z",
+        "maturity_at": "2026-09-15T07:28:32.596Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-07-17T07:28:32.596Z",
+        "updated_at": "2026-07-17T07:28:32.596Z"
+      }
+    ],
+    [
+      "inv-68992819",
+      {
+        "id": "inv-68992819",
+        "user_id": "usr-demo-e062c8e7",
+        "plan_key": "gold",
+        "plan_name": "Gold",
+        "principal": "1000.00",
+        "lock_days": 60,
+        "profit_percentage": "60.00",
+        "maturity_percentage": "160.00",
+        "expected_profit": "600.00",
+        "expected_payout": "1600.00",
+        "start_at": "2026-07-20T09:02:25.167Z",
+        "maturity_at": "2026-09-18T09:02:25.167Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-07-20T09:02:25.167Z",
+        "updated_at": "2026-07-20T09:02:25.167Z"
+      }
+    ],
+    [
+      "inv-048c0df1",
+      {
+        "id": "inv-048c0df1",
+        "user_id": "usr-demo-ccc56b27",
+        "plan_key": "gold",
+        "plan_name": "Gold",
+        "principal": "3000.00",
+        "lock_days": 60,
+        "profit_percentage": "60.00",
+        "maturity_percentage": "160.00",
+        "expected_profit": "1800.00",
+        "expected_payout": "4800.00",
+        "start_at": "2026-07-24T09:04:03.972Z",
+        "maturity_at": "2026-09-22T09:04:03.972Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-07-24T09:04:03.972Z",
+        "updated_at": "2026-07-24T09:04:03.972Z"
+      }
+    ],
+    [
+      "inv-56882b44",
+      {
+        "id": "inv-56882b44",
+        "user_id": "usr-demo-060a3a8e",
+        "plan_key": "silver",
+        "plan_name": "Silver",
+        "principal": "500.00",
+        "lock_days": 60,
+        "profit_percentage": "60.00",
+        "maturity_percentage": "160.00",
+        "expected_profit": "300.00",
+        "expected_payout": "800.00",
+        "start_at": "2026-07-28T09:42:52.477Z",
+        "maturity_at": "2026-09-26T09:42:52.477Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-07-28T09:42:52.477Z",
+        "updated_at": "2026-07-28T09:42:52.477Z"
+      }
+    ],
+    [
+      "inv-a94dcc3f",
+      {
+        "id": "inv-a94dcc3f",
+        "user_id": "usr-demo-e8ca4b71",
+        "plan_key": "diamond",
+        "plan_name": "Diamond",
+        "principal": "10000.00",
+        "lock_days": 60,
+        "profit_percentage": "100.00",
+        "maturity_percentage": "200.00",
+        "expected_profit": "10000.00",
+        "expected_payout": "20000.00",
+        "start_at": "2026-07-31T08:17:30.144Z",
+        "maturity_at": "2026-09-29T08:17:30.144Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-07-31T08:17:30.144Z",
+        "updated_at": "2026-07-31T08:17:30.144Z"
+      }
+    ],
+    [
+      "inv-6e85f838",
+      {
+        "id": "inv-6e85f838",
+        "user_id": "usr-demo-c995efc9",
+        "plan_key": "platinum",
+        "plan_name": "Platinum",
+        "principal": "5000.00",
+        "lock_days": 60,
+        "profit_percentage": "100.00",
+        "maturity_percentage": "200.00",
+        "expected_profit": "5000.00",
+        "expected_payout": "10000.00",
+        "start_at": "2026-08-03T07:05:44.046Z",
+        "maturity_at": "2026-10-02T07:05:44.046Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-08-03T07:05:44.046Z",
+        "updated_at": "2026-08-03T07:05:44.046Z"
+      }
+    ],
+    [
+      "inv-e2f55850",
+      {
+        "id": "inv-e2f55850",
+        "user_id": "usr-demo-4e576bd2",
+        "plan_key": "platinum",
+        "plan_name": "Platinum",
+        "principal": "8500.00",
+        "lock_days": 60,
+        "profit_percentage": "100.00",
+        "maturity_percentage": "200.00",
+        "expected_profit": "8500.00",
+        "expected_payout": "17000.00",
+        "start_at": "2026-08-06T08:27:42.519Z",
+        "maturity_at": "2026-10-05T08:27:42.519Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-08-06T08:27:42.519Z",
+        "updated_at": "2026-08-06T08:27:42.519Z"
+      }
+    ],
+    [
+      "inv-c847bfbf",
+      {
+        "id": "inv-c847bfbf",
+        "user_id": "usr-demo-aa003aa0",
+        "plan_key": "gold",
+        "plan_name": "Gold",
+        "principal": "1000.00",
+        "lock_days": 60,
+        "profit_percentage": "60.00",
+        "maturity_percentage": "160.00",
+        "expected_profit": "600.00",
+        "expected_payout": "1600.00",
+        "start_at": "2026-08-09T09:11:14.834Z",
+        "maturity_at": "2026-10-08T09:11:14.834Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-08-09T09:11:14.834Z",
+        "updated_at": "2026-08-09T09:11:14.834Z"
+      }
+    ],
+    [
+      "inv-99aaff1a",
+      {
+        "id": "inv-99aaff1a",
+        "user_id": "usr-demo-2d37a0f1",
+        "plan_key": "silver",
+        "plan_name": "Silver",
+        "principal": "300.00",
+        "lock_days": 60,
+        "profit_percentage": "60.00",
+        "maturity_percentage": "160.00",
+        "expected_profit": "180.00",
+        "expected_payout": "480.00",
+        "start_at": "2026-08-12T08:54:00.282Z",
+        "maturity_at": "2026-10-11T08:54:00.282Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-08-12T08:54:00.282Z",
+        "updated_at": "2026-08-12T08:54:00.282Z"
+      }
+    ],
+    [
+      "inv-e7a8c08f",
+      {
+        "id": "inv-e7a8c08f",
+        "user_id": "usr-demo-7dfa27c3",
+        "plan_key": "diamond",
+        "plan_name": "Diamond",
+        "principal": "15000.00",
+        "lock_days": 60,
+        "profit_percentage": "100.00",
+        "maturity_percentage": "200.00",
+        "expected_profit": "15000.00",
+        "expected_payout": "30000.00",
+        "start_at": "2026-08-15T08:23:32.611Z",
+        "maturity_at": "2026-10-14T08:23:32.611Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-08-15T08:23:32.611Z",
+        "updated_at": "2026-08-15T08:23:32.611Z"
+      }
+    ],
+    [
+      "inv-70c5b3ff",
+      {
+        "id": "inv-70c5b3ff",
+        "user_id": "usr-demo-950534eb",
+        "plan_key": "gold",
+        "plan_name": "Gold",
+        "principal": "2500.00",
+        "lock_days": 60,
+        "profit_percentage": "60.00",
+        "maturity_percentage": "160.00",
+        "expected_profit": "1500.00",
+        "expected_payout": "4000.00",
+        "start_at": "2026-08-17T09:17:41.171Z",
+        "maturity_at": "2026-10-16T09:17:41.171Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-08-17T09:17:41.171Z",
+        "updated_at": "2026-08-17T09:17:41.171Z"
+      }
+    ],
+    [
+      "inv-e8611b32",
+      {
+        "id": "inv-e8611b32",
+        "user_id": "usr-demo-d078c9c6",
+        "plan_key": "gold",
+        "plan_name": "Gold",
+        "principal": "1000.00",
+        "lock_days": 60,
+        "profit_percentage": "60.00",
+        "maturity_percentage": "160.00",
+        "expected_profit": "600.00",
+        "expected_payout": "1600.00",
+        "start_at": "2026-08-19T08:50:43.642Z",
+        "maturity_at": "2026-10-18T08:50:43.642Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-08-19T08:50:43.642Z",
+        "updated_at": "2026-08-19T08:50:43.642Z"
+      }
+    ],
+    [
+      "inv-3ac73d19",
+      {
+        "id": "inv-3ac73d19",
+        "user_id": "usr-demo-9809a6b1",
+        "plan_key": "platinum",
+        "plan_name": "Platinum",
+        "principal": "5000.00",
+        "lock_days": 60,
+        "profit_percentage": "100.00",
+        "maturity_percentage": "200.00",
+        "expected_profit": "5000.00",
+        "expected_payout": "10000.00",
+        "start_at": "2026-08-21T08:24:40.132Z",
+        "maturity_at": "2026-10-20T08:24:40.132Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-08-21T08:24:40.132Z",
+        "updated_at": "2026-08-21T08:24:40.132Z"
+      }
+    ],
+    [
+      "inv-8b264b16",
+      {
+        "id": "inv-8b264b16",
+        "user_id": "usr-demo-f21e5cc9",
+        "plan_key": "platinum",
+        "plan_name": "Platinum",
+        "principal": "6000.00",
+        "lock_days": 60,
+        "profit_percentage": "100.00",
+        "maturity_percentage": "200.00",
+        "expected_profit": "6000.00",
+        "expected_payout": "12000.00",
+        "start_at": "2026-08-24T09:19:45.002Z",
+        "maturity_at": "2026-10-23T09:19:45.002Z",
+        "status": "active",
+        "payout_status": "locked",
+        "payout_released_at": null,
+        "created_at": "2026-08-24T09:19:45.002Z",
+        "updated_at": "2026-08-24T09:19:45.002Z"
+      }
+    ]
+  ],
   "deposits": [
     [
-      "b6838918-8995-41c4-ac34-71cd4fd2ab38",
+      "dep-703d90cf",
       {
-        "id": "b6838918-8995-41c4-ac34-71cd4fd2ab38",
-        "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
+        "id": "dep-703d90cf",
+        "user_id": "usr-demo-ff6f22c8",
         "network": "TRC20",
-        "amount": "500.00",
-        "approved_amount": null,
-        "status": "pending",
-        "tx_hash": "0x_test_tx_1787456504765",
-        "admin_id": null,
-        "admin_note": null,
-        "created_at": "2026-08-23T03:41:44.908Z",
-        "decided_at": null,
-        "updated_at": "2026-08-23T03:41:44.908Z"
+        "amount": "5000.00",
+        "approved_amount": "5000.00",
+        "to_address": "TYDzsYUEpvnYmQk4zGP9sWWcTEd3ZiUSDT",
+        "tx_hash": "0x80d5e2518694f8af6be630fdd5526765159c173829dda78d595e9f023b0347f0",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-07-13T08:14:38.726Z",
+        "created_at": "2026-07-13T08:14:38.726Z",
+        "updated_at": "2026-07-13T08:14:38.726Z"
       }
     ],
     [
-      "c36ac555-026f-4f10-ab6f-e9a0072bdf94",
+      "dep-777a472f",
       {
-        "id": "c36ac555-026f-4f10-ab6f-e9a0072bdf94",
-        "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
-        "network": "TRC20",
-        "amount": "500.00",
-        "approved_amount": null,
-        "status": "pending",
-        "tx_hash": "0x_test_tx_1787456515316",
-        "admin_id": null,
-        "admin_note": null,
-        "created_at": "2026-08-23T03:41:55.437Z",
-        "decided_at": null,
-        "updated_at": "2026-08-23T03:41:55.437Z"
-      }
-    ],
-    [
-      "b1168be1-d304-4e43-ad79-3030f5c68e54",
-      {
-        "id": "b1168be1-d304-4e43-ad79-3030f5c68e54",
-        "user_id": "b4d75460-6769-4875-9479-8a86a96c67da",
+        "id": "dep-777a472f",
+        "user_id": "usr-demo-55020055",
         "network": "BEP20",
+        "amount": "10000.00",
+        "approved_amount": "10000.00",
+        "to_address": "0x71C8366420A0926793023680557456729000BEP",
+        "tx_hash": "0xf04b3b3b4c7b5fe6feb667b669262aa903740cf3575a180a5040626deb85594a",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-07-17T07:28:32.596Z",
+        "created_at": "2026-07-17T07:28:32.596Z",
+        "updated_at": "2026-07-17T07:28:32.596Z"
+      }
+    ],
+    [
+      "dep-7198d617",
+      {
+        "id": "dep-7198d617",
+        "user_id": "usr-demo-e062c8e7",
+        "network": "TRC20",
+        "amount": "1000.00",
+        "approved_amount": "1000.00",
+        "to_address": "TYDzsYUEpvnYmQk4zGP9sWWcTEd3ZiUSDT",
+        "tx_hash": "0x024e3a438b126e05a9f088696a832f3cffe1453346f788ea8456a78a107f04cd",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-07-20T09:02:25.167Z",
+        "created_at": "2026-07-20T09:02:25.167Z",
+        "updated_at": "2026-07-20T09:02:25.167Z"
+      }
+    ],
+    [
+      "dep-f34a9256",
+      {
+        "id": "dep-f34a9256",
+        "user_id": "usr-demo-ccc56b27",
+        "network": "ERC20",
+        "amount": "3000.00",
+        "approved_amount": "3000.00",
+        "to_address": "0x71C8366420A0926793023680557456729000BEP",
+        "tx_hash": "0x23dceb6750be308e31b7c2e12ebb5f78eb95b5975ce3f2e754175f2d2db543c2",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-07-24T09:04:03.972Z",
+        "created_at": "2026-07-24T09:04:03.972Z",
+        "updated_at": "2026-07-24T09:04:03.972Z"
+      }
+    ],
+    [
+      "dep-fa5d5a99",
+      {
+        "id": "dep-fa5d5a99",
+        "user_id": "usr-demo-060a3a8e",
+        "network": "TRC20",
+        "amount": "500.00",
+        "approved_amount": "500.00",
+        "to_address": "TYDzsYUEpvnYmQk4zGP9sWWcTEd3ZiUSDT",
+        "tx_hash": "0xad449259748ece0b1588067cf82e3293b1b3dab1026f8ec479e74dbf9259fab2",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-07-28T09:42:52.477Z",
+        "created_at": "2026-07-28T09:42:52.477Z",
+        "updated_at": "2026-07-28T09:42:52.477Z"
+      }
+    ],
+    [
+      "dep-f839d194",
+      {
+        "id": "dep-f839d194",
+        "user_id": "usr-demo-e8ca4b71",
+        "network": "BEP20",
+        "amount": "10000.00",
+        "approved_amount": "10000.00",
+        "to_address": "0x71C8366420A0926793023680557456729000BEP",
+        "tx_hash": "0x106a07c696f9f5b925cf1422c1b50b893a4cc929d6e56b5d19f777174ab8ad49",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-07-31T08:17:30.144Z",
+        "created_at": "2026-07-31T08:17:30.144Z",
+        "updated_at": "2026-07-31T08:17:30.144Z"
+      }
+    ],
+    [
+      "dep-caf19258",
+      {
+        "id": "dep-caf19258",
+        "user_id": "usr-demo-c995efc9",
+        "network": "TRC20",
+        "amount": "5000.00",
+        "approved_amount": "5000.00",
+        "to_address": "TYDzsYUEpvnYmQk4zGP9sWWcTEd3ZiUSDT",
+        "tx_hash": "0x6ca2bc21cfa0106dbde5d2465b59d6af95b38324ce7fc27132b4d6d4f6696a91",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-08-03T07:05:44.046Z",
+        "created_at": "2026-08-03T07:05:44.046Z",
+        "updated_at": "2026-08-03T07:05:44.046Z"
+      }
+    ],
+    [
+      "dep-5784a379",
+      {
+        "id": "dep-5784a379",
+        "user_id": "usr-demo-4e576bd2",
+        "network": "BEP20",
+        "amount": "8500.00",
+        "approved_amount": "8500.00",
+        "to_address": "0x71C8366420A0926793023680557456729000BEP",
+        "tx_hash": "0x4d9783f73a30ccd396c1d9bcf81e897076f727253b55e9f5a2473cb86009905e",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-08-06T08:27:42.519Z",
+        "created_at": "2026-08-06T08:27:42.519Z",
+        "updated_at": "2026-08-06T08:27:42.519Z"
+      }
+    ],
+    [
+      "dep-45cf523b",
+      {
+        "id": "dep-45cf523b",
+        "user_id": "usr-demo-aa003aa0",
+        "network": "TRC20",
+        "amount": "1000.00",
+        "approved_amount": "1000.00",
+        "to_address": "TYDzsYUEpvnYmQk4zGP9sWWcTEd3ZiUSDT",
+        "tx_hash": "0xb016b53cfc84fc24d2995e69204adb9780b1b7d70e8514f4b1ff9d85e022dead",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-08-09T09:11:14.834Z",
+        "created_at": "2026-08-09T09:11:14.834Z",
+        "updated_at": "2026-08-09T09:11:14.834Z"
+      }
+    ],
+    [
+      "dep-14540c62",
+      {
+        "id": "dep-14540c62",
+        "user_id": "usr-demo-2d37a0f1",
+        "network": "BEP20",
+        "amount": "300.00",
+        "approved_amount": "300.00",
+        "to_address": "0x71C8366420A0926793023680557456729000BEP",
+        "tx_hash": "0x14c987baaddcacb99a1acf96c05404da008ed4ce4a8b235f4703c280d78d1753",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-08-12T08:54:00.282Z",
+        "created_at": "2026-08-12T08:54:00.282Z",
+        "updated_at": "2026-08-12T08:54:00.282Z"
+      }
+    ],
+    [
+      "dep-f1fb181d",
+      {
+        "id": "dep-f1fb181d",
+        "user_id": "usr-demo-7dfa27c3",
+        "network": "TRC20",
+        "amount": "15000.00",
+        "approved_amount": "15000.00",
+        "to_address": "TYDzsYUEpvnYmQk4zGP9sWWcTEd3ZiUSDT",
+        "tx_hash": "0xfa674a58088f8166908550c35482985475ce392c37ed9c19af53103c6bcc97df",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-08-15T08:23:32.611Z",
+        "created_at": "2026-08-15T08:23:32.611Z",
+        "updated_at": "2026-08-15T08:23:32.611Z"
+      }
+    ],
+    [
+      "dep-dd4d1a58",
+      {
+        "id": "dep-dd4d1a58",
+        "user_id": "usr-demo-950534eb",
+        "network": "BEP20",
+        "amount": "2500.00",
+        "approved_amount": "2500.00",
+        "to_address": "0x71C8366420A0926793023680557456729000BEP",
+        "tx_hash": "0x4411e68a04b7f60256e0ffc395ae4a3c4f800a8eb3bb22e4608617dfc3141ab5",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-08-17T09:17:41.171Z",
+        "created_at": "2026-08-17T09:17:41.171Z",
+        "updated_at": "2026-08-17T09:17:41.171Z"
+      }
+    ],
+    [
+      "dep-dc95b18a",
+      {
+        "id": "dep-dc95b18a",
+        "user_id": "usr-demo-d078c9c6",
+        "network": "TRC20",
+        "amount": "1000.00",
+        "approved_amount": "1000.00",
+        "to_address": "TYDzsYUEpvnYmQk4zGP9sWWcTEd3ZiUSDT",
+        "tx_hash": "0xb0fe9d32acfaf30fdedd6a9d37126dd2a483c364020c680fc942a673ba4d8a12",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-08-19T08:50:43.642Z",
+        "created_at": "2026-08-19T08:50:43.642Z",
+        "updated_at": "2026-08-19T08:50:43.642Z"
+      }
+    ],
+    [
+      "dep-65551c8f",
+      {
+        "id": "dep-65551c8f",
+        "user_id": "usr-demo-9809a6b1",
+        "network": "BEP20",
+        "amount": "5000.00",
+        "approved_amount": "5000.00",
+        "to_address": "0x71C8366420A0926793023680557456729000BEP",
+        "tx_hash": "0x0331032fa74be4365cc638947b40fe8cf19108ebf6ebb2d01206d83eb18226bc",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-08-21T08:24:40.132Z",
+        "created_at": "2026-08-21T08:24:40.132Z",
+        "updated_at": "2026-08-21T08:24:40.132Z"
+      }
+    ],
+    [
+      "dep-2d2f74b8",
+      {
+        "id": "dep-2d2f74b8",
+        "user_id": "usr-demo-b405e369",
+        "network": "TRC20",
+        "amount": "300.00",
+        "approved_amount": "300.00",
+        "to_address": "TYDzsYUEpvnYmQk4zGP9sWWcTEd3ZiUSDT",
+        "tx_hash": "0xd75dc5b90137e782d75f6ad5030f259c07fb4c19a848c7460bea6a0056ca9c03",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-08-22T09:08:34.237Z",
+        "created_at": "2026-08-22T09:08:34.237Z",
+        "updated_at": "2026-08-22T09:08:34.237Z"
+      }
+    ],
+    [
+      "dep-071c0edb",
+      {
+        "id": "dep-071c0edb",
+        "user_id": "usr-demo-2325e464",
+        "network": "TRC20",
         "amount": "1200.00",
+        "approved_amount": "1200.00",
+        "to_address": "TYDzsYUEpvnYmQk4zGP9sWWcTEd3ZiUSDT",
+        "tx_hash": "0xc0114c02f9ce82fe884484493eef44367f4896aae79ced1034ae1cd24dea0cb3",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-08-23T07:27:35.721Z",
+        "created_at": "2026-08-23T07:27:35.721Z",
+        "updated_at": "2026-08-23T07:27:35.721Z"
+      }
+    ],
+    [
+      "dep-f7dc001b",
+      {
+        "id": "dep-f7dc001b",
+        "user_id": "usr-demo-f21e5cc9",
+        "network": "BEP20",
+        "amount": "6000.00",
+        "approved_amount": "6000.00",
+        "to_address": "0x71C8366420A0926793023680557456729000BEP",
+        "tx_hash": "0x203327b551bd18239bc23050a2759dfe6bc230f371b9b53daf9cf1ae108ed9b1",
+        "proof_images": [],
+        "status": "approved",
+        "admin_note": "Automated blockchain verification match",
+        "admin_id": "admin-user-0001",
+        "decided_at": "2026-08-24T09:19:45.002Z",
+        "created_at": "2026-08-24T09:19:45.002Z",
+        "updated_at": "2026-08-24T09:19:45.002Z"
+      }
+    ],
+    [
+      "560b3fa7-650c-47a5-be8e-acd99b86fe8f",
+      {
+        "id": "560b3fa7-650c-47a5-be8e-acd99b86fe8f",
+        "user_id": "83b699f1-33f4-4dba-a1e6-789798ded21a",
+        "network": "TRC20",
+        "amount": "500.00",
         "approved_amount": null,
         "status": "pending",
-        "tx_hash": "0x_reboot_tx_1787456520494",
+        "tx_hash": "0x4f8a7d3c2b1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a",
+        "proof_images": [
+          "https://example.com/proof.png"
+        ],
         "admin_id": null,
         "admin_note": null,
-        "created_at": "2026-08-23T03:42:00.632Z",
+        "created_at": "2026-08-24T10:01:55.352Z",
         "decided_at": null,
-        "updated_at": "2026-08-23T03:42:00.632Z"
+        "updated_at": "2026-08-24T10:01:55.352Z"
       }
     ]
   ],
@@ -262,221 +1977,389 @@
   "referral_commissions": [],
   "kyc_records": [
     [
-      "14834792-8434-4f60-8b11-afc87e51bad3",
+      "kyc-e720e068",
       {
-        "id": "f286330f-f93e-4fca-980a-094fcacaf51f",
-        "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
-        "status": "pending",
-        "id_type": "national_id",
-        "id_number_encrypted": "encrypted",
+        "id": "kyc-e720e068",
+        "user_id": "usr-demo-ff6f22c8",
+        "user_name": "David Vance",
+        "user_email": "david.vance@investor.io",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 7770",
+        "id_number_present": true,
+        "status": "approved",
         "reject_reason": null,
-        "admin_id": null,
-        "liveness_metadata": null,
-        "submitted_at": "2026-08-23T03:41:44.918Z",
-        "reviewed_at": null,
-        "created_at": "2026-08-23T03:41:44.918Z",
-        "updated_at": "2026-08-23T03:41:44.918Z"
+        "documents": [],
+        "submitted_at": "2026-07-13T08:14:38.726Z",
+        "decided_at": "2026-07-13T08:14:38.726Z",
+        "admin_id": "admin-user-0001",
+        "created_at": "2026-07-13T08:14:38.726Z",
+        "updated_at": "2026-07-13T08:14:38.726Z"
       }
     ],
     [
-      "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+      "kyc-cc2e0d01",
       {
-        "id": "dea25008-26d2-4891-987a-2a53a940887b",
-        "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
-        "status": "pending",
-        "id_type": "national_id",
-        "id_number_encrypted": "encrypted",
+        "id": "kyc-cc2e0d01",
+        "user_id": "usr-demo-55020055",
+        "user_name": "Sophia Chen",
+        "user_email": "sophia.chen@cryptoalpha.net",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 4081",
+        "id_number_present": true,
+        "status": "approved",
         "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-07-17T07:28:32.596Z",
+        "decided_at": "2026-07-17T07:28:32.596Z",
+        "admin_id": "admin-user-0001",
+        "created_at": "2026-07-17T07:28:32.596Z",
+        "updated_at": "2026-07-17T07:28:32.596Z"
+      }
+    ],
+    [
+      "kyc-1d7f3306",
+      {
+        "id": "kyc-1d7f3306",
+        "user_id": "usr-demo-e062c8e7",
+        "user_name": "Elena Rostova",
+        "user_email": "elena.rostova@globalfin.org",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 3769",
+        "id_number_present": true,
+        "status": "approved",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-07-20T09:02:25.167Z",
+        "decided_at": "2026-07-20T09:02:25.167Z",
+        "admin_id": "admin-user-0001",
+        "created_at": "2026-07-20T09:02:25.167Z",
+        "updated_at": "2026-07-20T09:02:25.167Z"
+      }
+    ],
+    [
+      "kyc-a354dc04",
+      {
+        "id": "kyc-a354dc04",
+        "user_id": "usr-demo-ccc56b27",
+        "user_name": "Marcus Thorne",
+        "user_email": "marcus.thorne@apexholdings.com",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 7643",
+        "id_number_present": true,
+        "status": "approved",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-07-24T09:04:03.972Z",
+        "decided_at": "2026-07-24T09:04:03.972Z",
+        "admin_id": "admin-user-0001",
+        "created_at": "2026-07-24T09:04:03.972Z",
+        "updated_at": "2026-07-24T09:04:03.972Z"
+      }
+    ],
+    [
+      "kyc-0e8d06cf",
+      {
+        "id": "kyc-0e8d06cf",
+        "user_id": "usr-demo-060a3a8e",
+        "user_name": "Amara Diallo",
+        "user_email": "amara.diallo@africacapital.com",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 1206",
+        "id_number_present": true,
+        "status": "approved",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-07-28T09:42:52.477Z",
+        "decided_at": "2026-07-28T09:42:52.477Z",
+        "admin_id": "admin-user-0001",
+        "created_at": "2026-07-28T09:42:52.477Z",
+        "updated_at": "2026-07-28T09:42:52.477Z"
+      }
+    ],
+    [
+      "kyc-1d8566bd",
+      {
+        "id": "kyc-1d8566bd",
+        "user_id": "usr-demo-e8ca4b71",
+        "user_name": "Liam O'Connor",
+        "user_email": "liam.oconnor@dublininvest.ie",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 8868",
+        "id_number_present": true,
+        "status": "approved",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-07-31T08:17:30.144Z",
+        "decided_at": "2026-07-31T08:17:30.144Z",
+        "admin_id": "admin-user-0001",
+        "created_at": "2026-07-31T08:17:30.144Z",
+        "updated_at": "2026-07-31T08:17:30.144Z"
+      }
+    ],
+    [
+      "kyc-d2e85310",
+      {
+        "id": "kyc-d2e85310",
+        "user_id": "usr-demo-c995efc9",
+        "user_name": "Hiroshi Tanaka",
+        "user_email": "hiroshi.tanaka@tokyocapital.jp",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 5578",
+        "id_number_present": true,
+        "status": "approved",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-08-03T07:05:44.046Z",
+        "decided_at": "2026-08-03T07:05:44.046Z",
+        "admin_id": "admin-user-0001",
+        "created_at": "2026-08-03T07:05:44.046Z",
+        "updated_at": "2026-08-03T07:05:44.046Z"
+      }
+    ],
+    [
+      "kyc-f7f5133e",
+      {
+        "id": "kyc-f7f5133e",
+        "user_id": "usr-demo-4e576bd2",
+        "user_name": "Zara Al-Mansoor",
+        "user_email": "zara.mansoor@gulfwealth.ae",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 1474",
+        "id_number_present": true,
+        "status": "approved",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-08-06T08:27:42.519Z",
+        "decided_at": "2026-08-06T08:27:42.519Z",
+        "admin_id": "admin-user-0001",
+        "created_at": "2026-08-06T08:27:42.519Z",
+        "updated_at": "2026-08-06T08:27:42.519Z"
+      }
+    ],
+    [
+      "kyc-80b95d77",
+      {
+        "id": "kyc-80b95d77",
+        "user_id": "usr-demo-aa003aa0",
+        "user_name": "Lucas Meyer",
+        "user_email": "lucas.meyer@berlinventures.de",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 3020",
+        "id_number_present": true,
+        "status": "approved",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-08-09T09:11:14.834Z",
+        "decided_at": "2026-08-09T09:11:14.834Z",
+        "admin_id": "admin-user-0001",
+        "created_at": "2026-08-09T09:11:14.834Z",
+        "updated_at": "2026-08-09T09:11:14.834Z"
+      }
+    ],
+    [
+      "kyc-eb803df7",
+      {
+        "id": "kyc-eb803df7",
+        "user_id": "usr-demo-2d37a0f1",
+        "user_name": "Camila Santos",
+        "user_email": "camila.santos@saopaulocrypto.br",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 9728",
+        "id_number_present": true,
+        "status": "pending",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-08-12T08:54:00.282Z",
+        "decided_at": null,
         "admin_id": null,
-        "liveness_metadata": null,
-        "submitted_at": "2026-08-23T03:41:55.443Z",
-        "reviewed_at": null,
-        "created_at": "2026-08-23T03:41:55.443Z",
-        "updated_at": "2026-08-23T03:41:55.443Z"
+        "created_at": "2026-08-12T08:54:00.282Z",
+        "updated_at": "2026-08-12T08:54:00.282Z"
+      }
+    ],
+    [
+      "kyc-2c7b2e85",
+      {
+        "id": "kyc-2c7b2e85",
+        "user_id": "usr-demo-7dfa27c3",
+        "user_name": "Vikram Malhotra",
+        "user_email": "vikram.malhotra@mumbaiwealth.in",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 8946",
+        "id_number_present": true,
+        "status": "approved",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-08-15T08:23:32.611Z",
+        "decided_at": "2026-08-15T08:23:32.611Z",
+        "admin_id": "admin-user-0001",
+        "created_at": "2026-08-15T08:23:32.611Z",
+        "updated_at": "2026-08-15T08:23:32.611Z"
+      }
+    ],
+    [
+      "kyc-7be1093c",
+      {
+        "id": "kyc-7be1093c",
+        "user_id": "usr-demo-950534eb",
+        "user_name": "Chloe Dupont",
+        "user_email": "chloe.dupont@parisinvest.fr",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 1689",
+        "id_number_present": true,
+        "status": "approved",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-08-17T09:17:41.171Z",
+        "decided_at": "2026-08-17T09:17:41.171Z",
+        "admin_id": "admin-user-0001",
+        "created_at": "2026-08-17T09:17:41.171Z",
+        "updated_at": "2026-08-17T09:17:41.171Z"
+      }
+    ],
+    [
+      "kyc-83f05265",
+      {
+        "id": "kyc-83f05265",
+        "user_id": "usr-demo-d078c9c6",
+        "user_name": "Mateo Silva",
+        "user_email": "mateo.silva@madridholdings.es",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 8600",
+        "id_number_present": true,
+        "status": "pending",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-08-19T08:50:43.642Z",
+        "decided_at": null,
+        "admin_id": null,
+        "created_at": "2026-08-19T08:50:43.642Z",
+        "updated_at": "2026-08-19T08:50:43.642Z"
+      }
+    ],
+    [
+      "kyc-76b32336",
+      {
+        "id": "kyc-76b32336",
+        "user_id": "usr-demo-9809a6b1",
+        "user_name": "Kavita Rao",
+        "user_email": "kavita.rao@bangalorefin.in",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 8151",
+        "id_number_present": true,
+        "status": "approved",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-08-21T08:24:40.132Z",
+        "decided_at": "2026-08-21T08:24:40.132Z",
+        "admin_id": "admin-user-0001",
+        "created_at": "2026-08-21T08:24:40.132Z",
+        "updated_at": "2026-08-21T08:24:40.132Z"
+      }
+    ],
+    [
+      "kyc-f7410dac",
+      {
+        "id": "kyc-f7410dac",
+        "user_id": "usr-demo-2325e464",
+        "user_name": "Fatima Zahra",
+        "user_email": "fatima.zahra@casablancafund.ma",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 6042",
+        "id_number_present": true,
+        "status": "pending",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-08-23T07:27:35.721Z",
+        "decided_at": null,
+        "admin_id": null,
+        "created_at": "2026-08-23T07:27:35.721Z",
+        "updated_at": "2026-08-23T07:27:35.721Z"
+      }
+    ],
+    [
+      "kyc-692113b0",
+      {
+        "id": "kyc-692113b0",
+        "user_id": "usr-demo-f21e5cc9",
+        "user_name": "Ethan Brooks",
+        "user_email": "ethan.brooks@austincap.io",
+        "country": "US",
+        "id_type": "passport",
+        "id_number_masked": "•••• 4294",
+        "id_number_present": true,
+        "status": "approved",
+        "reject_reason": null,
+        "documents": [],
+        "submitted_at": "2026-08-24T09:19:45.002Z",
+        "decided_at": "2026-08-24T09:19:45.002Z",
+        "admin_id": "admin-user-0001",
+        "created_at": "2026-08-24T09:19:45.002Z",
+        "updated_at": "2026-08-24T09:19:45.002Z"
       }
     ]
   ],
-  "kyc_documents": [
-    [
-      "dec2ced7-24cc-491a-b9de-eff650099f02",
-      {
-        "id": "dec2ced7-24cc-491a-b9de-eff650099f02",
-        "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
-        "kyc_record_id": "f286330f-f93e-4fca-980a-094fcacaf51f",
-        "doc_type": "id_front",
-        "mime": "image/png",
-        "size": 21,
-        "data": "ZmFrZSBuYXRpb25hbCBpZCBmaWxl",
-        "created_at": "2026-08-23T03:41:44.918Z",
-        "_is_b64": true
-      }
-    ],
-    [
-      "7866f2f7-07c8-4049-99c9-c8332287568f",
-      {
-        "id": "7866f2f7-07c8-4049-99c9-c8332287568f",
-        "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
-        "kyc_record_id": "f286330f-f93e-4fca-980a-094fcacaf51f",
-        "doc_type": "selfie",
-        "mime": "image/jpeg",
-        "size": 16,
-        "data": "ZmFrZSBzZWxmaWUgZmlsZQ==",
-        "created_at": "2026-08-23T03:41:44.918Z",
-        "_is_b64": true
-      }
-    ],
-    [
-      "cf1fc11c-cc0d-4eb8-87eb-a6ed58495c2a",
-      {
-        "id": "cf1fc11c-cc0d-4eb8-87eb-a6ed58495c2a",
-        "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
-        "kyc_record_id": "dea25008-26d2-4891-987a-2a53a940887b",
-        "doc_type": "id_front",
-        "mime": "image/png",
-        "size": 21,
-        "data": "ZmFrZSBuYXRpb25hbCBpZCBmaWxl",
-        "created_at": "2026-08-23T03:41:55.443Z",
-        "_is_b64": true
-      }
-    ],
-    [
-      "e5499f0d-637c-4004-82ac-c140c13b9e0b",
-      {
-        "id": "e5499f0d-637c-4004-82ac-c140c13b9e0b",
-        "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
-        "kyc_record_id": "dea25008-26d2-4891-987a-2a53a940887b",
-        "doc_type": "selfie",
-        "mime": "image/jpeg",
-        "size": 16,
-        "data": "ZmFrZSBzZWxmaWUgZmlsZQ==",
-        "created_at": "2026-08-23T03:41:55.443Z",
-        "_is_b64": true
-      }
-    ]
-  ],
+  "kyc_documents": [],
   "liveness_sessions": [],
+  "password_resets": [],
   "notifications": [
     {
-      "id": "02a295e5-2fb6-4dc1-bffc-44d6dee9836c",
-      "user_id": "b4d75460-6769-4875-9479-8a86a96c67da",
-      "channel": "in_app",
-      "type": "deposit_submitted",
-      "title": "Deposit submitted",
-      "body": "Your BEP20 deposit of 1200.00 USDT was submitted and is pending admin approval.",
-      "is_read": false,
-      "investment_id": null,
-      "dedupe_key": "deposit-submitted:b1168be1-d304-4e43-ad79-3030f5c68e54",
-      "created_at": "2026-08-23T03:42:00.632Z",
-      "read_at": null
-    },
-    {
-      "id": "5b978ec2-9656-4e56-9d05-bd81897eedcc",
-      "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
-      "channel": "in_app",
-      "type": "kyc_submitted",
-      "title": "KYC submitted",
-      "body": "Your identity verification documents and camera selfie were submitted and are pending manual admin review.",
-      "is_read": false,
-      "investment_id": null,
-      "dedupe_key": "kyc_submitted:dea25008-26d2-4891-987a-2a53a940887b:2026-08-23T03:41:55.443Z",
-      "created_at": "2026-08-23T03:41:55.444Z",
-      "read_at": null
-    },
-    {
-      "id": "154ebdf1-1664-45f7-83bb-ff1deb6bf606",
-      "user_id": "153e3a4e-c566-4ea3-bd6b-c609ecb86ff2",
+      "id": "dbcab039-2133-4ac8-9bfe-2692238f2121",
+      "user_id": "83b699f1-33f4-4dba-a1e6-789798ded21a",
       "channel": "in_app",
       "type": "deposit_submitted",
       "title": "Deposit submitted",
       "body": "Your TRC20 deposit of 500.00 USDT was submitted and is pending admin approval.",
       "is_read": false,
       "investment_id": null,
-      "dedupe_key": "deposit-submitted:c36ac555-026f-4f10-ab6f-e9a0072bdf94",
-      "created_at": "2026-08-23T03:41:55.437Z",
-      "read_at": null
-    },
-    {
-      "id": "d53cb65b-77e5-469c-a944-292fad39f1ca",
-      "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
-      "channel": "in_app",
-      "type": "kyc_submitted",
-      "title": "KYC submitted",
-      "body": "Your identity verification documents and camera selfie were submitted and are pending manual admin review.",
-      "is_read": false,
-      "investment_id": null,
-      "dedupe_key": "kyc_submitted:f286330f-f93e-4fca-980a-094fcacaf51f:2026-08-23T03:41:44.918Z",
-      "created_at": "2026-08-23T03:41:44.918Z",
-      "read_at": null
-    },
-    {
-      "id": "70d27e8c-ebc5-466d-ac91-37e92442b3c4",
-      "user_id": "14834792-8434-4f60-8b11-afc87e51bad3",
-      "channel": "in_app",
-      "type": "deposit_submitted",
-      "title": "Deposit submitted",
-      "body": "Your TRC20 deposit of 500.00 USDT was submitted and is pending admin approval.",
-      "is_read": false,
-      "investment_id": null,
-      "dedupe_key": "deposit-submitted:b6838918-8995-41c4-ac34-71cd4fd2ab38",
-      "created_at": "2026-08-23T03:41:44.908Z",
+      "dedupe_key": "deposit-submitted:560b3fa7-650c-47a5-be8e-acd99b86fe8f",
+      "created_at": "2026-08-24T10:01:55.352Z",
       "read_at": null
     }
   ],
   "audit_logs": [
     {
-      "id": "e0504a0f-c636-4ca5-aa4e-a39483f9cf01",
+      "id": "c9be2ba2-88ba-4034-b538-1f6be392d973",
       "action": "admin.login",
-      "actor_id": "admin-user-0001",
+      "decision_type": "action",
+      "actor_id": "admin-owner-4be1858a",
       "actor_role": "admin",
       "actor_email": "subamcollection@gmail.com",
-      "actor_name": "EasyX Admin",
+      "actor_name": "Platform Owner Admin",
       "entity_type": "user",
-      "entity_id": "admin-user-0001",
+      "entity_id": "admin-owner-4be1858a",
+      "target_user_id": "admin-owner-4be1858a",
+      "target_user_name": "Platform Owner Admin",
+      "target_user_email": "subamcollection@gmail.com",
       "amount": null,
       "reason": null,
       "meta": {
-        "ip": "127.0.0.1"
+        "ip": "127.0.0.1",
+        "target_user_name": "Platform Owner Admin",
+        "target_user_email": "subamcollection@gmail.com"
       },
-      "created_at": "2026-08-23T03:42:00.734Z"
+      "created_at": "2026-08-24T09:57:46.584Z"
     },
     {
-      "id": "c7efdb92-4045-4640-a758-0e8b0d2ad7fd",
-      "action": "admin.login",
-      "actor_id": "admin-user-0001",
-      "actor_role": "admin",
-      "actor_email": "subamcollection@gmail.com",
-      "actor_name": "EasyX Admin",
-      "entity_type": "user",
-      "entity_id": "admin-user-0001",
-      "amount": null,
-      "reason": null,
-      "meta": {
-        "ip": "127.0.0.1"
-      },
-      "created_at": "2026-08-23T03:41:55.543Z"
-    },
-    {
-      "id": "ac821c5d-4a5e-4623-8907-e6333414aed8",
-      "action": "admin.login",
-      "actor_id": "admin-user-0001",
-      "actor_role": "admin",
-      "actor_email": "subamcollection@gmail.com",
-      "actor_name": "EasyX Admin",
-      "entity_type": "user",
-      "entity_id": "admin-user-0001",
-      "amount": null,
-      "reason": null,
-      "meta": {
-        "ip": "127.0.0.1"
-      },
-      "created_at": "2026-08-23T03:41:45.016Z"
-    },
-    {
-      "id": "b216e977-51aa-4c14-9259-d91e6d4aa9fd",
+      "id": "3a7d7014-05bf-4994-9cb1-4bba2ccf11dd",
       "action": "system.init",
       "actor_id": "admin-user-0001",
       "actor_role": "admin",
-      "actor_email": "subamcollection@gmail.com",
+      "actor_email": "admin@easyx.com",
       "actor_name": "EasyX Super Admin",
       "entity_type": "system",
       "entity_id": "platform",
@@ -485,7 +2368,7 @@
       "meta": {
         "version": "1.0.0"
       },
-      "created_at": "2026-08-23T03:41:36.436Z"
+      "created_at": "2026-08-24T09:47:25.682Z"
     }
   ],
   "platform_settings": {

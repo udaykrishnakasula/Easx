@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [submitting, setSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const from = location.state?.from?.pathname || "/app/dashboard";
 
   const {
@@ -67,10 +68,36 @@ export default function LoginPage() {
           {errors.email && <p className="text-xs text-red-400">{errors.email.message}</p>}
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="password" className="text-white/80">Password</Label>
-          <Input id="password" type="password" autoComplete="current-password" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
-            className="bg-white/5 border-white/15 text-white placeholder:text-white/30"
-            data-testid={LOGIN.passwordInput} {...register("password")} />
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password" className="text-white/80">Password</Label>
+            <Link
+              to="/forgot-password"
+              className="text-xs text-white/60 hover:text-white hover:underline"
+              data-testid={LOGIN.forgotPasswordLink}
+            >
+              Forgot password?
+            </Link>
+          </div>
+          <div className="relative">
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              placeholder="••••••••"
+              className="bg-white/5 border-white/15 text-white placeholder:text-white/30 pr-10"
+              data-testid={LOGIN.passwordInput}
+              {...register("password")}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition focus:outline-none p-1"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              data-testid={LOGIN.passwordToggle}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
           {errors.password && <p className="text-xs text-red-400">{errors.password.message}</p>}
         </div>
         <Button type="submit" disabled={submitting}

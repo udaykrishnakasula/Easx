@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BadgeCheck, FileImage, Check, X } from "lucide-react";
+import { BadgeCheck, FileImage, Check, X, ZoomIn } from "lucide-react";
 import { toast } from "sonner";
 import dayjs from "dayjs";
 
@@ -18,32 +18,72 @@ import {
   EasyXStatusBadge,
   EasyXEmptyState,
 } from "@/design/EasyX";
+import { AdminImageZoomModal } from "@/admin/components/AdminImageZoomModal";
 
 const FILTERS = ["pending", "approved", "rejected", "all"];
 
-function DocThumb({ docId, label }) {
+function DocThumb({ docId, label, onZoom }) {
   const [url, setUrl] = useState(null);
   const [err, setErr] = useState(false);
+  const [errStatus, setErrStatus] = useState(null);
+
   useEffect(() => {
     let active = true;
     let objectUrl = null;
     fetchAdminKycDocUrl(docId)
-      .then((u) => { if (active) { objectUrl = u; setUrl(u); } })
-      .catch(() => { if (active) setErr(true); });
-    return () => { active = false; if (objectUrl) URL.revokeObjectURL(objectUrl); };
-  }, [docId]);
+      .then((u) => {
+        if (active) {
+          objectUrl = u;
+          setUrl(u);
+        }
+      })
+      .catch((error) => {
+        if (active) {
+          setErr(true);
+          const status = error?.response?.status || "Network Error";
+          setErrStatus(status);
+          console.error(
+            `[Admin KYC Image Error] Failed to fetch KYC document ID: ${docId} (Type: ${label}). HTTP Status: ${status}`,
+            error
+          );
+        }
+      });
+    return () => {
+      active = false;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [docId, label]);
+
+  const displayLabel = label.replace("_", " ");
 
   return (
     <div className="flex flex-col items-center gap-1">
-      <div className="text-[11px] text-ex-muted capitalize">{label.replace("_", " ")}</div>
+      <div className="text-[11px] text-ex-muted capitalize">{displayLabel}</div>
       {err ? (
-        <div className="grid h-28 w-28 place-items-center rounded-ex border border-white/10 bg-white/5 text-ex-muted">
-          <FileImage className="h-6 w-6" />
+        <div className="flex flex-col items-center justify-center h-28 w-28 rounded-ex border border-purple-500/20 bg-purple-950/20 text-ex-lav-200 text-xs p-2 text-center">
+          <FileImage className="h-6 w-6 mb-1 text-ex-lav-300 opacity-80" />
+          <span className="text-[10px] text-white/50">{errStatus ? `Error (${errStatus})` : "Encrypted"}</span>
         </div>
       ) : url ? (
-        <a href={url} target="_blank" rel="noreferrer">
-          <img src={url} alt={label} className="h-28 w-28 rounded-ex border border-white/10 object-cover" data-testid={`kyc-doc-${docId}`} />
-        </a>
+        <div
+          onClick={() => onZoom?.(url, `${displayLabel.toUpperCase()} Document`)}
+          className="group relative h-28 w-28 cursor-pointer rounded-ex overflow-hidden border border-white/10 hover:border-ex-accent transition"
+          title="Click to zoom and inspect"
+        >
+          <img
+            src={url}
+            alt={label}
+            onError={(e) => {
+              console.error(`[Admin KYC Image Error] Failed rendering image in DocThumb for docId: ${docId}`, e);
+              setErr(true);
+            }}
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+            data-testid={`kyc-doc-${docId}`}
+          />
+          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-semibold gap-1">
+            <ZoomIn className="h-4 w-4" /> Zoom
+          </div>
+        </div>
       ) : (
         <div className="grid h-28 w-28 place-items-center rounded-ex border border-white/10 bg-white/5">
           <div className="h-4 w-4 animate-spin rounded-full border-2 border-ex-accent border-t-transparent" />
@@ -53,7 +93,7 @@ function DocThumb({ docId, label }) {
   );
 }
 
-function KycRow({ rec }) {
+function KycRow({ rec, onZoom }) {
   const approve = useApproveKyc();
   const reject = useRejectKyc();
   const [reason, setReason] = useState("");
@@ -92,7 +132,12 @@ function KycRow({ rec }) {
 
       <div className="flex flex-wrap gap-4">
         {rec.documents.map((d) => (
-          <DocThumb key={d.id} docId={d.id} label={d.doc_type} />
+          <DocThumb
+            key={d.id}
+            docId={d.id}
+            label={d.doc_type}
+            onZoom={(url, title) => onZoom?.(url, `${title} — ${rec.user_name || rec.user_email}`)}
+          />
         ))}
       </div>
 
@@ -134,6 +179,7 @@ function KycRow({ rec }) {
 export default function AdminKycPage() {
   const [filter, setFilter] = useState("pending");
   const { data: list, isLoading } = useAdminKyc(filter === "all" ? undefined : filter);
+  const [zoomModal, setZoomModal] = useState(null); // { url, title }
 
   return (
     <div data-testid="admin-kyc-page">
@@ -164,10 +210,23 @@ export default function AdminKycPage() {
       ) : (
         <div className="mt-5 grid grid-cols-1 gap-4" data-testid="admin-kyc-list">
           {list.map((rec) => (
-            <KycRow key={rec.id} rec={rec} />
+            <KycRow
+              key={rec.id}
+              rec={rec}
+              onZoom={(url, title) => setZoomModal({ url, title })}
+            />
           ))}
         </div>
       )}
+
+      {/* INTERACTIVE KYC ZOOM & ROTATE INSPECTION MODAL */}
+      <AdminImageZoomModal
+        open={Boolean(zoomModal)}
+        onClose={() => setZoomModal(null)}
+        imageUrl={zoomModal?.url}
+        title={zoomModal?.title || "KYC Document Inspection"}
+        subtitle="Zoom in to inspect government ID numbers, holograms, photo details, and selfie liveness."
+      />
     </div>
   );
 }

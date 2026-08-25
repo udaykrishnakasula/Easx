@@ -4,13 +4,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, KeyRound, ArrowLeft, Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
 import { useAuth } from "@/shared/context/AuthContext";
-import { apiError } from "@/shared/lib/api";
+import { api, apiError } from "@/shared/lib/api";
 import AuthLayout from "./AuthLayout";
 import { LOGIN } from "@/constants/testIds/auth";
 
@@ -24,6 +24,14 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [submitting, setSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showForgot, setShowForgot] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showResetNewPassword, setShowResetNewPassword] = useState(false);
+  const [showResetConfirmPassword, setShowResetConfirmPassword] = useState(false);
+  const [resetting, setResetting] = useState(false);
   const from = location.state?.from?.pathname || "/dashboard";
 
   React.useEffect(() => {
@@ -35,6 +43,7 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema), defaultValues: { email: "", password: "" } });
 
@@ -50,6 +59,121 @@ export default function LoginPage() {
       setSubmitting(false);
     }
   };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    if (!resetEmail) {
+      toast.error("Please enter your account email.");
+      return;
+    }
+    if (!newPassword || newPassword.length < 8) {
+      toast.error("Password must be at least 8 characters.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+    setResetting(true);
+    try {
+      const { data } = await api.post("/auth/reset-password", {
+        email: resetEmail,
+        new_password: newPassword,
+      });
+      toast.success(data?.message || "Password updated successfully!");
+      setValue("email", resetEmail);
+      setValue("password", newPassword);
+      setShowForgot(false);
+    } catch (err) {
+      toast.error(apiError(err, "Failed to reset password."));
+    } finally {
+      setResetting(false);
+    }
+  };
+
+  if (showForgot) {
+    return (
+      <AuthLayout
+        title="Reset Password"
+        subtitle="Set a new password for your EasyX account."
+        footer={
+          <button
+            type="button"
+            onClick={() => setShowForgot(false)}
+            className="text-white inline-flex items-center gap-1.5 underline underline-offset-4"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" /> Back to sign in
+          </button>
+        }
+      >
+        <form onSubmit={handleResetPassword} className="space-y-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="reset-email" className="text-white/80">Account Email</Label>
+            <Input
+              id="reset-email"
+              type="email"
+              placeholder="you@example.com"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              className="bg-white/5 border-white/15 text-white placeholder:text-white/30"
+              required
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="new-password" className="text-white/80">New Password</Label>
+            <div className="relative">
+              <Input
+                id="new-password"
+                type={showResetNewPassword ? "text" : "password"}
+                placeholder="At least 8 characters"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="bg-white/5 border-white/15 text-white placeholder:text-white/30 pr-10"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowResetNewPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition focus:outline-none"
+                aria-label={showResetNewPassword ? "Hide password" : "Show password"}
+              >
+                {showResetNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="confirm-password" className="text-white/80">Confirm New Password</Label>
+            <div className="relative">
+              <Input
+                id="confirm-password"
+                type={showResetConfirmPassword ? "text" : "password"}
+                placeholder="Re-type new password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="bg-white/5 border-white/15 text-white placeholder:text-white/30 pr-10"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowResetConfirmPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition focus:outline-none"
+                aria-label={showResetConfirmPassword ? "Hide password" : "Show password"}
+              >
+                {showResetConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
+          </div>
+          <Button
+            type="submit"
+            disabled={resetting}
+            className="w-full bg-white text-black hover:bg-white/90 rounded-full h-11 font-semibold"
+          >
+            {resetting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Update Password"}
+          </Button>
+        </form>
+      </AuthLayout>
+    );
+  }
 
   return (
     <AuthLayout
@@ -73,10 +197,36 @@ export default function LoginPage() {
           {errors.email && <p className="text-xs text-red-400">{errors.email.message}</p>}
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="password" className="text-white/80">Password</Label>
-          <Input id="password" type="password" autoComplete="current-password" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
-            className="bg-white/5 border-white/15 text-white placeholder:text-white/30"
-            data-testid={LOGIN.passwordInput} {...register("password")} />
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password" className="text-white/80">Password</Label>
+            <Link
+              to="/forgot-password"
+              className="text-xs text-white/60 hover:text-white hover:underline transition"
+              data-testid={LOGIN.forgotPasswordLink}
+            >
+              Forgot password?
+            </Link>
+          </div>
+          <div className="relative">
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              placeholder="••••••••"
+              className="bg-white/5 border-white/15 text-white placeholder:text-white/30 pr-10"
+              data-testid={LOGIN.passwordInput}
+              {...register("password")}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition focus:outline-none p-1"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              data-testid={LOGIN.passwordToggle}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
           {errors.password && <p className="text-xs text-red-400">{errors.password.message}</p>}
         </div>
         <Button type="submit" disabled={submitting}

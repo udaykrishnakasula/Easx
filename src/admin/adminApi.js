@@ -28,6 +28,41 @@ export function useRejectDeposit() {
   });
 }
 
+export function useBatchApproveDeposits() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ids, note }) =>
+      (await api.post("/admin/deposits/batch-approve", { ids, note })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-deposits"] });
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+      qc.invalidateQueries({ queryKey: ["admin-overview"] });
+    },
+  });
+}
+
+export function useBatchRejectDeposits() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ids, reason }) =>
+      (await api.post("/admin/deposits/batch-reject", { ids, reason })).data,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-deposits"] }),
+  });
+}
+
+export function useBatchSetDepositStatus() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ids, status, note, reason }) =>
+      (await api.post("/admin/deposits/batch-set-status", { ids, status, note: note || reason })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-deposits"] });
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+      qc.invalidateQueries({ queryKey: ["admin-overview"] });
+    },
+  });
+}
+
 export function useAdminDepositSettings() {
   return useQuery({
     queryKey: ["admin-deposit-settings"],
@@ -97,10 +132,52 @@ export function useRejectKyc() {
   });
 }
 
+export function useBatchApproveKyc() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ids }) => (await api.post("/admin/kyc/batch-approve", { ids })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-kyc"] });
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+  });
+}
+
+export function useBatchRejectKyc() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ids, reason }) => (await api.post("/admin/kyc/batch-reject", { ids, reason })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-kyc"] });
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+  });
+}
+
+export function useBatchSetKycStatus() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ids, status, reason, note }) =>
+      (await api.post("/admin/kyc/batch-set-status", { ids, status, reason: reason || note })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-kyc"] });
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+      qc.invalidateQueries({ queryKey: ["admin-overview"] });
+    },
+  });
+}
+
 // Fetch a protected KYC document as an object URL (admin-authenticated).
 export async function fetchAdminKycDocUrl(docId) {
-  const res = await api.get(`/admin/kyc/documents/${docId}`, { responseType: "blob" });
-  return URL.createObjectURL(res.data);
+  try {
+    const res = await api.get(`/admin/kyc/documents/${docId}`, { responseType: "blob" });
+    if (!res?.data || (res.data.type && res.data.type.includes("application/json"))) {
+      throw new Error("Invalid document response");
+    }
+    return URL.createObjectURL(res.data);
+  } catch (err) {
+    throw err;
+  }
 }
 
 export function useAdminReferrals() {
@@ -139,6 +216,19 @@ export function useUnsuspendUser() {
   return useMutation({
     mutationFn: async ({ id }) => (await api.post(`/admin/users/${id}/unsuspend`)).data,
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-users"] }),
+  });
+}
+
+export function useBatchSetUserStatus() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ids, status, reason }) =>
+      (await api.post("/admin/users/batch-set-status", { ids, status, reason })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+      qc.invalidateQueries({ queryKey: ["admin-kyc"] });
+      qc.invalidateQueries({ queryKey: ["admin-overview"] });
+    },
   });
 }
 
@@ -200,12 +290,13 @@ export function useAdminAdjustWallet() {
 }
 
 /* ------------------------- Audit logs ------------------------- */
-export function useAdminAuditLogs({ action, entity_type, q, from_date, to_date } = {}) {
+export function useAdminAuditLogs({ action, entity_type, decision, q, from_date, to_date } = {}) {
   return useQuery({
     queryKey: [
       "admin-audit-logs",
       action || "all",
       entity_type || "all",
+      decision || "all",
       q || "",
       from_date || "",
       to_date || "",
@@ -214,6 +305,7 @@ export function useAdminAuditLogs({ action, entity_type, q, from_date, to_date }
       const params = {};
       if (action && action !== "all") params.action = action;
       if (entity_type && entity_type !== "all") params.entity_type = entity_type;
+      if (decision && decision !== "all") params.decision = decision;
       if (q) params.q = q;
       if (from_date) params.from_date = from_date;
       if (to_date) params.to_date = to_date;
@@ -228,6 +320,7 @@ export async function downloadAuditLogs(format = "csv", filters = {}) {
   const params = { format };
   if (filters.action && filters.action !== "all") params.action = filters.action;
   if (filters.entity_type && filters.entity_type !== "all") params.entity_type = filters.entity_type;
+  if (filters.decision && filters.decision !== "all") params.decision = filters.decision;
   if (filters.q) params.q = filters.q;
   if (filters.from_date) params.from_date = filters.from_date;
   if (filters.to_date) params.to_date = filters.to_date;
@@ -393,3 +486,26 @@ export function useWithdrawalAction() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-withdrawals"] }),
   });
 }
+
+export function useBatchSetWithdrawalStatus() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ids, status, note, reason, tx_hash }) =>
+      (await api.post("/admin/withdrawals/batch-set-status", { ids, status, note: note || reason, tx_hash })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-withdrawals"] });
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+      qc.invalidateQueries({ queryKey: ["admin-overview"] });
+    },
+  });
+}
+
+/* ------------------------- Analytics & Growth Trends (Recharts) ------------------------- */
+export function useAdminAnalyticsTrends(period = "30d") {
+  return useQuery({
+    queryKey: ["admin-analytics-trends", period],
+    queryFn: async () => (await api.get("/admin/analytics/trends", { params: { period } })).data,
+    refetchInterval: 30000,
+  });
+}
+

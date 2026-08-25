@@ -62,8 +62,8 @@ export function useMyDeposits() {
 export function useCreateDeposit() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async ({ network, amount, tx_hash }) =>
-      (await api.post("/deposits", { network, amount, tx_hash })).data,
+    mutationFn: async ({ network, amount, tx_hash, proof_images }) =>
+      (await api.post("/deposits", { network, amount, tx_hash, proof_images })).data,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["my-deposits"] });
     },

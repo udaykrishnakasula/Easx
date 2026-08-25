@@ -28,6 +28,27 @@ export function useRejectDeposit() {
   });
 }
 
+export function useBatchApproveDeposits() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ids, note }) =>
+      (await api.post("/admin/deposits/batch-approve", { ids, note })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-deposits"] });
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+  });
+}
+
+export function useBatchRejectDeposits() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ids, reason }) =>
+      (await api.post("/admin/deposits/batch-reject", { ids, reason })).data,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-deposits"] }),
+  });
+}
+
 export function useAdminDepositSettings() {
   return useQuery({
     queryKey: ["admin-deposit-settings"],
@@ -72,10 +93,39 @@ export function useRejectKyc() {
   });
 }
 
+export function useBatchApproveKyc() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ids }) => (await api.post("/admin/kyc/batch-approve", { ids })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-kyc"] });
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+  });
+}
+
+export function useBatchRejectKyc() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ids, reason }) => (await api.post("/admin/kyc/batch-reject", { ids, reason })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-kyc"] });
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+  });
+}
+
 // Fetch a protected KYC document as an object URL (admin-authenticated).
 export async function fetchAdminKycDocUrl(docId) {
-  const res = await api.get(`/admin/kyc/documents/${docId}`, { responseType: "blob" });
-  return URL.createObjectURL(res.data);
+  try {
+    const res = await api.get(`/admin/kyc/documents/${docId}`, { responseType: "blob" });
+    if (!res?.data || (res.data.type && res.data.type.includes("application/json"))) {
+      throw new Error("Invalid document response");
+    }
+    return URL.createObjectURL(res.data);
+  } catch (err) {
+    throw err;
+  }
 }
 
 export function useAdminReferrals() {

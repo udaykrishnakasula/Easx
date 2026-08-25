@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff, Check, ShieldCheck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,7 +22,13 @@ const schema = z
       .string()
       .min(6, "Enter a valid phone number")
       .regex(/^\+?[0-9]{6,15}$/, "Digits only, optional leading +"),
-    password: z.string().min(8, "At least 8 characters"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .regex(/\d/, "Password must contain at least one number (0-9)")
+      .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character (!@#$%^&*...)")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter"),
     passwordConfirm: z.string(),
     referral_code: z.string().optional(),
   })
@@ -36,10 +42,13 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const [submitting, setSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
@@ -52,6 +61,22 @@ export default function RegisterPage() {
       referral_code: params.get("ref") || "",
     },
   });
+
+  const passwordValue = watch("password") || "";
+  const hasMinLength = passwordValue.length >= 8;
+  const hasNumber = /\d/.test(passwordValue);
+  const hasSpecial = /[^A-Za-z0-9]/.test(passwordValue);
+  const hasMixedCase = /[a-z]/.test(passwordValue) && /[A-Z]/.test(passwordValue);
+
+  const strengthScore = [hasMinLength, hasNumber, hasSpecial, hasMixedCase].filter(Boolean).length;
+
+  const getStrengthMeta = () => {
+    if (passwordValue.length === 0) return { label: "None", color: "bg-white/10", textColor: "text-white/40" };
+    if (strengthScore <= 1) return { label: "Weak", color: "bg-rose-500", textColor: "text-rose-400" };
+    if (strengthScore <= 2) return { label: "Fair", color: "bg-amber-500", textColor: "text-amber-400" };
+    if (strengthScore === 3) return { label: "Good", color: "bg-blue-400", textColor: "text-blue-300" };
+    return { label: "Strong & Secure", color: "bg-emerald-500", textColor: "text-emerald-400" };
+  };
 
   const onSubmit = async (values) => {
     setSubmitting(true);
@@ -111,19 +136,145 @@ export default function RegisterPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <Label htmlFor="password" className="text-white/80">Password</Label>
-            <Input id="password" type="password" autoComplete="new-password" placeholder="At least 8 chars"
-              className="bg-white/5 border-white/15 text-white placeholder:text-white/30"
-              data-testid={REGISTER.passwordInput} {...register("password")} />
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="new-password"
+                placeholder="At least 8 chars"
+                className="bg-white/5 border-white/15 text-white placeholder:text-white/30 pr-10"
+                data-testid={REGISTER.passwordInput}
+                {...register("password")}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition focus:outline-none p-1"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                data-testid={REGISTER.passwordToggle}
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
             {errors.password && <p className="text-xs text-red-400">{errors.password.message}</p>}
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="passwordConfirm" className="text-white/80">Confirm</Label>
-            <Input id="passwordConfirm" type="password" autoComplete="new-password" placeholder="Repeat password"
-              className="bg-white/5 border-white/15 text-white placeholder:text-white/30"
-              data-testid={REGISTER.passwordConfirmInput} {...register("passwordConfirm")} />
+            <div className="relative">
+              <Input
+                id="passwordConfirm"
+                type={showPasswordConfirm ? "text" : "password"}
+                autoComplete="new-password"
+                placeholder="Repeat password"
+                className="bg-white/5 border-white/15 text-white placeholder:text-white/30 pr-10"
+                data-testid={REGISTER.passwordConfirmInput}
+                {...register("passwordConfirm")}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPasswordConfirm((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition focus:outline-none p-1"
+                aria-label={showPasswordConfirm ? "Hide password" : "Show password"}
+                data-testid={REGISTER.passwordConfirmToggle}
+              >
+                {showPasswordConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
             {errors.passwordConfirm && <p className="text-xs text-red-400">{errors.passwordConfirm.message}</p>}
           </div>
         </div>
+
+        {/* Real-time Password Strength Meter & Security Requirements */}
+        {passwordValue.length > 0 && (
+          <div
+            className="space-y-2 p-3 rounded-xl bg-white/[0.04] border border-white/10 text-xs"
+            data-testid={REGISTER.passwordStrength}
+          >
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="text-white/60 flex items-center gap-1.5">
+                <ShieldCheck className="h-3.5 w-3.5 text-white/50" />
+                Password Security:
+              </span>
+              <span
+                className={`font-semibold transition-colors duration-200 ${getStrengthMeta().textColor}`}
+                data-testid={REGISTER.passwordStrengthLabel}
+              >
+                {getStrengthMeta().label}
+              </span>
+            </div>
+
+            {/* 4-Bar Strength Progress */}
+            <div className="grid grid-cols-4 gap-1.5 h-1.5">
+              {[1, 2, 3, 4].map((bar) => (
+                <div
+                  key={bar}
+                  className={`rounded-full transition-all duration-300 ${
+                    strengthScore >= bar ? getStrengthMeta().color : "bg-white/10"
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Criteria Checklist */}
+            <div className="grid grid-cols-2 gap-y-1.5 gap-x-2 pt-1 text-[11px]">
+              <div
+                className={`flex items-center gap-1.5 transition-colors duration-200 ${
+                  hasMinLength ? "text-emerald-400 font-medium" : "text-white/50"
+                }`}
+                data-testid={REGISTER.passwordRuleLength}
+              >
+                {hasMinLength ? (
+                  <Check className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+                ) : (
+                  <span className="h-3.5 w-3.5 flex items-center justify-center text-white/30 text-[10px]">•</span>
+                )}
+                <span>Min 8 characters</span>
+              </div>
+
+              <div
+                className={`flex items-center gap-1.5 transition-colors duration-200 ${
+                  hasNumber ? "text-emerald-400 font-medium" : "text-white/50"
+                }`}
+                data-testid={REGISTER.passwordRuleNumber}
+              >
+                {hasNumber ? (
+                  <Check className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+                ) : (
+                  <span className="h-3.5 w-3.5 flex items-center justify-center text-white/30 text-[10px]">•</span>
+                )}
+                <span>At least 1 number (0-9)</span>
+              </div>
+
+              <div
+                className={`flex items-center gap-1.5 transition-colors duration-200 ${
+                  hasSpecial ? "text-emerald-400 font-medium" : "text-white/50"
+                }`}
+                data-testid={REGISTER.passwordRuleSpecial}
+              >
+                {hasSpecial ? (
+                  <Check className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+                ) : (
+                  <span className="h-3.5 w-3.5 flex items-center justify-center text-white/30 text-[10px]">•</span>
+                )}
+                <span>Special char (!@#$%)</span>
+              </div>
+
+              <div
+                className={`flex items-center gap-1.5 transition-colors duration-200 ${
+                  hasMixedCase ? "text-emerald-400 font-medium" : "text-white/50"
+                }`}
+                data-testid={REGISTER.passwordRuleCase}
+              >
+                {hasMixedCase ? (
+                  <Check className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+                ) : (
+                  <span className="h-3.5 w-3.5 flex items-center justify-center text-white/30 text-[10px]">•</span>
+                )}
+                <span>Upper & lower case</span>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="space-y-1.5">
           <Label htmlFor="referral_code" className="text-white/80">Referral code <span className="text-white/40">(optional)</span></Label>
           <Input id="referral_code" placeholder="e.g. AB12CD34"
