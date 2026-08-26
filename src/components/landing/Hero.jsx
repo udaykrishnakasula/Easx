@@ -1,8 +1,9 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Coin from "./Coin";
+import localCoinMp4 from "@/assets/coin.mp4";
+import VideoPositionControls, { useVideoPositionConfig } from "./VideoPositionControls";
 
 const EasyxMark = () => (
   <svg width="60%" height="60%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
@@ -13,13 +14,114 @@ const EasyxMark = () => (
   </svg>
 );
 
-const partners = ["Aave", "Compound", "MakerDAO", "Chainlink", "Curve"];
+const partners = ["Uniswap", "AAVE", "Compound", "MakerDAO"];
+
+const RAW_VIDEO_URL =
+  "https://raw.githubusercontent.com/udaykrishnakasula/Easyx-3d-coin-video-/main/gemini_generated_video_78da6d75.mp4";
 
 export default function Hero() {
   const navigate = useNavigate();
+  const videoRef = useRef(null);
+  const [videoSrc, setVideoSrc] = useState(RAW_VIDEO_URL);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const { config, setConfig, resetConfig } = useVideoPositionConfig();
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.defaultMuted = true;
+      video.muted = true;
+
+      // Check if already ready/cached
+      if (video.readyState >= 2) {
+        setIsVideoLoaded(true);
+      }
+
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsVideoLoaded(true);
+          })
+          .catch((err) => {
+            console.debug("Video autoplay handled:", err);
+          });
+      }
+    }
+  }, [videoSrc]);
+
+  const handleVideoError = () => {
+    if (videoSrc !== RAW_VIDEO_URL) {
+      setVideoSrc(RAW_VIDEO_URL);
+    } else if (videoSrc !== "/coin.mp4") {
+      setVideoSrc("/coin.mp4");
+    }
+  };
+
+  const handleVideoReady = () => {
+    setIsVideoLoaded(true);
+  };
+
+  // Compute dynamic inline styles based on position, transform adjustments, and loading fade-in
+  const dynamicVideoStyle = {
+    objectFit: config.objectFit || "cover",
+    objectPosition: `${config.posX}% ${config.posY}%`,
+    transform: `scale(${config.scale || 1}) translate(${config.offsetX || 0}px, ${config.offsetY || 0}px)`,
+    opacity: isVideoLoaded ? (config.opacity || 100) / 100 : 0,
+    transition: "opacity 0.6s ease-out, object-position 0.15s ease-out, transform 0.15s ease-out",
+  };
+
   return (
     <section className="hero font-body" data-testid="hero-section">
-      <div className="hero__bg" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/assets/hero_bg.jpg)` }} />
+      {/* Brand Color Blur-Hash Placeholder Loading State */}
+      <AnimatePresence>
+        {!isVideoLoaded && (
+          <motion.div
+            className="hero__placeholder"
+            data-testid="hero-video-placeholder"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {/* Ambient blur-hash radial gradients matching brand colors */}
+            <div className="hero__placeholder-mesh" />
+            <div className="hero__placeholder-glow hero__placeholder-glow--1" />
+            <div className="hero__placeholder-glow hero__placeholder-glow--2" />
+            <div className="hero__placeholder-glow hero__placeholder-glow--3" />
+            {/* Shimmer overlay */}
+            <div className="hero__placeholder-shimmer" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Absolute full-coverage looping background video with adjustable position */}
+      <video
+        ref={videoRef}
+        src={videoSrc}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        className="hero__video-bg responsive-hero-coin"
+        style={dynamicVideoStyle}
+        data-testid="hero-video"
+        onLoadedData={handleVideoReady}
+        onCanPlay={handleVideoReady}
+        onPlaying={handleVideoReady}
+        onError={handleVideoError}
+      >
+        <source src={RAW_VIDEO_URL} type="video/mp4" />
+        <source src="/coin.mp4" type="video/mp4" />
+        <source src="/assets/coin.mp4" type="video/mp4" />
+        <source src={localCoinMp4} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      {/* Background fallbacks and subtle grain overlays */}
+      <div className="hero__bg" style={{ backgroundImage: "url(/assets/hero_bg.jpg)" }} />
+      <div className="hero__flowers" style={{ backgroundImage: "url(/assets/flowers.png)" }} />
+      <div className="hero__grain" />
 
       {/* Navbar overlays the hero */}
       <nav className="nav" data-testid="hero-navbar">
@@ -29,15 +131,14 @@ export default function Hero() {
         </a>
       </nav>
 
-      {/* 3D coins — dominant foreground, same composition on every size */}
-      <Coin variant="lead" reeds={104} testId="hero-coin-lead" />
-      <Coin variant="sub" discs={14} reeds={68} testId="hero-coin-sub" />
-      <Coin variant="mini" discs={12} reeds={52} testId="hero-coin-mini" />
+      {/* Interactive Background Video Position Toolbar */}
+      <VideoPositionControls
+        config={config}
+        setConfig={setConfig}
+        onReset={resetConfig}
+      />
 
-      <div className="hero__flowers" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/assets/flowers.png)` }} />
-      <div className="hero__grain" />
-
-      {/* Text block, left-anchored */}
+      {/* Text & CTA Container sitting cleanly in front of video (z-index: 2) */}
       <div className="hero__content">
         <div className="hero__text">
           <motion.h1
@@ -73,7 +174,8 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="hero__partners" data-testid="hero-partners">
+      {/* Partner Logos Ticker (z-index: 2) */}
+      <div className="hero__partners partners ticker" data-testid="hero-partners">
         {partners.map((p) => (
           <span key={p}>{p}</span>
         ))}

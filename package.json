@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx server.ts",
     "build": "vite build",
-    "start": "NODE_ENV=production tsx server.ts"
+    "lint": "tsc --noEmit",
+    "start": "tsx server.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -65,6 +66,7 @@
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "tsx": "^4.19.1",
     "vaul": "^0.9.3",
     "xlsx": "^0.18.5",
     "zod": "^3.23.8"
@@ -83,7 +85,6 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.45",
     "tailwindcss": "^3.4.11",
-    "tsx": "^4.19.1",
     "typescript": "^5.5.4",
     "vite": "^5.4.3"
   }

@@ -29,12 +29,146 @@ body {
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
+  min-height: 90vh;
+  min-height: 100vh;
+  min-height: 100svh;
   width: 100%;
-  min-height: 100vh;      /* fallback */
-  min-height: 100svh;     /* mobile-stable */
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   isolation: isolate;
-  background-color: #e8e3f1;
+  background-color: #0c0c0f;
+}
+
+/* 1. Full-bleed absolute background video */
+.hero__video-bg,
+.responsive-hero-coin {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 2% 3%;
+  transform: scale(1) translate(0px, 0px);
+  opacity: 1;
+  z-index: 0;
+  pointer-events: none;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  display: block;
+}
+
+/* ---------- Hero Video Blur-Hash Placeholder Loading State ---------- */
+.hero__placeholder {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: #0c0c0f;
+  background: radial-gradient(circle at 75% 45%, #24143d 0%, #130a21 40%, #0c0c0f 100%);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero__placeholder-mesh {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(ellipse at 80% 40%, rgba(168, 85, 247, 0.35) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 65%, rgba(124, 58, 237, 0.25) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 75%, rgba(192, 132, 252, 0.28) 0%, transparent 45%),
+    linear-gradient(135deg, #170d28 0%, #0f0b1a 60%, #0c0c0f 100%);
+  filter: blur(45px);
+  transform: scale(1.1);
+  animation: placeholderMeshPulse 6s ease-in-out infinite alternate;
+}
+
+.hero__placeholder-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.hero__placeholder-glow--1 {
+  width: min(500px, 60vw);
+  height: min(500px, 60vw);
+  right: 5%;
+  top: 25%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(124, 58, 237, 0.1) 70%, transparent 100%);
+  animation: placeholderFloat1 7s ease-in-out infinite alternate;
+}
+
+.hero__placeholder-glow--2 {
+  width: min(350px, 45vw);
+  height: min(350px, 45vw);
+  right: 25%;
+  top: 50%;
+  background: radial-gradient(circle, rgba(192, 132, 252, 0.3) 0%, rgba(147, 51, 234, 0.08) 60%, transparent 100%);
+  animation: placeholderFloat2 8.5s ease-in-out infinite alternate;
+}
+
+.hero__placeholder-glow--3 {
+  width: min(400px, 50vw);
+  height: min(400px, 50vw);
+  left: 10%;
+  top: 20%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.2) 0%, transparent 70%);
+}
+
+.hero__placeholder-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 30%,
+    rgba(216, 180, 254, 0.06) 50%,
+    rgba(255, 255, 255, 0.03) 70%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: placeholderShimmer 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes placeholderMeshPulse {
+  0% {
+    transform: scale(1.02) rotate(0deg);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1.15) rotate(2deg);
+    opacity: 1;
+  }
+}
+
+@keyframes placeholderFloat1 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-30px, 25px) scale(1.1);
+  }
+}
+
+@keyframes placeholderFloat2 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(25px, -30px) scale(0.92);
+  }
+}
+
+@keyframes placeholderShimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .hero__bg {
@@ -44,23 +178,25 @@ body {
   background-position: center 30%;
   background-size: cover;
   background-repeat: no-repeat;
+  opacity: 0.15;
+  pointer-events: none;
 }
 .hero__bg::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(120% 90% at 15% 30%, rgba(245, 243, 250, 0.72) 0%, rgba(245, 243, 250, 0) 55%),
-    linear-gradient(165deg, rgba(240, 238, 248, 0.35) 0%, rgba(206, 197, 228, 0.10) 45%, rgba(150, 136, 190, 0.32) 100%);
+    radial-gradient(120% 90% at 15% 30%, rgba(245, 243, 250, 0.45) 0%, rgba(245, 243, 250, 0) 55%),
+    linear-gradient(165deg, rgba(240, 238, 248, 0.15) 0%, rgba(206, 197, 228, 0.05) 45%, rgba(150, 136, 190, 0.15) 100%);
 }
 
 /* soft lavender vignette + grain for cinematic depth */
 .hero__grain {
   position: absolute;
   inset: 0;
-  z-index: 4;
+  z-index: 1;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.04;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -70,29 +206,114 @@ body {
   right: -3%;
   bottom: -1%;
   height: clamp(90px, 16svh, 210px);
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
   background-position: bottom center;
   background-size: cover;
   background-repeat: no-repeat;
   filter: blur(1.5px) saturate(1.05);
-  opacity: 0.92;
+  opacity: 0.4;
   -webkit-mask-image: linear-gradient(to top, #000 55%, transparent 100%);
   mask-image: linear-gradient(to top, #000 55%, transparent 100%);
 }
 
 /* ---------- Navbar ---------- */
 .nav {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: relative;
   z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   padding: clamp(16px, 2.4vw, 30px) clamp(18px, 5vw, 70px);
+  width: 100%;
+}
+
+/* ---------- Video Position Adjustment Controls ---------- */
+.video-adjust-trigger-container {
+  position: absolute;
+  top: clamp(18px, 2.4vw, 30px);
+  right: clamp(18px, 5vw, 70px);
+  z-index: 30;
+}
+
+.video-adjust-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  background: rgba(22, 16, 36, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(168, 139, 250, 0.35);
+  color: #f3effa;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.video-adjust-trigger-btn:hover,
+.video-adjust-trigger-btn.active {
+  background: rgba(38, 26, 64, 0.95);
+  border-color: rgba(192, 168, 255, 0.7);
+  box-shadow: 0 6px 20px rgba(147, 51, 234, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.video-adjust-badge {
+  font-size: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  background: rgba(168, 85, 247, 0.3);
+  border: 1px solid rgba(192, 132, 252, 0.45);
+  color: #e9d5ff;
+  padding: 1px 6px;
+  border-radius: 6px;
+}
+
+.video-adjust-panel {
+  position: absolute;
+  top: clamp(62px, 8.5vh, 76px);
+  right: clamp(18px, 5vw, 70px);
+  z-index: 40;
+  width: min(350px, calc(100vw - 32px));
+  background: rgba(14, 10, 24, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  border-radius: 18px;
+  box-shadow:
+    0 20px 40px -10px rgba(0, 0, 0, 0.8),
+    0 0 25px rgba(147, 51, 234, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+
+.video-adjust-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.video-adjust-panel__section {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.video-adjust-panel__footer {
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 640px) {
+  .video-adjust-panel {
+    right: 16px;
+    left: 16px;
+    width: auto;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
 }
 .nav__brand {
   display: flex;
@@ -139,19 +360,24 @@ body {
   font-size: clamp(0.95rem, 1.2vw, 1.05rem);
 }
 
-/* ---------- Hero content ---------- */
+/* ---------- 3. Hero content (Text and button container) ---------- */
 .hero__content {
   position: relative;
-  z-index: 3;
-  max-width: 1440px;
-  margin: 0 auto;
-  min-height: 100vh;
-  min-height: 100svh;
+  z-index: 2; /* Sits cleanly in front of the video */
+  max-width: 550px;
+  width: 100%;
+  margin: 0;
   display: flex;
-  align-items: center;
-  padding: clamp(96px, 12vh, 150px) clamp(20px, 5.5vw, 84px) clamp(80px, 12vh, 130px);
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 4rem 1.5rem 2rem 1.5rem;
 }
-.hero__text { max-width: min(640px, 92%); }
+
+.hero__text {
+  max-width: 550px;
+  width: 100%;
+}
 
 .hero__title {
   margin: 0;
@@ -225,201 +451,51 @@ body {
     inset 0 -1px 2px rgba(139, 127, 176, 0.4);
 }
 
-/* ---------- Partner strip ---------- */
-.hero__partners {
-  position: absolute;
-  z-index: 3;
-  left: 0;
-  right: 0;
-  bottom: clamp(20px, 4vh, 44px);
+/* ---------- 4. Partner strip ticker ---------- */
+.hero__partners,
+.partners,
+.ticker {
+  position: relative;
+  z-index: 2;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: clamp(24px, 6vw, 76px);
-  padding: 0 clamp(20px, 5vw, 70px);
+  padding: 1rem 1.5rem 2rem 1.5rem;
   color: var(--lav-700);
-  opacity: 0.7;
+  opacity: 0.8;
   font-family: "Bricolage Grotesque", serif;
   font-size: clamp(0.95rem, 1.6vw, 1.35rem);
   letter-spacing: 0.04em;
 }
 
-/* ============ CSS 3D Coin ============ */
-.coin-wrap {
-  position: absolute;
-  z-index: 1;
-  pointer-events: none;
-}
-.coin-perspective { perspective: 1500px; }
-.coin-tilt { transform-style: preserve-3d; }
-.coin-float {
-  transform-style: preserve-3d;
-  animation: coinFloat 13s ease-in-out infinite;
-}
-.coin {
-  position: relative;
-  width: var(--d);
-  height: var(--d);
-  transform-style: preserve-3d;
-  animation: coinSpinA 8s linear infinite;
-  will-change: transform;
-}
-.coin__face,
-.coin__disc {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-}
-.coin__disc {
-  /* smooth lavender-silver metallic core that fills the thickness with realistic cylindrical shading */
-  backface-visibility: visible;
-  background:
-    linear-gradient(105deg,
-      rgba(255, 255, 255, 0.6) 0%,
-      rgba(235, 228, 248, 0.25) 20%,
-      rgba(150, 138, 178, 0.1) 45%,
-      rgba(60, 48, 85, 0.45) 75%,
-      rgba(255, 255, 255, 0.3) 100%),
-    radial-gradient(circle at 50% 40%, #fbf9ff 0%, #d8d0ea 42%, #ada3cb 70%, #766a98 100%);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
-}
-/* fine milled reeding — real metallic cylinder wall with crisp grooved rim */
-.coin__reed {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: calc(var(--t) * 2);
-  margin-left: calc(var(--t) * -1);
-  transform-origin: center center;
-  backface-visibility: hidden;
-  border-radius: 1px;
-}
-.coin__reed--a {
-  background: linear-gradient(90deg, #faf8ff 0%, #ddd6ee 30%, #b8aecd 70%, #9084ad 100%);
-}
-.coin__reed--b {
-  background: linear-gradient(90deg, #bfb6d8 0%, #968baed 40%, #72668e 80%, #564c70 100%);
-}
-.coin__face {
-  backface-visibility: hidden;
-  overflow: hidden;
-  background-position: center;
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  box-shadow:
-    inset 0 0 25px rgba(95, 82, 130, 0.4),
-    inset 0 4px 12px rgba(255, 255, 255, 0.45),
-    inset 0 -4px 12px rgba(45, 36, 68, 0.35);
-}
-/* soft static specular hotspot (adds polished lavender-metal depth) */
-.coin__face::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: radial-gradient(65% 50% at 35% 25%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.15) 35%, rgba(255, 255, 255, 0) 65%);
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-/* moving studio-light sheen that sweeps once per rotation */
-.coin__face::after {
-  content: "";
-  position: absolute;
-  top: -30%;
-  left: -60%;
-  width: 55%;
-  height: 160%;
-  border-radius: 50%;
-  background: linear-gradient(105deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.75) 50%,
-    rgba(255, 255, 255, 0) 100%);
-  filter: blur(6px);
-  mix-blend-mode: screen;
-  pointer-events: none;
-  animation: coinSheen 8s ease-in-out infinite;
-}
-.coin-shadow {
-  position: absolute;
-  left: 50%;
-  bottom: -14%;
-  width: 78%;
-  height: 14%;
-  transform: translateX(-50%);
-  background: radial-gradient(ellipse at center, rgba(60, 48, 92, 0.4) 0%, rgba(60, 48, 92, 0) 70%);
-  filter: blur(6px);
-  z-index: -1;
-  animation: coinShadow 13s ease-in-out infinite;
+@media (min-width: 769px) {
+  .hero__content {
+    padding: 6rem clamp(24px, 5.5vw, 84px) 3rem clamp(24px, 5.5vw, 84px);
+  }
+  .hero__partners,
+  .partners,
+  .ticker {
+    padding-left: clamp(24px, 5.5vw, 84px);
+    padding-right: clamp(24px, 5.5vw, 84px);
+    padding-bottom: 2rem;
+  }
 }
 
-/* coin placements — same composition scaled by vw */
-.coin-wrap--lead {
-  top: 45%;
-  right: clamp(-30px, 1vw, 40px);
-  transform: translateY(-50%);
-  --d: clamp(240px, 33vw, 460px);
-  --t: clamp(5px, 0.95vw, 12px);
-}
-.coin-wrap--lead .coin-tilt { transform: rotateX(14deg) rotateZ(-16deg); }
-
-.coin-wrap--sub {
-  top: 73%;
-  right: clamp(60px, 20vw, 240px);
-  transform: translateY(-50%);
-  --d: clamp(150px, 20vw, 280px);
-  --t: clamp(4px, 0.6vw, 7px);
-}
-.coin-wrap--sub .coin-tilt { transform: rotateX(26deg) rotateZ(10deg); }
-.coin-wrap--sub .coin { animation-name: coinSpinB; animation-duration: 5s; animation-direction: reverse; }
-.coin-wrap--sub .coin__face::after { animation-duration: 5s; animation-direction: reverse; }
-.coin-wrap--sub .coin-float { animation-duration: 15s; animation-delay: -4s; }
-
-.coin-wrap--mini {
-  top: 26%;
-  right: clamp(24px, 9vw, 150px);
-  transform: translateY(-50%);
-  --d: clamp(90px, 12vw, 170px);
-  --t: clamp(3px, 0.4vw, 5px);
-}
-.coin-wrap--mini .coin-tilt { transform: rotateX(20deg) rotateZ(-9deg); }
-.coin-wrap--mini .coin { animation-name: coinSpinC; animation-duration: 7s; }
-.coin-wrap--mini .coin__face::after { animation-duration: 7s; }
-.coin-wrap--mini .coin-float { animation-name: coinFloatMini; animation-duration: 14s; animation-delay: -6s; }
-
-@keyframes coinFloatMini {
-  0% { transform: translate3d(0, 30px, 0); }
-  50% { transform: translate3d(-14px, -30px, 0); }
-  100% { transform: translate3d(0, 30px, 0); }
-}
-
-@keyframes coinSpinA {
-  from { transform: rotate3d(0.08, 1, 0.05, 0deg); }
-  to { transform: rotate3d(0.08, 1, 0.05, 360deg); }
-}
-@keyframes coinSpinB {
-  from { transform: rotate3d(0.4, 1, -0.28, 0deg); }
-  to { transform: rotate3d(0.4, 1, -0.28, 360deg); }
-}
-@keyframes coinSpinC {
-  from { transform: rotate3d(-0.32, 0.9, 0.45, 0deg); }
-  to { transform: rotate3d(-0.32, 0.9, 0.45, 360deg); }
-}
-@keyframes coinSheen {
-  0% { transform: translateX(0) rotate(4deg); opacity: 0; }
-  15% { opacity: 0.9; }
-  50% { transform: translateX(300%) rotate(4deg); opacity: 0.35; }
-  70% { opacity: 0; }
-  100% { transform: translateX(340%) rotate(4deg); opacity: 0; }
-}
-@keyframes coinFloat {
-  0% { transform: translate3d(0, 20px, 0); }
-  50% { transform: translate3d(12px, -22px, 0); }
-  100% { transform: translate3d(0, 20px, 0); }
-}
-@keyframes coinShadow {
-  0%, 100% { transform: translateX(-50%) scale(0.9); opacity: 0.35; }
-  50% { transform: translateX(-50%) scale(1.08); opacity: 0.5; }
+@media (max-width: 768px) {
+  .hero__content {
+    padding: 5rem 1.5rem 2rem 1.5rem;
+    max-width: 100%;
+  }
+  .hero__partners,
+  .partners,
+  .ticker {
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 2rem;
+  }
 }
 
 /* ---------- Below-the-fold sections ---------- */
@@ -545,19 +621,8 @@ body {
 
 /* ---------- Responsive tuning ---------- */
 @media (max-width: 900px) {
-  .hero__text { max-width: 78%; }
-  .coin-wrap--sub { right: clamp(24px, 12vw, 120px); top: 76%; }
+  .hero__text { max-width: 100%; }
 }
 @media (max-width: 560px) {
-  .hero__content { align-items: flex-start; padding-top: clamp(110px, 20svh, 160px); }
-  .hero__text { max-width: 86%; }
-  .coin-wrap--lead { top: 50%; right: -6%; --d: clamp(210px, 62vw, 320px); --t: 7px; }
-  .coin-wrap--sub { top: 80%; right: 30%; --d: clamp(130px, 40vw, 200px); --t: 5px; }
-  .coin-wrap--mini { top: 20%; right: 8%; --d: clamp(66px, 22vw, 120px); --t: 4px; }
   .hero__partners { justify-content: space-between; gap: 14px; bottom: clamp(14px, 3vh, 28px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .coin { animation: none; transform: rotateY(-24deg); }
-  .coin-float, .coin-shadow, .coin__face::after { animation: none; }
 }

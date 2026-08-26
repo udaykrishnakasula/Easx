@@ -12,7 +12,7 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton as ShadSkeleton } from "@/components/ui/skeleton";
 
 /* ---------------- Button ---------------- */
-export function EasyXButton({ variant = "primary", className, children, loading, ...props }) {
+export function EasyXButton({ variant = "primary", className, children, loading = false, ...props }) {
   const variants = {
     primary: "ex-btn ex-btn-primary",
     accent: "ex-btn ex-btn-accent",
