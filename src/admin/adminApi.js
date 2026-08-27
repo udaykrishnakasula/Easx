@@ -509,3 +509,337 @@ export function useAdminAnalyticsTrends(period = "30d") {
   });
 }
 
+/* ------------------------- UX Friction & Error Telemetry ------------------------- */
+export function useAdminUxAnalyticsSummary() {
+  return useQuery({
+    queryKey: ["admin-ux-analytics-summary"],
+    queryFn: async () => (await api.get("/admin/analytics/summary")).data,
+    refetchInterval: 8000,
+  });
+}
+
+export function useAdminErrorLogs(params = {}) {
+  return useQuery({
+    queryKey: ["admin-error-logs", params],
+    queryFn: async () => (await api.get("/admin/analytics/errors", { params })).data,
+    refetchInterval: 8000,
+  });
+}
+
+export function useResolveErrorLog() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, resolved }) =>
+      (await api.post(`/admin/analytics/errors/${id}/resolve`, { resolved })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-error-logs"] });
+      qc.invalidateQueries({ queryKey: ["admin-ux-analytics-summary"] });
+    },
+  });
+}
+
+export function useClearErrorLogs() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ resolvedOnly } = {}) =>
+      (await api.delete("/admin/analytics/errors", { params: { resolved: resolvedOnly ? "true" : "false" } })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-error-logs"] });
+      qc.invalidateQueries({ queryKey: ["admin-ux-analytics-summary"] });
+    },
+  });
+}
+
+export function useTriggerTestAnalyticsEvent() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ type, severity, message }) =>
+      (await api.post("/admin/analytics/test-event", { type, severity, message })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-ux-analytics-summary"] });
+      qc.invalidateQueries({ queryKey: ["admin-error-logs"] });
+    },
+  });
+}
+
+/* ------------------------- Automated Reminder Notifications ------------------------- */
+export function useAdminReminderSettings() {
+  return useQuery({
+    queryKey: ["admin-reminder-settings"],
+    queryFn: async () => (await api.get("/admin/reminders/settings")).data,
+    staleTime: 30000,
+  });
+}
+
+export function useSaveAdminReminderSettings() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload) => (await api.put("/admin/reminders/settings", payload)).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-reminder-settings"] });
+      qc.invalidateQueries({ queryKey: ["admin-reminder-analytics"] });
+    },
+  });
+}
+
+export function useUpdateAdminReminderWorkflow() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ key, patch }) =>
+      (await api.put(`/admin/reminders/workflows/${key}`, patch)).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-reminder-settings"] });
+      qc.invalidateQueries({ queryKey: ["admin-reminder-analytics"] });
+    },
+  });
+}
+
+export function useAdminReminderAnalytics() {
+  return useQuery({
+    queryKey: ["admin-reminder-analytics"],
+    queryFn: async () => (await api.get("/admin/reminders/analytics")).data,
+    refetchInterval: 10000,
+  });
+}
+
+export function useAdminReminderLogs(params = {}) {
+  return useQuery({
+    queryKey: ["admin-reminder-logs", params],
+    queryFn: async () => (await api.get("/admin/reminders/logs", { params })).data,
+    refetchInterval: 10000,
+  });
+}
+
+export function useRunReminderSweep() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async () => (await api.post("/admin/reminders/run-sweep")).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-reminder-analytics"] });
+      qc.invalidateQueries({ queryKey: ["admin-reminder-logs"] });
+    },
+  });
+}
+
+export function useSendTestReminder() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload) => (await api.post("/admin/reminders/test", payload)).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-reminder-logs"] });
+      qc.invalidateQueries({ queryKey: ["admin-notification-logs"] });
+    },
+  });
+}
+
+/* ------------------------- Unified Notification Center (Personalized, Bulk, Automated) ------------------------- */
+export function useAdminNotificationSegments() {
+  return useQuery({
+    queryKey: ["admin-notification-segments"],
+    queryFn: async () => (await api.get("/admin/notifications/segments")).data,
+    refetchInterval: 15000,
+  });
+}
+
+export function useAdminNotificationSegmentPreview() {
+  return useMutation({
+    mutationFn: async ({ segment_id }) =>
+      (await api.post("/admin/notifications/segments/preview", { segment_id })).data,
+  });
+}
+
+export function useSendPersonalizedNotification() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload) => (await api.post("/admin/notifications/send-personalized", payload)).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-notification-logs"] });
+      qc.invalidateQueries({ queryKey: ["admin-notification-analytics"] });
+    },
+  });
+}
+
+export function useSendBulkNotification() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload) => (await api.post("/admin/notifications/send-bulk", payload)).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-notification-logs"] });
+      qc.invalidateQueries({ queryKey: ["admin-notification-analytics"] });
+      qc.invalidateQueries({ queryKey: ["admin-notification-segments"] });
+    },
+  });
+}
+
+export function useAdminUnifiedNotificationLogs(params = {}) {
+  return useQuery({
+    queryKey: ["admin-notification-logs", params],
+    queryFn: async () => (await api.get("/admin/notifications/logs", { params })).data,
+    refetchInterval: 8000,
+  });
+}
+
+export function useAdminUnifiedNotificationAnalytics() {
+  return useQuery({
+    queryKey: ["admin-notification-analytics"],
+    queryFn: async () => (await api.get("/admin/notifications/analytics")).data,
+    refetchInterval: 10000,
+  });
+}
+
+/* -------------------- Admin Support Hooks -------------------- */
+
+export function useAdminSupportTickets(params = {}) {
+  return useQuery({
+    queryKey: ["admin-support-tickets", params],
+    queryFn: async () => (await api.get("/admin/support/tickets", { params })).data,
+    refetchInterval: 10000,
+  });
+}
+
+export function useAdminSupportTicket(ticketId) {
+  return useQuery({
+    queryKey: ["admin-support-ticket", ticketId],
+    queryFn: async () => (await api.get(`/admin/support/tickets/${ticketId}`)).data,
+    enabled: Boolean(ticketId),
+    refetchInterval: 5000,
+  });
+}
+
+export function useAdminReplySupportTicket() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ticketId, message, text, status, attachments }) =>
+      (await api.post(`/admin/support/tickets/${ticketId}/reply`, { message, text, status, attachments })).data,
+    onSuccess: (_, variables) => {
+      qc.invalidateQueries({ queryKey: ["admin-support-ticket", variables.ticketId] });
+      qc.invalidateQueries({ queryKey: ["admin-support-tickets"] });
+    },
+  });
+}
+
+export function useAdminUpdateSupportTicketStatus() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ticketId, status, note }) =>
+      (await api.patch(`/admin/support/tickets/${ticketId}/status`, { status, note })).data,
+    onSuccess: (_, variables) => {
+      qc.invalidateQueries({ queryKey: ["admin-support-ticket", variables.ticketId] });
+      qc.invalidateQueries({ queryKey: ["admin-support-tickets"] });
+    },
+  });
+}
+
+export function useAdminAssignSupportTicket() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ticketId, admin_id }) =>
+      (await api.patch(`/admin/support/tickets/${ticketId}/assign`, { admin_id })).data,
+    onSuccess: (_, variables) => {
+      qc.invalidateQueries({ queryKey: ["admin-support-ticket", variables.ticketId] });
+      qc.invalidateQueries({ queryKey: ["admin-support-tickets"] });
+    },
+  });
+}
+
+export function useAdminAddInternalNote() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ticketId, note, message, attachments }) =>
+      (await api.post(`/admin/support/tickets/${ticketId}/notes`, { note, message, attachments })).data,
+    onSuccess: (_, variables) => {
+      qc.invalidateQueries({ queryKey: ["admin-support-ticket", variables.ticketId] });
+      qc.invalidateQueries({ queryKey: ["admin-support-tickets"] });
+    },
+  });
+}
+
+export function useAdminUpdateSupportTicketPriority() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ticketId, priority }) =>
+      (await api.patch(`/admin/support/tickets/${ticketId}/priority`, { priority })).data,
+    onSuccess: (_, variables) => {
+      qc.invalidateQueries({ queryKey: ["admin-support-ticket", variables.ticketId] });
+      qc.invalidateQueries({ queryKey: ["admin-support-tickets"] });
+    },
+  });
+}
+
+// ==================== ADMIN FAQ & HELP CENTER HOOKS ====================
+
+export function useAdminSupportFaqs(params = {}) {
+  const { category, status, search } = params;
+  return useQuery({
+    queryKey: ["admin-support-faqs", category || "ALL", status || "ALL", search || ""],
+    queryFn: async () => {
+      const queryParams = {};
+      if (category && category !== "ALL") queryParams.category = category;
+      if (status && status !== "ALL") queryParams.status = status;
+      if (search && search.trim()) queryParams.search = search.trim();
+      return (await api.get("/admin/support/faqs", { params: queryParams })).data;
+    },
+  });
+}
+
+export function useAdminSupportFaqAnalytics() {
+  return useQuery({
+    queryKey: ["admin-support-faq-analytics"],
+    queryFn: async () => (await api.get("/admin/support/faqs/analytics")).data,
+  });
+}
+
+export function useAdminCreateSupportFaq() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload) => (await api.post("/admin/support/faqs", payload)).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-support-faqs"] });
+      qc.invalidateQueries({ queryKey: ["admin-support-faq-analytics"] });
+      qc.invalidateQueries({ queryKey: ["support-faqs"] });
+    },
+  });
+}
+
+export function useAdminUpdateSupportFaq() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, ...payload }) => (await api.put(`/admin/support/faqs/${id}`, payload)).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-support-faqs"] });
+      qc.invalidateQueries({ queryKey: ["admin-support-faq-analytics"] });
+      qc.invalidateQueries({ queryKey: ["support-faqs"] });
+    },
+  });
+}
+
+export function useAdminToggleSupportFaqPublish() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, is_published }) =>
+      (await api.patch(`/admin/support/faqs/${id}/publish`, { is_published })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-support-faqs"] });
+      qc.invalidateQueries({ queryKey: ["admin-support-faq-analytics"] });
+      qc.invalidateQueries({ queryKey: ["support-faqs"] });
+    },
+  });
+}
+
+export function useAdminDeleteSupportFaq() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id) => (await api.delete(`/admin/support/faqs/${id}`)).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-support-faqs"] });
+      qc.invalidateQueries({ queryKey: ["admin-support-faq-analytics"] });
+      qc.invalidateQueries({ queryKey: ["support-faqs"] });
+    },
+  });
+}
+
+
+
+
+
+

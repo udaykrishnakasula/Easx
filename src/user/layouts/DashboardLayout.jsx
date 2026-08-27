@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/shared/ui/sheet";
 import { useAuth } from "@/shared/context/AuthContext";
 import { useUnreadCount } from "@/user/api";
+import { useRealtimeNotifications } from "@/shared/hooks/useRealtimeNotifications";
 import NotificationBell from "@/user/components/NotificationBell";
 
 const NAV = [
@@ -43,7 +44,7 @@ function NavItems({ onNavigate, unreadCount = 0, isAdmin = false }) {
         >
           <Icon className="h-4 w-4" />
           <span className="flex-1">{label}</span>
-          {to === "/app/notifications" && unreadCount > 0 && (
+          {to === "/notifications" && unreadCount > 0 && (
             <span
               className="grid min-w-5 h-5 place-items-center rounded-full bg-ex-accent px-1.5 text-[11px] font-bold text-ex-ink"
               data-testid="nav-unread-badge"
@@ -71,6 +72,7 @@ export default function DashboardLayout() {
   const navigate = useNavigate();
   const [openMobile, setOpenMobile] = useState(false);
   const { data: unreadCount = 0 } = useUnreadCount();
+  useRealtimeNotifications();
 
   const handleLogout = () => {
     logout();

@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 
 import { useAdminAuditLogs, downloadAuditLogs } from "@/admin/adminApi";
+import { downloadProductionAuditReport } from "@/admin/utils/downloadAuditReport";
 import {
   PageHeading,
   EasyXCard,
@@ -330,6 +331,15 @@ export default function AdminAuditPage() {
           </EasyXButton>
 
           <div className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 p-1">
+            <button
+              onClick={() => downloadProductionAuditReport("md")}
+              className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-semibold text-amber-400 hover:bg-amber-500/10 transition"
+              title="Download Complete EasyX Production Audit Report"
+            >
+              <Download className="h-3.5 w-3.5" />
+              Full Audit Report (.md)
+            </button>
+            <span className="text-white/20">|</span>
             <button
               onClick={() => handleExport("csv")}
               disabled={isExporting || isLoading || logs.length === 0}

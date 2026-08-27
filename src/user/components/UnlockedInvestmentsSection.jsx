@@ -35,17 +35,33 @@ const UnlockedCardItem = React.memo(function UnlockedCardItem({
   userName,
   onViewDetails,
 }) {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 60);
+    return () => clearTimeout(timer);
+  }, []);
+
   const planKey = inv.plan_key || "silver";
   const invIdShort = inv.id ? inv.id.slice(-6).toUpperCase() : "";
 
   return (
     <div
       data-testid={`unlocked-card-${inv.id}`}
-      className="w-[320px] sm:w-[380px] md:w-[400px] shrink-0 snap-start flex flex-col items-center group/card"
-      style={{ transform: "translateZ(0)" }}
+      className={`w-[320px] sm:w-[380px] md:w-[400px] shrink-0 snap-start flex flex-col items-center group/card transition-all duration-700 ease-out transform ${
+        mounted
+          ? "opacity-100 translate-y-0 scale-100"
+          : "opacity-0 translate-y-6 scale-[0.97]"
+      }`}
+      style={{
+        transform: "translateZ(0)",
+        transitionDelay: `${(cardIdx % 4) * 100 + 100}ms`,
+      }}
     >
       {/* 3D Certificate Card */}
-      <div className="relative w-full">
+      <div className="relative w-full transition-transform duration-300 ease-out group-hover/card:-translate-y-1">
         <InvestmentCard
           variant={planKey}
           investment={inv}

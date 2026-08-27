@@ -17,14 +17,22 @@ import {
   Download,
   ScrollText,
   Wallet,
+  Activity,
+  BellRing,
+  LifeBuoy,
   Menu,
   X,
 } from "lucide-react";
 
 import { useAuth } from "@/shared/context/AuthContext";
+import { useUnreadCount } from "@/user/api";
+import { useRealtimeNotifications } from "@/shared/hooks/useRealtimeNotifications";
 
 const ADMIN_NAV = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard },
+  { to: "/admin/analytics", label: "UX & Error Analytics", icon: Activity },
+  { to: "/admin/notifications", label: "Notifications", icon: BellRing },
+  { to: "/admin/support", label: "Support", icon: LifeBuoy },
   { to: "/admin/users", label: "Users", icon: Users },
   { to: "/admin/deposits", label: "Deposits", icon: Inbox },
   { to: "/admin/investments", label: "Investments", icon: PiggyBank },
@@ -43,6 +51,8 @@ export default function AdminLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const { data: unreadCount = 0 } = useUnreadCount();
+  useRealtimeNotifications();
 
   const handleLogout = () => {
     logout();
@@ -82,7 +92,12 @@ export default function AdminLayout() {
               }
             >
               <item.icon className="h-4 w-4 shrink-0" />
-              <span>{item.label}</span>
+              <span className="flex-1">{item.label}</span>
+              {item.to === "/admin/notifications" && unreadCount > 0 && (
+                <span className="grid min-w-5 h-5 place-items-center rounded-full bg-ex-accent px-1.5 text-[10px] font-bold text-ex-ink">
+                  {unreadCount > 99 ? "99+" : unreadCount}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>

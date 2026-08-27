@@ -15,6 +15,10 @@ import AdminReportsPage from "@/admin/pages/AdminReportsPage";
 import AdminAuditPage from "@/admin/pages/AdminAuditPage";
 import AdminMaintenancePage from "@/admin/pages/AdminMaintenancePage";
 import AdminSettingsPage from "@/admin/pages/AdminSettingsPage";
+import AdminAnalyticsPage from "@/admin/pages/AdminAnalyticsPage";
+import AdminRemindersPage from "@/admin/pages/AdminRemindersPage";
+import AdminNotificationsPage from "@/admin/pages/AdminNotificationsPage";
+import AdminSupportPage from "@/admin/pages/AdminSupportPage";
 
 export default function AdminRoutes() {
   return (
@@ -22,6 +26,11 @@ export default function AdminRoutes() {
       <Route element={<AdminLayout />}>
         <Route index element={<Navigate to="overview" replace />} />
         <Route path="overview" element={<AdminOverviewPage />} />
+        <Route path="analytics" element={<AdminAnalyticsPage />} />
+        <Route path="notifications" element={<AdminNotificationsPage />} />
+        <Route path="support" element={<AdminSupportPage />} />
+        <Route path="support/:ticketId" element={<AdminSupportPage />} />
+        <Route path="reminders" element={<AdminNotificationsPage />} />
         <Route path="users" element={<AdminUsersPage />} />
         <Route path="deposits" element={<AdminDepositsPage />} />
         <Route path="investments" element={<AdminInvestmentsPage />} />

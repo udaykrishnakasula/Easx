@@ -32,6 +32,7 @@ import {
   downloadReport,
   useAdminAuditLogs,
 } from "@/admin/adminApi";
+import { downloadProductionAuditReport } from "@/admin/utils/downloadAuditReport";
 import AdminGrowthDashboard from "@/admin/components/AdminGrowthDashboard";
 import {
   PageHeading,
@@ -266,6 +267,16 @@ export default function AdminReportsPage() {
           >
             <TrendingUp className="h-4 w-4 mr-1.5" />
             {showGrowthCharts ? "Hide Visual Trends" : "Visual Growth Analytics"}
+          </EasyXButton>
+
+          <EasyXButton
+            variant="secondary"
+            onClick={() => downloadProductionAuditReport("md")}
+            data-testid="btn-export-audit-md"
+            className="text-xs !bg-amber-500/10 !text-amber-300 !border-amber-500/30 hover:!bg-amber-500/20"
+          >
+            <Download className="h-4 w-4 mr-1.5 text-amber-400" />
+            Full Audit Report (.md)
           </EasyXButton>
 
           <EasyXButton

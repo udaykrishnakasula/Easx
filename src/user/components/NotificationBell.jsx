@@ -61,11 +61,19 @@ export default function NotificationBell() {
 
   const handleItemClick = (n) => {
     if (!n.is_read) markRead.mutate(n.id);
+    if (n.action_url) {
+      setOpen(false);
+      if (n.action_url.startsWith("http")) {
+        window.open(n.action_url, "_blank");
+      } else {
+        navigate(n.action_url);
+      }
+    }
   };
 
   const goToAll = () => {
     setOpen(false);
-    navigate("/app/notifications");
+    navigate("/notifications");
   };
 
   return (

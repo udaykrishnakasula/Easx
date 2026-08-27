@@ -13,6 +13,7 @@ import {
   EasyXStatusBadge,
   EasyXEmptyState,
 } from "@/design/EasyX";
+import ReferralInvitationModal from "@/user/components/ReferralInvitationModal";
 
 function CopyField({ label, value, testId }) {
   const [copied, setCopied] = useState(false);
@@ -51,6 +52,7 @@ function CopyField({ label, value, testId }) {
 
 export default function ReferralPage() {
   const { data, isLoading } = useReferralSummary();
+  const [modalOpen, setModalOpen] = useState(false);
 
   const referralCode = data?.referral_code || "";
   const pct = Number(data?.referral_percentage ?? 10);
@@ -61,25 +63,7 @@ export default function ReferralPage() {
   }, [referralCode]);
 
   const share = async () => {
-    if (!referralLink) return;
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Join EasyX",
-          text: `Join EasyX with my referral link and start earning.`,
-          url: referralLink,
-        });
-        return;
-      } catch {
-        /* user cancelled — fall through to copy */
-      }
-    }
-    try {
-      await navigator.clipboard.writeText(referralLink);
-      toast.success("Referral link copied");
-    } catch {
-      toast.error("Could not share");
-    }
+    setModalOpen(true);
   };
 
   return (
@@ -90,7 +74,7 @@ export default function ReferralPage() {
         icon={Users}
         actions={
           <EasyXButton variant="accent" onClick={share} disabled={!referralLink} data-testid="referral-share">
-            <Share2 className="mr-2 h-4 w-4" /> Share link
+            <Share2 className="mr-2 h-4 w-4" /> Invite friends
           </EasyXButton>
         }
       />
@@ -120,8 +104,18 @@ export default function ReferralPage() {
 
           {/* Share card */}
           <EasyXCard className="mt-4">
-            <div className="flex items-center gap-2 text-sm font-semibold text-ex-text">
-              <Gift className="h-4 w-4 text-ex-lav-300" /> Invite friends & earn
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-2 text-sm font-semibold text-ex-text">
+                <Gift className="h-4 w-4 text-ex-lav-300" /> Invite friends & earn
+              </div>
+              <EasyXButton
+                variant="ghost"
+                className="h-8 px-3 text-xs text-ex-lav-300 border border-ex-lav-400/20 hover:bg-ex-lav-400/10"
+                onClick={() => setModalOpen(true)}
+                data-testid="open-invite-modal-btn"
+              >
+                <Share2 className="h-3.5 w-3.5 mr-1.5" /> Open Invite Card
+              </EasyXButton>
             </div>
             <p className="mt-1 text-xs text-ex-muted">
               Share your link or code. When someone signs up with it and makes a successful
@@ -132,6 +126,14 @@ export default function ReferralPage() {
               <CopyField label="Your referral link" value={referralLink} testId="referral-link" />
             </div>
           </EasyXCard>
+
+          {/* Referral Invitation Modal */}
+          <ReferralInvitationModal
+            open={modalOpen}
+            onOpenChange={setModalOpen}
+            referralCode={referralCode}
+            referralPercentage={pct}
+          />
 
           {/* Two columns: referred users + commission history */}
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-4">

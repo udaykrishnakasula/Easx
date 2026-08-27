@@ -7,8 +7,23 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import * as XLSX from "xlsx";
+import { RealtimeManager } from "./src/server/realtimeManager";
+import { ReminderEngine } from "./src/server/reminderEngine";
+import { NotificationManager, AUDIENCE_SEGMENTS } from "./src/server/notificationManager";
+import {
+  SupportManager,
+  validateSupportImageBuffer,
+  sanitizeFileName,
+  type SupportAttachment,
+} from "./src/server/supportService";
+import {
+  DEFAULT_REMINDER_GLOBAL_SETTINGS,
+  DEFAULT_REMINDER_WORKFLOWS,
+  DEFAULT_USER_NOTIFICATION_PREFERENCES,
+} from "./src/server/reminderService";
 
 const JWT_SECRET = process.env.JWT_SECRET || "easyx_jwt_super_secure_secret_key_2026";
+const realtimeManager = new RealtimeManager(JWT_SECRET);
 const PORT = 3000;
 const HOST = "0.0.0.0";
 
@@ -38,6 +53,10 @@ const upload = multer({
 
 const DATA_DIR = path.resolve("./.data");
 const DB_FILE = path.join(DATA_DIR, "easyx_db.json");
+const SUPPORT_ATTACHMENTS_DIR = path.join(DATA_DIR, "support_attachments");
+if (!fs.existsSync(SUPPORT_ATTACHMENTS_DIR)) {
+  fs.mkdirSync(SUPPORT_ATTACHMENTS_DIR, { recursive: true });
+}
 
 const fmt = (val: any): string => {
   const num = Number(val || 0);
@@ -218,6 +237,8 @@ const db = {
   password_resets: new Map<string, any>(),
   notifications: [] as any[],
   audit_logs: [] as any[],
+  analytics_events: [] as any[],
+  error_logs: [] as any[],
   platform_settings: {
     id: "platform",
     currency: "USDT",
@@ -238,6 +259,20 @@ const db = {
     investments_enabled: true,
     withdrawals_enabled: true,
   },
+  reminder_settings: {
+    global: { ...DEFAULT_REMINDER_GLOBAL_SETTINGS },
+    workflows: JSON.parse(JSON.stringify(DEFAULT_REMINDER_WORKFLOWS)),
+  },
+  reminder_logs: [] as any[],
+  unified_notification_logs: [] as any[],
+  admin_notification_campaigns: [] as any[],
+  user_preferences: new Map<string, any>(),
+  push_subscriptions: new Map<string, any>(),
+  support_tickets: new Map<string, any>(),
+  support_messages: new Map<string, any>(),
+  support_attachments: new Map<string, any>(),
+  support_faqs: new Map<string, any>(),
+  support_faq_searches: [] as any[],
 };
 
 const saveDatabase = () => {
@@ -269,8 +304,21 @@ const saveDatabase = () => {
       password_resets: Array.from(db.password_resets.entries()),
       notifications: db.notifications,
       audit_logs: db.audit_logs,
+      analytics_events: db.analytics_events.slice(0, 1000),
+      error_logs: db.error_logs.slice(0, 500),
       platform_settings: db.platform_settings,
       maintenance_settings: db.maintenance_settings,
+      reminder_settings: db.reminder_settings,
+      reminder_logs: db.reminder_logs.slice(0, 2000),
+      unified_notification_logs: db.unified_notification_logs.slice(0, 3000),
+      admin_notification_campaigns: db.admin_notification_campaigns.slice(0, 500),
+      user_preferences: Array.from(db.user_preferences.entries()),
+      push_subscriptions: Array.from(db.push_subscriptions.entries()),
+      support_tickets: Array.from(db.support_tickets.entries()),
+      support_messages: Array.from(db.support_messages.entries()),
+      support_attachments: Array.from(db.support_attachments.entries()),
+      support_faqs: Array.from(db.support_faqs.entries()),
+      support_faq_searches: db.support_faq_searches.slice(0, 3000),
     };
     const tmpFile = `${DB_FILE}.tmp`;
     fs.writeFileSync(tmpFile, JSON.stringify(serialized, null, 2), "utf8");
@@ -355,11 +403,61 @@ const loadDatabase = () => {
     if (Array.isArray(parsed.audit_logs)) {
       db.audit_logs = parsed.audit_logs;
     }
+    if (Array.isArray(parsed.analytics_events)) {
+      db.analytics_events = parsed.analytics_events;
+    }
+    if (Array.isArray(parsed.error_logs)) {
+      db.error_logs = parsed.error_logs;
+    }
     if (parsed.platform_settings) {
       db.platform_settings = { ...db.platform_settings, ...parsed.platform_settings };
     }
     if (parsed.maintenance_settings) {
       db.maintenance_settings = { ...db.maintenance_settings, ...parsed.maintenance_settings };
+    }
+    if (parsed.reminder_settings) {
+      db.reminder_settings = {
+        global: { ...DEFAULT_REMINDER_GLOBAL_SETTINGS, ...(parsed.reminder_settings.global || {}) },
+        workflows: Array.isArray(parsed.reminder_settings.workflows)
+          ? parsed.reminder_settings.workflows
+          : DEFAULT_REMINDER_WORKFLOWS,
+      };
+    }
+    if (Array.isArray(parsed.reminder_logs)) {
+      db.reminder_logs = parsed.reminder_logs;
+    }
+    if (Array.isArray(parsed.unified_notification_logs)) {
+      db.unified_notification_logs = parsed.unified_notification_logs;
+    }
+    if (Array.isArray(parsed.admin_notification_campaigns)) {
+      db.admin_notification_campaigns = parsed.admin_notification_campaigns;
+    }
+    if (Array.isArray(parsed.user_preferences)) {
+      db.user_preferences.clear();
+      for (const [k, v] of parsed.user_preferences) db.user_preferences.set(k, v);
+    }
+    if (Array.isArray(parsed.push_subscriptions)) {
+      db.push_subscriptions.clear();
+      for (const [k, v] of parsed.push_subscriptions) db.push_subscriptions.set(k, v);
+    }
+    if (Array.isArray(parsed.support_tickets)) {
+      db.support_tickets.clear();
+      for (const [k, v] of parsed.support_tickets) db.support_tickets.set(k, v);
+    }
+    if (Array.isArray(parsed.support_messages)) {
+      db.support_messages.clear();
+      for (const [k, v] of parsed.support_messages) db.support_messages.set(k, v);
+    }
+    if (Array.isArray(parsed.support_attachments)) {
+      db.support_attachments.clear();
+      for (const [k, v] of parsed.support_attachments) db.support_attachments.set(k, v);
+    }
+    if (Array.isArray(parsed.support_faqs)) {
+      db.support_faqs.clear();
+      for (const [k, v] of parsed.support_faqs) db.support_faqs.set(k, v);
+    }
+    if (Array.isArray(parsed.support_faq_searches)) {
+      db.support_faq_searches = parsed.support_faq_searches;
     }
     console.log(`[EasyX DB] Loaded ${db.users.size} users from disk persistence.`);
     return true;
@@ -673,6 +771,211 @@ const seedDatabase = async () => {
     });
   }
 
+  // Analytics events seed initialization
+  if (db.analytics_events.length === 0) {
+    const seedNow = Date.now();
+    const seedEvents = [
+      // Deposit Funnel Events
+      {
+        id: "evt_seed_1",
+        timestamp: new Date(seedNow - 140 * 60000).toISOString(),
+        user: { id: "u_demo_1", email: "alice.vance@easyx.io", role: "user" },
+        route: "/deposit",
+        category: "FUNNEL",
+        action: "FUNNEL_START",
+        funnelName: "Deposit",
+        step: "view_deposit_page",
+        metadata: { network: "TRC20" },
+      },
+      {
+        id: "evt_seed_2",
+        timestamp: new Date(seedNow - 138 * 60000).toISOString(),
+        user: { id: "u_demo_1", email: "alice.vance@easyx.io", role: "user" },
+        route: "/deposit",
+        category: "FUNNEL",
+        action: "FUNNEL_STEP",
+        funnelName: "Deposit",
+        step: "network_selected",
+        metadata: { network: "TRC20", amount: "1000.00" },
+      },
+      {
+        id: "evt_seed_3",
+        timestamp: new Date(seedNow - 136 * 60000).toISOString(),
+        user: { id: "u_demo_1", email: "alice.vance@easyx.io", role: "user" },
+        route: "/deposit",
+        category: "FUNNEL",
+        action: "FUNNEL_COMPLETE",
+        funnelName: "Deposit",
+        step: "completed",
+        durationSeconds: 240,
+        metadata: { network: "TRC20", amount: "1000.00", totalSteps: 3 },
+      },
+      // KYC Funnel Events
+      {
+        id: "evt_seed_4",
+        timestamp: new Date(seedNow - 90 * 60000).toISOString(),
+        user: { id: "u_demo_2", email: "bob.ross@easyx.io", role: "user" },
+        route: "/kyc",
+        category: "FUNNEL",
+        action: "FUNNEL_START",
+        funnelName: "KYC",
+        step: "view_kyc_page",
+      },
+      {
+        id: "evt_seed_5",
+        timestamp: new Date(seedNow - 85 * 60000).toISOString(),
+        user: { id: "u_demo_2", email: "bob.ross@easyx.io", role: "user" },
+        route: "/kyc",
+        category: "FUNNEL",
+        action: "FUNNEL_STEP",
+        funnelName: "KYC",
+        step: "document_uploaded",
+        metadata: { documentType: "PASSPORT" },
+      },
+      {
+        id: "evt_seed_6",
+        timestamp: new Date(seedNow - 80 * 60000).toISOString(),
+        user: { id: "u_demo_2", email: "bob.ross@easyx.io", role: "user" },
+        route: "/kyc",
+        category: "FUNNEL",
+        action: "FUNNEL_COMPLETE",
+        funnelName: "KYC",
+        step: "completed",
+        durationSeconds: 600,
+        metadata: { documentType: "PASSPORT", livenessCheckPassed: true },
+      },
+      // Investment Funnel Abandonment
+      {
+        id: "evt_seed_7",
+        timestamp: new Date(seedNow - 60 * 60000).toISOString(),
+        user: { id: "u_demo_3", email: "carol.danvers@easyx.io", role: "user" },
+        route: "/investments",
+        category: "FUNNEL",
+        action: "FUNNEL_START",
+        funnelName: "Investment",
+        step: "view_plans_catalog",
+      },
+      {
+        id: "evt_seed_8",
+        timestamp: new Date(seedNow - 55 * 60000).toISOString(),
+        user: { id: "u_demo_3", email: "carol.danvers@easyx.io", role: "user" },
+        route: "/investments",
+        category: "FUNNEL",
+        action: "FUNNEL_ABANDON",
+        funnelName: "Investment",
+        step: "plan_selected",
+        durationSeconds: 300,
+        metadata: { abandonReason: "insufficient_wallet_balance", planKey: "plan-growth" },
+      },
+      // Rage Clicks
+      {
+        id: "evt_seed_9",
+        timestamp: new Date(seedNow - 35 * 60000).toISOString(),
+        user: { id: "u_demo_4", email: "david.beck@easyx.io", role: "user" },
+        route: "/deposit",
+        category: "UX_FRICTION",
+        action: "RAGE_CLICK",
+        element: "button#copy-deposit-address",
+        elementText: "Copy Deposit Address",
+        clickCount: 4,
+        coordinates: { x: 742, y: 388 },
+        metadata: { durationMs: 720, tag: "button" },
+      },
+      {
+        id: "evt_seed_10",
+        timestamp: new Date(seedNow - 20 * 60000).toISOString(),
+        user: { id: "u_demo_5", email: "elena.rostova@easyx.io", role: "user" },
+        route: "/wallet",
+        category: "UX_FRICTION",
+        action: "RAGE_CLICK",
+        element: "button[data-testid='btn-refresh-balance']",
+        elementText: "Refresh Balance",
+        clickCount: 5,
+        coordinates: { x: 890, y: 155 },
+        metadata: { durationMs: 850, tag: "button" },
+      },
+      // Dead Clicks
+      {
+        id: "evt_seed_11",
+        timestamp: new Date(seedNow - 15 * 60000).toISOString(),
+        user: { id: "u_demo_1", email: "alice.vance@easyx.io", role: "user" },
+        route: "/investments",
+        category: "UX_FRICTION",
+        action: "DEAD_CLICK",
+        element: "span.tab-filter-archived",
+        elementText: "Archived Plans",
+        coordinates: { x: 530, y: 220 },
+        metadata: { note: "Interactive styled element triggered no DOM or state mutation" },
+      },
+      {
+        id: "evt_seed_12",
+        timestamp: new Date(seedNow - 5 * 60000).toISOString(),
+        user: { id: "u_demo_6", email: "frank.castle@easyx.io", role: "user" },
+        route: "/kyc",
+        category: "UX_FRICTION",
+        action: "DEAD_CLICK",
+        element: "button.kyc-guidelines-accordion",
+        elementText: "Document Guidelines",
+        coordinates: { x: 310, y: 490 },
+        metadata: { note: "No state or network update observed" },
+      },
+    ];
+    db.analytics_events = seedEvents;
+  }
+
+  // Error logs seed initialization
+  if (db.error_logs.length === 0) {
+    const seedNow = Date.now();
+    const seedErrors = [
+      {
+        id: "err_seed_1",
+        timestamp: new Date(seedNow - 110 * 60000).toISOString(),
+        user: { id: "u_demo_3", email: "carol.danvers@easyx.io", role: "user" },
+        route: "/deposit",
+        source: "api_network",
+        severity: "warning",
+        errorName: "HTTP_422_POST",
+        message: "POST /api/deposits failed with status 422: Invalid transaction hash format provided.",
+        stack: "AxiosError: Request failed with status code 422\n    at settle (axios.js:1240)\n    at XMLHttpRequest.onloadend (axios.js:1890)",
+        componentStack: null,
+        metadata: { status: 422, method: "POST", url: "/api/deposits" },
+        userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+        resolved: true,
+      },
+      {
+        id: "err_seed_2",
+        timestamp: new Date(seedNow - 45 * 60000).toISOString(),
+        user: { id: "u_demo_4", email: "david.beck@easyx.io", role: "user" },
+        route: "/kyc",
+        source: "window.onerror",
+        severity: "error",
+        errorName: "TypeError",
+        message: "Cannot read properties of undefined (reading 'cameraStream')",
+        stack: "TypeError: Cannot read properties of undefined\n    at KYCPage.jsx:214:18\n    at commitHookEffectListMount (react-dom.development.js:23150)",
+        componentStack: "    in VideoCaptureStream\n    in KYCPage (at UserRoutes.jsx:30)",
+        metadata: { lineno: 214, colno: 18, filename: "/src/user/pages/KYCPage.jsx" },
+        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        resolved: false,
+      },
+      {
+        id: "err_seed_3",
+        timestamp: new Date(seedNow - 12 * 60000).toISOString(),
+        user: { id: "u_demo_7", email: "george.stone@easyx.io", role: "user" },
+        route: "/wallet",
+        source: "unhandledrejection",
+        severity: "critical",
+        errorName: "NetworkTimeoutError",
+        message: "Connection to TronGrid RPC node timed out after 10000ms",
+        stack: "Error: Connection timed out\n    at TronWebProvider.query (tron.js:88)\n    at async fetchBalance (wallet.js:142)",
+        componentStack: null,
+        metadata: { timeoutMs: 10000, endpoint: "https://api.trongrid.io" },
+        userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X)",
+        resolved: false,
+      },
+    ];
+    db.error_logs = seedErrors;
+  }
+
   saveDatabase();
 };
 
@@ -820,7 +1123,8 @@ const createNotification = (
   title: string,
   body?: string,
   dedupeKey?: string,
-  investmentId?: string
+  investmentId?: string,
+  extraMeta?: any
 ) => {
   if (dedupeKey) {
     const existing = db.notifications.find((n) => n.dedupe_key === dedupeKey);
@@ -829,19 +1133,66 @@ const createNotification = (
   const notif = {
     id: genId(),
     user_id: userId,
-    channel: "in_app",
+    channel: extraMeta?.delivery_channel || "in_app",
     type: ntype,
     title,
     body: body || "",
     is_read: false,
     investment_id: investmentId || null,
     dedupe_key: dedupeKey || null,
+    metadata: extraMeta || null,
+    action_url: extraMeta?.action_url || null,
+    action_text: extraMeta?.action_text || null,
     created_at: nowIso(),
     read_at: null,
   };
   db.notifications.unshift(notif);
+
+  // Real-time broadcast to recipient's active browser connections
+  const unreadCount = db.notifications.filter((n) => n.user_id === userId && !n.is_read).length;
+  realtimeManager.notifyUserCreated(notif, unreadCount);
+
   return true;
 };
+
+const notifyAdmins = (
+  ntype: string,
+  title: string,
+  body: string,
+  extraMeta?: any,
+  dedupeKeyPrefix?: string
+) => {
+  const adminUsers = Array.from(db.users.values()).filter((u) => u.role === "admin");
+  for (const admin of adminUsers) {
+    const dKey = dedupeKeyPrefix ? `${dedupeKeyPrefix}:${admin.id}` : undefined;
+    createNotification(admin.id, ntype, title, body, dKey, undefined, {
+      ...extraMeta,
+      is_admin_event: true,
+    });
+  }
+
+  // Also broadcast to connected admin streams
+  realtimeManager.notifyAdminEvent({
+    type: ntype,
+    title,
+    body,
+    category: extraMeta?.category || "admin_alert",
+    entityId: extraMeta?.entity_id || extraMeta?.deposit_id || extraMeta?.withdrawal_id || extraMeta?.user_id,
+    data: extraMeta,
+  });
+};
+
+// Initialize Automated Reminder Engine & Unified Notification Manager
+const reminderEngine = new ReminderEngine(db, createNotification);
+const notificationManager = new NotificationManager(db, createNotification);
+const supportManager = new SupportManager(
+  db,
+  createNotification,
+  notifyAdmins,
+  (userId: string, title: string, body: string, actionUrl?: string | null) =>
+    notificationManager.dispatchWebPush(userId, title, body, actionUrl)
+);
+supportManager.seedDefaultFaqs();
 
 const getUserSafe = (userId: string) => {
   const u = db.users.get(userId);
@@ -1150,6 +1501,7 @@ const runReminderSweep = async () => {
 setInterval(() => {
   runMaturitySweep().catch(console.error);
   runReminderSweep().catch(console.error);
+  reminderEngine.runSweep().catch(console.error);
 }, 60000);
 
 // ==================== API ROUTES ====================
@@ -1257,6 +1609,25 @@ api.post("/auth/register", async (req, res) => {
       created_at: ts,
     });
   }
+
+  // Send welcome notification to user
+  createNotification(
+    userId,
+    "account_welcome",
+    "Welcome to EasyX!",
+    "Your account has been created. Explore high-yield staking plans or fund your wallet.",
+    `welcome:${userId}`,
+    undefined,
+    { action_url: "/investments", action_text: "Explore Plans" }
+  );
+
+  // Notify administrators in real time
+  notifyAdmins(
+    "user_registered",
+    "New Investor Registered",
+    `New investor ${newUser.name} (${newUser.email}) registered on EasyX.`,
+    { user_id: userId, name: newUser.name, email: newUser.email, action_url: "/admin/users", action_text: "View User" }
+  );
 
   saveDatabase();
   console.log(`[EasyX Auth] Successfully registered new user: ${userId} (${cleanEmail}). Wallet created.`);
@@ -1954,6 +2325,9 @@ api.post("/investments", authMiddleware, async (req, res) => {
     invId
   );
 
+  // Stop idle balance / investment reminders for this user
+  reminderEngine.handleUserActionCompleted(user.id, "investment");
+
   res.status(201).json(serializeInvestment(invDoc));
 });
 
@@ -2095,6 +2469,24 @@ api.post("/deposits", authMiddleware, (req, res) => {
     `deposit-submitted:${depId}`
   );
 
+  // Notify administrators in real time
+  notifyAdmins(
+    "deposit_submitted",
+    "New Deposit Submitted",
+    `User ${user.name} submitted a ${cleanNetwork} deposit of ${fmt(numAmt)} USDT.`,
+    {
+      deposit_id: depId,
+      user_id: user.id,
+      amount: fmt(numAmt),
+      network: cleanNetwork,
+      action_url: "/admin/deposits",
+      action_text: "Review Deposit",
+    }
+  );
+
+  // Mark deposit reminder workflow converted
+  reminderEngine.handleUserActionCompleted(user.id, "deposit");
+
   res.status(201).json(doc);
 });
 
@@ -2177,6 +2569,21 @@ api.post("/withdrawals", authMiddleware, async (req, res) => {
     "Withdrawal submitted",
     `Your ${network} withdrawal request of ${fmt(numAmt)} USDT was submitted and is pending admin approval.`,
     `withdrawal-submitted:${wid}`
+  );
+
+  // Notify administrators in real time
+  notifyAdmins(
+    "withdrawal_submitted",
+    "New Withdrawal Request",
+    `User ${user.name} requested a withdrawal of ${fmt(numAmt)} USDT (${network}).`,
+    {
+      withdrawal_id: wid,
+      user_id: user.id,
+      amount: fmt(numAmt),
+      network,
+      action_url: "/admin/withdrawals",
+      action_text: "Review Withdrawal",
+    }
   );
 
   res.status(201).json(doc);
@@ -2297,6 +2704,27 @@ api.get("/referrals/summary", authMiddleware, (req, res) => {
 });
 
 // Notifications
+// Real-time notification SSE stream
+api.get("/notifications/stream", (req, res) => {
+  const rawAuth = req.headers.authorization;
+  const rawToken = (req.query.token as string) || (rawAuth ? rawAuth.replace(/^Bearer\s+/i, "") : "");
+  if (!rawToken) {
+    return res.status(401).json({ detail: "Authentication required for real-time notification stream." });
+  }
+
+  const user = realtimeManager.verifyToken(rawToken);
+  if (!user) {
+    return res.status(401).json({ detail: "Invalid or expired authentication token." });
+  }
+
+  const initialUnreadCount = db.notifications.filter((n) => n.user_id === user.id && !n.is_read).length;
+  const cleanup = realtimeManager.registerClient(user, res, initialUnreadCount);
+
+  req.on("close", () => {
+    cleanup();
+  });
+});
+
 api.get("/notifications", authMiddleware, (req, res) => {
   const user = (req as any).user;
   const unreadOnly = req.query.unread_only === "true";
@@ -2317,7 +2745,9 @@ api.post("/notifications/:id/read", authMiddleware, (req, res) => {
   if (notif) {
     notif.is_read = true;
     notif.read_at = nowIso();
-    return res.json({ ok: true });
+    const unreadCount = db.notifications.filter((n) => n.user_id === user.id && !n.is_read).length;
+    realtimeManager.notifyUserRead(user.id, notif.id, unreadCount);
+    return res.json({ ok: true, unreadCount });
   }
   res.json({ ok: false });
 });
@@ -2332,7 +2762,104 @@ api.post("/notifications/read-all", authMiddleware, (req, res) => {
       count++;
     }
   }
-  res.json({ updated: count });
+  realtimeManager.notifyUserReadAll(user.id, 0);
+  res.json({ updated: count, unreadCount: 0 });
+});
+
+// User Notification Preferences & Web Push Subscriptions
+api.get("/user/notification-preferences", authMiddleware, (req, res) => {
+  const user = (req as any).user;
+  const prefs = reminderEngine.getUserPreferences(user.id);
+  const pushSubscribed = db.push_subscriptions.has(user.id);
+  res.json({ preferences: prefs, push_subscribed: pushSubscribed });
+});
+
+api.put("/user/notification-preferences", authMiddleware, (req, res) => {
+  const user = (req as any).user;
+  const { kyc, deposit, investment, activity } = req.body || {};
+  const updated = reminderEngine.setUserPreferences(user.id, {
+    ...(typeof kyc === "boolean" ? { kyc } : {}),
+    ...(typeof deposit === "boolean" ? { deposit } : {}),
+    ...(typeof investment === "boolean" ? { investment } : {}),
+    ...(typeof activity === "boolean" ? { activity } : {}),
+  });
+  saveDatabase();
+  res.json({ preferences: updated, ok: true });
+});
+
+api.post("/user/push-subscription", authMiddleware, (req, res) => {
+  const user = (req as any).user;
+  const { subscription } = req.body;
+  if (!subscription) {
+    return res.status(422).json({ detail: "Missing push subscription data." });
+  }
+  reminderEngine.registerPushSubscription(user.id, subscription);
+  saveDatabase();
+  res.json({ ok: true, message: "Push notifications subscribed successfully." });
+});
+
+api.delete("/user/push-subscription", authMiddleware, (req, res) => {
+  const user = (req as any).user;
+  db.push_subscriptions.delete(user.id);
+  saveDatabase();
+  res.json({ ok: true, message: "Push notifications unsubscribed." });
+});
+
+// User Profile & Account Settings Management
+api.put("/user/profile", authMiddleware, (req, res) => {
+  const authUser = (req as any).user;
+  const user = db.users.get(authUser.id);
+  if (!user) {
+    return res.status(404).json({ detail: "User not found." });
+  }
+
+  const { name, phone } = req.body || {};
+  if (typeof name === "string" && name.trim()) {
+    user.name = name.trim();
+  }
+  if (typeof phone === "string") {
+    user.phone = phone.trim();
+  }
+
+  saveDatabase();
+
+  const sanitized = { ...user };
+  delete sanitized.password_hash;
+  res.json({ user: sanitized, message: "Profile settings updated successfully." });
+});
+
+api.post("/user/change-password", authMiddleware, async (req, res) => {
+  const authUser = (req as any).user;
+  const user = db.users.get(authUser.id);
+  if (!user) {
+    return res.status(404).json({ detail: "User not found." });
+  }
+
+  const { current_password, new_password } = req.body || {};
+  if (!current_password || !new_password) {
+    return res.status(422).json({ detail: "Current and new password are required." });
+  }
+  if (new_password.length < 8) {
+    return res.status(422).json({ detail: "New password must be at least 8 characters long." });
+  }
+
+  const isValid = await bcrypt.compare(current_password, user.password_hash);
+  if (!isValid) {
+    return res.status(400).json({ detail: "Incorrect current password." });
+  }
+
+  user.password_hash = await bcrypt.hash(new_password, 10);
+  saveDatabase();
+
+  createNotification(
+    user.id,
+    "security_alert",
+    "Password Changed",
+    "Your EasyX account password was successfully updated.",
+    "/profile"
+  );
+
+  res.json({ ok: true, message: "Password changed successfully." });
 });
 
 // KYC Liveness Provider Backend Configuration
@@ -2854,6 +3381,17 @@ api.post(
       "Your identity verification documents and camera selfie were submitted and are pending manual admin review.",
       `kyc_submitted:${recId}:${ts}`
     );
+
+    // Notify administrators in real time
+    notifyAdmins(
+      "kyc_submitted",
+      "New KYC Verification Submitted",
+      `User ${user.name} submitted identity documents (${record.id_type}) for manual KYC review.`,
+      { user_id: user.id, id_type: record.id_type, action_url: "/admin/kyc", action_text: "Review KYC" }
+    );
+
+    // Stop incomplete KYC reminder workflow
+    reminderEngine.handleUserActionCompleted(user.id, "kyc");
 
     res.json({
       status: "pending",
@@ -3589,6 +4127,8 @@ api.post("/admin/deposits/:id/approve", adminMiddleware, async (req, res) => {
     `Your ${dep.network} deposit of ${finalAmount} USDT was approved and credited to your wallet.`,
     `deposit-approved:${dep.id}`
   );
+
+  reminderEngine.handleUserActionCompleted(dep.user_id, "deposit");
 
   res.json(dep);
 });
@@ -4432,6 +4972,8 @@ api.post("/admin/kyc/:id/approve", adminMiddleware, (req, res) => {
     "Your identity verification was approved. You can now withdraw funds.",
     `kyc_approved:${record.id}`
   );
+
+  reminderEngine.handleUserActionCompleted(record.user_id, "kyc");
 
   res.json({ ok: true, status: "approved" });
 });
@@ -5526,6 +6068,1639 @@ api.get("/admin/reports/:dataset", adminMiddleware, (req, res) => {
     res.setHeader("Content-Type", "text/csv; charset=utf-8");
     res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
     return res.send("\uFEFF" + csvContent);
+  }
+});
+
+// ==================== UX ANALYTICS & ERROR TELEMETRY ENDPOINTS ====================
+
+// Public Ingest: Client Behaviour & Friction Events
+api.post("/analytics/events", (req, res) => {
+  try {
+    const rawEvents = Array.isArray(req.body.events)
+      ? req.body.events
+      : req.body && typeof req.body === "object" && req.body.action
+      ? [req.body]
+      : [];
+
+    if (!rawEvents.length) {
+      return res.status(200).json({ status: "ok", ingested: 0 });
+    }
+
+    const now = nowIso();
+    const sanitized = rawEvents.slice(0, 50).map((evt) => ({
+      id: evt.id || `evt_${genId().substring(0, 10)}`,
+      timestamp: evt.timestamp || now,
+      user: {
+        id: evt.user?.id || "anonymous",
+        email: evt.user?.email || "anonymous@easyx.io",
+        role: evt.user?.role || "guest",
+      },
+      route: String(evt.route || "/").slice(0, 120),
+      category: String(evt.category || "GENERAL").slice(0, 40),
+      action: String(evt.action || "EVENT").slice(0, 40),
+      element: evt.element ? String(evt.element).slice(0, 200) : null,
+      elementText: evt.elementText ? String(evt.elementText).slice(0, 100) : null,
+      funnelName: evt.funnelName ? String(evt.funnelName).slice(0, 60) : null,
+      step: evt.step ? String(evt.step).slice(0, 60) : null,
+      durationSeconds: typeof evt.durationSeconds === "number" ? evt.durationSeconds : null,
+      clickCount: typeof evt.clickCount === "number" ? evt.clickCount : null,
+      coordinates: evt.coordinates && typeof evt.coordinates === "object" ? evt.coordinates : null,
+      metadata: evt.metadata && typeof evt.metadata === "object" ? evt.metadata : {},
+    }));
+
+    db.analytics_events = [...sanitized, ...db.analytics_events].slice(0, 2000);
+    res.status(200).json({ status: "ok", ingested: sanitized.length });
+  } catch (err: any) {
+    console.error("[EasyX Analytics] Event ingestion failed:", err?.message);
+    res.status(200).json({ status: "ok", ingested: 0 });
+  }
+});
+
+// Public Ingest: Client Error Reports
+api.post("/analytics/errors", (req, res) => {
+  try {
+    const rawErrors = Array.isArray(req.body.errors)
+      ? req.body.errors
+      : req.body && typeof req.body === "object" && (req.body.message || req.body.errorName)
+      ? [req.body]
+      : [];
+
+    if (!rawErrors.length) {
+      return res.status(200).json({ status: "ok", ingested: 0 });
+    }
+
+    const now = nowIso();
+    const sanitized = rawErrors.slice(0, 20).map((err) => ({
+      id: err.id || `err_${genId().substring(0, 10)}`,
+      timestamp: err.timestamp || now,
+      user: {
+        id: err.user?.id || "anonymous",
+        email: err.user?.email || "anonymous@easyx.io",
+        role: err.user?.role || "guest",
+      },
+      route: String(err.route || "/").slice(0, 120),
+      source: String(err.source || "application").slice(0, 50),
+      severity: ["critical", "error", "warning"].includes(err.severity) ? err.severity : "error",
+      errorName: String(err.errorName || "Error").slice(0, 100),
+      message: String(err.message || "Unknown error").slice(0, 1000),
+      stack: err.stack ? String(err.stack).slice(0, 4000) : null,
+      componentStack: err.componentStack ? String(err.componentStack).slice(0, 3000) : null,
+      metadata: err.metadata && typeof err.metadata === "object" ? err.metadata : {},
+      userAgent: err.userAgent ? String(err.userAgent).slice(0, 200) : "unknown",
+      resolved: Boolean(err.resolved),
+    }));
+
+    db.error_logs = [...sanitized, ...db.error_logs].slice(0, 1000);
+    res.status(200).json({ status: "ok", ingested: sanitized.length });
+  } catch (err: any) {
+    console.error("[EasyX Analytics] Error ingestion failed:", err?.message);
+    res.status(200).json({ status: "ok", ingested: 0 });
+  }
+});
+
+// Admin: Analytics Summary & Frustration Hotspots
+api.get("/admin/analytics/summary", adminMiddleware, (_req, res) => {
+  const events = db.analytics_events || [];
+  const errors = db.error_logs || [];
+
+  // 1. Friction Metrics
+  const rageClicks = events.filter((e) => e.action === "RAGE_CLICK");
+  const deadClicks = events.filter((e) => e.action === "DEAD_CLICK");
+  const unresolvedErrors = errors.filter((e) => !e.resolved);
+
+  // 2. Frustration Hotspots Aggregation
+  const hotspotMap = new Map<string, { element: string; elementText: string; route: string; rageClicks: number; deadClicks: number; lastDetected: string }>();
+  
+  for (const e of events) {
+    if (e.action === "RAGE_CLICK" || e.action === "DEAD_CLICK") {
+      const key = `${e.route}::${e.element || e.elementText || "unknown"}`;
+      const existing = hotspotMap.get(key) || {
+        element: e.element || "Unknown Target",
+        elementText: e.elementText || "",
+        route: e.route || "/",
+        rageClicks: 0,
+        deadClicks: 0,
+        lastDetected: e.timestamp,
+      };
+
+      if (e.action === "RAGE_CLICK") existing.rageClicks += (e.clickCount || 1);
+      if (e.action === "DEAD_CLICK") existing.deadClicks += 1;
+      if (new Date(e.timestamp) > new Date(existing.lastDetected)) {
+        existing.lastDetected = e.timestamp;
+      }
+      hotspotMap.set(key, existing);
+    }
+  }
+
+  const hotspots = Array.from(hotspotMap.values())
+    .map((h) => ({
+      ...h,
+      totalFrictionScore: h.rageClicks * 2 + h.deadClicks * 1.5,
+    }))
+    .sort((a, b) => b.totalFrictionScore - a.totalFrictionScore)
+    .slice(0, 15);
+
+  // 3. Drop-off Funnels Analysis (Deposit, KYC, Investment)
+  const funnelsList = ["Deposit", "KYC", "Investment"];
+  const funnelSummaries = funnelsList.map((fName) => {
+    const fEvents = events.filter((e) => (e.funnelName || "").toLowerCase() === fName.toLowerCase());
+    const starts = fEvents.filter((e) => e.action === "FUNNEL_START").length;
+    const completed = fEvents.filter((e) => e.action === "FUNNEL_COMPLETE").length;
+    const abandoned = fEvents.filter((e) => e.action === "FUNNEL_ABANDON").length;
+    const totalEngaged = Math.max(starts, completed + abandoned, 1);
+    
+    // Average completion time
+    const completedDurations = fEvents
+      .filter((e) => e.action === "FUNNEL_COMPLETE" && typeof e.durationSeconds === "number")
+      .map((e) => e.durationSeconds);
+    const avgDuration = completedDurations.length
+      ? Math.round(completedDurations.reduce((a, b) => a + b, 0) / completedDurations.length)
+      : 0;
+
+    const conversionRate = totalEngaged > 0 ? Number(((completed / totalEngaged) * 100).toFixed(1)) : 0;
+    const dropOffRate = totalEngaged > 0 ? Number(((abandoned / totalEngaged) * 100).toFixed(1)) : 0;
+
+    return {
+      funnelName: fName,
+      starts: Math.max(starts, completed + abandoned),
+      completed,
+      abandoned,
+      conversionRate,
+      dropOffRate,
+      avgDurationSeconds: avgDuration,
+    };
+  });
+
+  // 4. Page View Durations
+  const pageDurationMap = new Map<string, { totalDuration: number; visits: number }>();
+  for (const e of events) {
+    if (e.action === "PAGE_LEAVE" && typeof e.durationSeconds === "number" && e.durationSeconds > 0 && e.durationSeconds < 3600) {
+      const route = e.route || "/";
+      const cur = pageDurationMap.get(route) || { totalDuration: 0, visits: 0 };
+      cur.totalDuration += e.durationSeconds;
+      cur.visits += 1;
+      pageDurationMap.set(route, cur);
+    }
+  }
+
+  const pageDurations = Array.from(pageDurationMap.entries()).map(([route, data]) => ({
+    route,
+    visits: data.visits,
+    avgDurationSec: Math.round(data.totalDuration / data.visits),
+  })).sort((a, b) => b.visits - a.visits).slice(0, 10);
+
+  res.json({
+    metrics: {
+      totalEvents: events.length,
+      rageClicksCount: rageClicks.length,
+      deadClicksCount: deadClicks.length,
+      totalErrors: errors.length,
+      unresolvedErrorsCount: unresolvedErrors.length,
+      criticalErrorsCount: errors.filter((e) => e.severity === "critical").length,
+    },
+    hotspots,
+    funnels: funnelSummaries,
+    pageDurations,
+    recentErrors: errors.slice(0, 10),
+  });
+});
+
+// Admin: Detailed Error Logs
+api.get("/admin/analytics/errors", adminMiddleware, (req, res) => {
+  let list = [...(db.error_logs || [])];
+
+  const q = String(req.query.q || "").toLowerCase().trim();
+  const severity = String(req.query.severity || "all").toLowerCase();
+  const status = String(req.query.status || "all").toLowerCase();
+  const route = String(req.query.route || "").trim();
+
+  if (q) {
+    list = list.filter(
+      (e) =>
+        e.message?.toLowerCase().includes(q) ||
+        e.errorName?.toLowerCase().includes(q) ||
+        e.route?.toLowerCase().includes(q) ||
+        e.user?.email?.toLowerCase().includes(q) ||
+        e.id?.toLowerCase().includes(q)
+    );
+  }
+
+  if (severity && severity !== "all") {
+    list = list.filter((e) => e.severity === severity);
+  }
+
+  if (status === "resolved") {
+    list = list.filter((e) => e.resolved === true);
+  } else if (status === "unresolved") {
+    list = list.filter((e) => !e.resolved);
+  }
+
+  if (route) {
+    list = list.filter((e) => e.route?.includes(route));
+  }
+
+  // Pagination
+  const page = Math.max(1, Number(req.query.page || 1));
+  const limit = Math.min(100, Math.max(10, Number(req.query.limit || 25)));
+  const total = list.length;
+  const startIndex = (page - 1) * limit;
+  const paginated = list.slice(startIndex, startIndex + limit);
+
+  res.json({
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit) || 1,
+    errors: paginated,
+  });
+});
+
+// Admin: Toggle Error Resolved State
+api.post("/admin/analytics/errors/:id/resolve", adminMiddleware, (req, res) => {
+  const { id } = req.params;
+  const errItem = db.error_logs.find((e) => e.id === id);
+  if (!errItem) {
+    return res.status(404).json({ detail: "Error log entry not found." });
+  }
+
+  errItem.resolved = req.body.resolved !== undefined ? Boolean(req.body.resolved) : !errItem.resolved;
+  saveDatabase();
+  res.json(errItem);
+});
+
+// Admin: Clear Error Logs
+api.delete("/admin/analytics/errors", adminMiddleware, (req, res) => {
+  const onlyResolved = req.query.resolved === "true";
+  if (onlyResolved) {
+    db.error_logs = db.error_logs.filter((e) => !e.resolved);
+  } else {
+    db.error_logs = [];
+  }
+  saveDatabase();
+  res.json({ status: "ok", remaining: db.error_logs.length });
+});
+
+// Admin: Funnel Deep Dive
+api.get("/admin/analytics/funnels", adminMiddleware, (req, res) => {
+  const events = db.analytics_events || [];
+  const funnelName = String(req.query.name || "Deposit");
+  const filtered = events.filter((e) => (e.funnelName || "").toLowerCase() === funnelName.toLowerCase());
+
+  // Aggregate steps
+  const stepCounts: Record<string, number> = {};
+  for (const e of filtered) {
+    const step = e.step || "start";
+    stepCounts[step] = (stepCounts[step] || 0) + 1;
+  }
+
+  res.json({
+    funnelName,
+    totalEvents: filtered.length,
+    stepBreakdown: stepCounts,
+  });
+});
+
+// Admin: Test Event Trigger
+api.post("/admin/analytics/test-event", adminMiddleware, (req, res) => {
+  const admin = (req as any).user;
+  const type = req.body.type || "RAGE_CLICK";
+
+  if (type === "ERROR") {
+    const testErr = {
+      id: `err_test_${Date.now()}`,
+      timestamp: nowIso(),
+      user: { id: admin.id, email: admin.email, role: "admin" },
+      route: "/admin/analytics",
+      source: "manual_test_injection",
+      severity: req.body.severity || "warning",
+      errorName: "TestDiagnosticException",
+      message: req.body.message || "Manual test exception generated from Admin Analytics console.",
+      stack: "Error: TestDiagnosticException\n    at AdminAnalyticsPage.jsx:TestButton.onClick",
+      metadata: { triggeredBy: admin.email, isManualTest: true },
+      userAgent: req.headers["user-agent"] || "Admin Test Runner",
+      resolved: false,
+    };
+    db.error_logs.unshift(testErr);
+    saveDatabase();
+    return res.json({ status: "ok", error: testErr });
+  }
+
+  const testEvt = {
+    id: `evt_test_${Date.now()}`,
+    timestamp: nowIso(),
+    user: { id: admin.id, email: admin.email, role: "admin" },
+    route: "/deposit",
+    category: "UX_FRICTION",
+    action: type === "DEAD_CLICK" ? "DEAD_CLICK" : "RAGE_CLICK",
+    element: "button#submit-deposit-form",
+    elementText: "Confirm Deposit",
+    clickCount: type === "DEAD_CLICK" ? 1 : 4,
+    coordinates: { x: 500, y: 350 },
+    metadata: { isManualTest: true, injectedBy: admin.email },
+  };
+
+  db.analytics_events.unshift(testEvt);
+  saveDatabase();
+  res.json({ status: "ok", event: testEvt });
+});
+
+// ==================== ADMIN: AUTOMATED REMINDER NOTIFICATION SYSTEM ====================
+
+// 1. Get Reminder System Settings (Global Rules & All Workflows)
+api.get("/admin/reminders/settings", adminMiddleware, (_req, res) => {
+  res.json(reminderEngine.getSettings());
+});
+
+// 2. Update Reminder Global Settings & Workflows
+api.put("/admin/reminders/settings", adminMiddleware, (req, res) => {
+  const admin = (req as any).user;
+  const { global, workflows } = req.body || {};
+
+  const current = reminderEngine.getSettings();
+
+  if (global && typeof global === "object") {
+    current.global = {
+      ...current.global,
+      ...(typeof global.enabled === "boolean" ? { enabled: global.enabled } : {}),
+      ...(typeof global.max_reminders_per_user_per_month === "number"
+        ? { max_reminders_per_user_per_month: Math.max(1, Math.min(30, global.max_reminders_per_user_per_month)) }
+        : {}),
+      ...(typeof global.quiet_hours_start_utc === "number"
+        ? { quiet_hours_start_utc: Math.max(0, Math.min(23, global.quiet_hours_start_utc)) }
+        : {}),
+      ...(typeof global.quiet_hours_end_utc === "number"
+        ? { quiet_hours_end_utc: Math.max(0, Math.min(23, global.quiet_hours_end_utc)) }
+        : {}),
+      ...(typeof global.push_enabled === "boolean" ? { push_enabled: global.push_enabled } : {}),
+      ...(typeof global.sweep_interval_minutes === "number"
+        ? { sweep_interval_minutes: Math.max(1, global.sweep_interval_minutes) }
+        : {}),
+    };
+  }
+
+  if (Array.isArray(workflows)) {
+    for (const w of workflows) {
+      if (w?.key) {
+        reminderEngine.updateWorkflow(w.key, w);
+      }
+    }
+  }
+
+  db.reminder_settings = current;
+  saveDatabase();
+
+  logAudit("reminders.update_settings", admin, "reminder_settings", "platform", {
+    global: current.global,
+    workflows_count: current.workflows.length,
+  });
+
+  res.json({ ok: true, settings: current });
+});
+
+// 3. Update a Specific Workflow (Toggle enable, change interval or messages)
+api.put("/admin/reminders/workflows/:key", adminMiddleware, (req, res) => {
+  const admin = (req as any).user;
+  const { key } = req.params;
+  const patch = req.body || {};
+
+  const updated = reminderEngine.updateWorkflow(key, patch);
+  if (!updated) {
+    return res.status(404).json({ detail: `Workflow '${key}' not found.` });
+  }
+
+  saveDatabase();
+  logAudit("reminders.update_workflow", admin, "reminder_workflow", key, { patch });
+
+  res.json({ ok: true, workflow: updated });
+});
+
+// 4. Get System Analytics & Performance Funnel
+api.get("/admin/reminders/analytics", adminMiddleware, (_req, res) => {
+  const analytics = reminderEngine.getAnalytics();
+  res.json(analytics);
+});
+
+// 5. Get Reminder Logs with Filters & Pagination
+api.get("/admin/reminders/logs", adminMiddleware, (req, res) => {
+  const workflow = req.query.workflow as string | undefined;
+  const status = req.query.status as string | undefined;
+  const page = Math.max(1, Number(req.query.page || 1));
+  const limit = Math.min(100, Math.max(10, Number(req.query.limit || 30)));
+
+  let list = db.reminder_logs || [];
+  if (workflow) {
+    list = list.filter((l) => l.workflow_key === workflow);
+  }
+  if (status) {
+    list = list.filter((l) => l.status === status);
+  }
+
+  // Sort descending by timestamp
+  list = list.slice().sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+  const total = list.length;
+  const startIndex = (page - 1) * limit;
+  const paginated = list.slice(startIndex, startIndex + limit).map((log) => {
+    const u = db.users.get(log.user_id);
+    return {
+      ...log,
+      user: {
+        name: u?.name || "Unknown User",
+        email: u?.email || "N/A",
+      },
+    };
+  });
+
+  res.json({
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit) || 1,
+    logs: paginated,
+  });
+});
+
+// 6. Trigger Manual On-Demand Evaluation Sweep
+api.post("/admin/reminders/run-sweep", adminMiddleware, async (req, res) => {
+  const admin = (req as any).user;
+  try {
+    const result = await reminderEngine.runSweep();
+    saveDatabase();
+    logAudit("reminders.manual_sweep", admin, "reminder_engine", "platform", result);
+    res.json({ ok: true, result });
+  } catch (err: any) {
+    console.error("[ReminderEngine] Manual sweep failed:", err);
+    res.status(500).json({ detail: "Sweep failed: " + err.message });
+  }
+});
+
+// 7. Send Live Test / Preview Reminder
+api.post("/admin/reminders/test", adminMiddleware, async (req, res) => {
+  const admin = (req as any).user;
+  const { user_id, workflow_key, step_index } = req.body;
+
+  const targetUser = user_id ? db.users.get(user_id) : admin;
+  if (!targetUser) {
+    return res.status(404).json({ detail: "Target user not found." });
+  }
+
+  const workflow = reminderEngine.getSettings().workflows.find((w) => w.key === workflow_key);
+  if (!workflow) {
+    return res.status(404).json({ detail: "Workflow not found." });
+  }
+
+  const step = workflow.schedules[step_index || 0] || workflow.schedules[0];
+  const renderedTitle = step.title.replace(/{{first_name}}/g, targetUser.name?.split(" ")[0] || "User");
+  const renderedBody = step.message
+    .replace(/{{first_name}}/g, targetUser.name?.split(" ")[0] || "User")
+    .replace(/{{user_name}}/g, targetUser.name || "User");
+
+  // Send preview notification
+  const sent = createNotification(
+    targetUser.id,
+    "automated_reminder",
+    `[Test Preview] ${renderedTitle}`,
+    renderedBody,
+    undefined,
+    undefined,
+    {
+      workflow_key: workflow.key,
+      is_reminder: true,
+      action_url: step.action_url,
+      action_text: step.action_text,
+      is_test_preview: true,
+      sent_by_admin: admin.email,
+    }
+  );
+
+  logAudit("reminders.send_test", admin, "reminder_test", targetUser.id, {
+    workflow_key,
+    target_user: targetUser.email,
+  });
+
+  res.json({
+    ok: true,
+    sent,
+    preview: {
+      user_id: targetUser.id,
+      email: targetUser.email,
+      title: renderedTitle,
+      body: renderedBody,
+      action_url: step.action_url,
+      action_text: step.action_text,
+    },
+  });
+});
+
+// ==================== UNIFIED NOTIFICATION MANAGEMENT ROUTES ====================
+
+// 1. Get Audience Segments with Live Counts
+api.get("/admin/notifications/segments", adminMiddleware, (req, res) => {
+  try {
+    const segments = notificationManager.getSegmentsWithCounts();
+    res.json({ segments });
+  } catch (err: any) {
+    console.error("[NotificationManager] Get segments error:", err);
+    res.status(500).json({ detail: "Failed to fetch audience segments." });
+  }
+});
+
+// 2. Preview Users in a Segment
+api.post("/admin/notifications/segments/preview", adminMiddleware, (req, res) => {
+  try {
+    const { segment_id } = req.body;
+    if (!segment_id) {
+      return res.status(400).json({ detail: "segment_id is required." });
+    }
+    const matching = notificationManager.evaluateSegmentUsers(segment_id);
+    const safeUsers = matching.slice(0, 100).map((u: any) => ({
+      id: u.id,
+      name: u.name || "Unknown",
+      email: u.email || "N/A",
+      phone: u.phone || "N/A",
+      kyc_status: u.kyc_status || "none",
+      status: u.status || "active",
+      created_at: u.created_at,
+    }));
+
+    res.json({
+      segment_id,
+      total_count: matching.length,
+      sample_users: safeUsers,
+    });
+  } catch (err: any) {
+    console.error("[NotificationManager] Segment preview error:", err);
+    res.status(500).json({ detail: "Failed to preview segment users." });
+  }
+});
+
+// 3. Send Personalized Notification (Admin → 1 User)
+api.post("/admin/notifications/send-personalized", adminMiddleware, async (req, res) => {
+  const admin = (req as any).user;
+  try {
+    const { user_id, title, message, type, channel, action_url, action_text, idempotency_key } = req.body;
+
+    if (!user_id || !title?.trim() || !message?.trim()) {
+      return res.status(400).json({ detail: "user_id, title, and message are required." });
+    }
+
+    const cleanTitle = sanitizeHtml(title, 200);
+    const cleanMessage = sanitizeHtml(message, 2000);
+    const cleanActionUrl = action_url ? sanitizeHtml(action_url, 300) : null;
+    const cleanActionText = action_text ? sanitizeHtml(action_text, 100) : null;
+
+    const result = await notificationManager.sendPersonalized({
+      admin,
+      userId: user_id,
+      title: cleanTitle,
+      message: cleanMessage,
+      type: type || "general",
+      channel: channel || "both",
+      actionUrl: cleanActionUrl,
+      actionText: cleanActionText,
+      idempotencyKey: idempotency_key,
+    });
+
+    logAudit("notifications.send_personalized", admin, "notification", user_id, {
+      title: cleanTitle,
+      type,
+      channel,
+      target_user_id: user_id,
+    });
+
+    res.json(result);
+  } catch (err: any) {
+    console.error("[NotificationManager] Send personalized error:", err);
+    res.status(400).json({ detail: err.message || "Failed to send personalized notification." });
+  }
+});
+
+// 4. Send Bulk / Segment Notification (Admin → Multiple Users)
+api.post("/admin/notifications/send-bulk", adminMiddleware, async (req, res) => {
+  const admin = (req as any).user;
+  try {
+    const { mode, segment_id, user_ids, title, message, type, channel, action_url, action_text, idempotency_key } = req.body;
+
+    if (!title?.trim() || !message?.trim()) {
+      return res.status(400).json({ detail: "Title and message are required." });
+    }
+
+    if (mode !== "segment" && mode !== "manual_users") {
+      return res.status(400).json({ detail: "Mode must be 'segment' or 'manual_users'." });
+    }
+
+    const cleanTitle = sanitizeHtml(title, 200);
+    const cleanMessage = sanitizeHtml(message, 2000);
+    const cleanActionUrl = action_url ? sanitizeHtml(action_url, 300) : null;
+    const cleanActionText = action_text ? sanitizeHtml(action_text, 100) : null;
+
+    const result = await notificationManager.sendBulk({
+      admin,
+      mode,
+      segmentId: segment_id,
+      userIds: user_ids,
+      title: cleanTitle,
+      message: cleanMessage,
+      type: type || "general",
+      channel: channel || "both",
+      actionUrl: cleanActionUrl,
+      actionText: cleanActionText,
+      idempotencyKey: idempotency_key,
+    });
+
+    logAudit("notifications.send_bulk", admin, "notification_campaign", result.campaign_id, {
+      title: cleanTitle,
+      type,
+      channel,
+      mode,
+      segment_id,
+      recipients_count: result.recipients_count,
+      sent_count: result.sent_count,
+    });
+
+    res.json(result);
+  } catch (err: any) {
+    console.error("[NotificationManager] Send bulk error:", err);
+    res.status(400).json({ detail: err.message || "Failed to send bulk notification." });
+  }
+});
+
+// 5. Unified Notification Logs
+api.get("/admin/notifications/logs", adminMiddleware, (req, res) => {
+  try {
+    const { mode, type, status, channel, search, page, limit } = req.query;
+    const result = notificationManager.getUnifiedLogs({
+      mode: mode as string,
+      type: type as string,
+      status: status as string,
+      channel: channel as string,
+      search: search as string,
+      page: page ? parseInt(page as string, 10) : 1,
+      limit: limit ? parseInt(limit as string, 10) : 25,
+    });
+    res.json(result);
+  } catch (err: any) {
+    console.error("[NotificationManager] Get logs error:", err);
+    res.status(500).json({ detail: "Failed to fetch notification logs." });
+  }
+});
+
+// 6. Unified Notification Analytics
+api.get("/admin/notifications/analytics", adminMiddleware, (req, res) => {
+  try {
+    const analytics = notificationManager.getUnifiedAnalytics();
+    res.json(analytics);
+  } catch (err: any) {
+    console.error("[NotificationManager] Get analytics error:", err);
+    res.status(500).json({ detail: "Failed to fetch notification analytics." });
+  }
+});
+
+// ==================== SUPPORT SYSTEM APIs ====================
+
+// --- SUPPORT ATTACHMENT ENDPOINTS ---
+
+// Upload attachment (Supports single file or up to 3 files)
+const handleAttachmentUpload = (req: Request, res: Response) => {
+  try {
+    const authUser = (req as any).user;
+    const rawFiles: Express.Multer.File[] = [];
+
+    if (req.file) {
+      rawFiles.push(req.file);
+    } else if (req.files) {
+      if (Array.isArray(req.files)) {
+        rawFiles.push(...req.files);
+      } else {
+        for (const key of Object.keys(req.files)) {
+          const flist = (req.files as any)[key];
+          if (Array.isArray(flist)) rawFiles.push(...flist);
+        }
+      }
+    }
+
+    if (rawFiles.length === 0) {
+      return res.status(400).json({ detail: "No image file provided for upload." });
+    }
+
+    if (rawFiles.length > 3) {
+      return res.status(400).json({ detail: "Maximum 3 image attachments allowed per message." });
+    }
+
+    const savedList: SupportAttachment[] = [];
+
+    for (const f of rawFiles) {
+      // Validate file size: 5MB
+      if (f.size > 5 * 1024 * 1024 || f.buffer.length > 5 * 1024 * 1024) {
+        return res.status(413).json({ detail: "Image is too large. Maximum size is 5 MB." });
+      }
+
+      // Validate magic bytes
+      const validation = validateSupportImageBuffer(f.buffer);
+      if (!validation.valid || !validation.fileType || !validation.ext) {
+        return res.status(400).json({
+          detail: validation.error || "Unsupported file format. Please upload JPG, PNG, or WEBP images only.",
+        });
+      }
+
+      const attId = `att_${crypto.randomUUID().replace(/-/g, "").slice(0, 16)}`;
+      const uniqueFileName = `${attId}.${validation.ext}`;
+      const filePath = path.join(SUPPORT_ATTACHMENTS_DIR, uniqueFileName);
+
+      fs.writeFileSync(filePath, f.buffer);
+
+      const sanitizedName = sanitizeFileName(f.originalname);
+      const attachment: SupportAttachment = {
+        id: attId,
+        ticket_id: req.body?.ticket_id || null,
+        message_id: null,
+        uploaded_by: authUser.id,
+        file_name: sanitizedName,
+        name: sanitizedName,
+        file_type: validation.fileType,
+        file_size: f.size || f.buffer.length,
+        size: f.size || f.buffer.length,
+        storage_reference: uniqueFileName,
+        url: `/api/support/attachments/${attId}`,
+        created_at: nowIso(),
+      };
+
+      db.support_attachments.set(attId, attachment);
+      savedList.push(attachment);
+    }
+
+    logAudit("SUPPORT_ATTACHMENT_UPLOADED", authUser, "support_attachment", savedList[0].id, {
+      count: savedList.length,
+      types: savedList.map((s) => s.file_type),
+    });
+
+    res.status(201).json({
+      ok: true,
+      attachment: savedList[0],
+      attachments: savedList,
+    });
+  } catch (err: any) {
+    console.error("[Support] Attachment upload error:", err);
+    res.status(500).json({ detail: "Failed to upload support attachment: " + (err?.message || "Internal error") });
+  }
+};
+
+api.post("/support/attachments/upload", authMiddleware, upload.array("files", 3), handleAttachmentUpload);
+api.post("/support/attachment/upload", authMiddleware, upload.single("file"), handleAttachmentUpload);
+api.post("/admin/support/attachments/upload", adminMiddleware, upload.array("files", 3), handleAttachmentUpload);
+api.post("/admin/support/attachment/upload", adminMiddleware, upload.single("file"), handleAttachmentUpload);
+
+// Retrieve attachment (secure authenticated access)
+const handleAttachmentServe = (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const attachment = db.support_attachments.get(id);
+
+    if (!attachment) {
+      return res.status(404).json({ detail: "Support attachment not found." });
+    }
+
+    // Authenticate via Authorization header OR query parameter (?token= or ?auth=)
+    let token = "";
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.split(" ")[1]?.trim();
+    } else if (typeof req.query.token === "string" && req.query.token) {
+      token = req.query.token.trim();
+    } else if (typeof req.query.auth === "string" && req.query.auth) {
+      token = req.query.auth.trim();
+    }
+
+    if (!token) {
+      return res.status(401).json({ detail: "Authentication required to view support attachments." });
+    }
+
+    let authUser: any = null;
+    try {
+      const payload = jwt.verify(token, JWT_SECRET) as any;
+      if (payload && payload.sub) {
+        authUser = db.users.get(payload.sub);
+      }
+    } catch {
+      return res.status(401).json({ detail: "Invalid or expired authentication token." });
+    }
+
+    if (!authUser) {
+      return res.status(401).json({ detail: "User not found or unauthenticated." });
+    }
+
+    // Authorization check
+    let authorized = false;
+    if (authUser.role === "admin") {
+      authorized = true;
+    } else if (attachment.uploaded_by === authUser.id) {
+      authorized = true;
+    } else if (attachment.ticket_id) {
+      const ticket = db.support_tickets.get(attachment.ticket_id);
+      if (ticket && ticket.user_id === authUser.id) {
+        authorized = true;
+      }
+    }
+
+    if (!authorized) {
+      return res.status(403).json({ detail: "Access denied to this support attachment." });
+    }
+
+    const filePath = path.join(SUPPORT_ATTACHMENTS_DIR, attachment.storage_reference);
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ detail: "Attachment file missing from storage." });
+    }
+
+    res.setHeader("Content-Type", attachment.file_type || "image/jpeg");
+    const isDownload = req.query.download === "1" || req.query.download === "true";
+    const disposition = isDownload ? "attachment" : "inline";
+    res.setHeader("Content-Disposition", `${disposition}; filename="${encodeURIComponent(attachment.file_name || "screenshot.jpg")}"`);
+    res.setHeader("Cache-Control", "private, max-age=3600, no-transform");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+
+    const stream = fs.createReadStream(filePath);
+    stream.pipe(res);
+  } catch (err: any) {
+    console.error("[Support] Serve attachment error:", err);
+    res.status(500).json({ detail: "Failed to load attachment." });
+  }
+};
+
+api.get("/support/attachments/:id", handleAttachmentServe);
+api.get("/admin/support/attachments/:id", handleAttachmentServe);
+
+// Delete attachment
+const handleAttachmentDelete = (req: Request, res: Response) => {
+  try {
+    const authUser = (req as any).user;
+    const { id } = req.params;
+    const attachment = db.support_attachments.get(id);
+
+    if (!attachment) {
+      return res.status(404).json({ detail: "Support attachment not found." });
+    }
+
+    // Must be uploader or admin
+    if (authUser.role !== "admin" && attachment.uploaded_by !== authUser.id) {
+      return res.status(403).json({ detail: "Access denied. You cannot delete this attachment." });
+    }
+
+    const filePath = path.join(SUPPORT_ATTACHMENTS_DIR, attachment.storage_reference);
+    if (fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+      } catch (err) {
+        console.warn("[Support] Failed to unlink attachment file:", err);
+      }
+    }
+
+    db.support_attachments.delete(id);
+
+    logAudit("SUPPORT_ATTACHMENT_DELETED", authUser, "support_attachment", id);
+
+    res.json({ ok: true });
+  } catch (err: any) {
+    console.error("[Support] Delete attachment error:", err);
+    res.status(500).json({ detail: "Failed to delete attachment." });
+  }
+};
+
+api.delete("/support/attachments/:id", authMiddleware, handleAttachmentDelete);
+api.delete("/admin/support/attachments/:id", adminMiddleware, handleAttachmentDelete);
+
+// --- USER SUPPORT ENDPOINTS ---
+
+// 1. Create a support ticket
+api.post("/support/tickets", authMiddleware, (req, res) => {
+  try {
+    const authUser = (req as any).user;
+    const { subject, category, priority, message, text, attachments } = req.body || {};
+    const msgContent = message || text;
+
+    if (!subject || typeof subject !== "string" || !subject.trim()) {
+      return res.status(422).json({ detail: "Subject is required and cannot be empty." });
+    }
+    if (!msgContent || typeof msgContent !== "string" || !msgContent.trim()) {
+      return res.status(422).json({ detail: "Message description is required and cannot be empty." });
+    }
+
+    const result = supportManager.createTicket({
+      userId: authUser.id,
+      userName: authUser.name,
+      userEmail: authUser.email,
+      subject: subject.trim(),
+      category,
+      priority,
+      message: msgContent.trim(),
+      attachments,
+    });
+
+    logAudit("SUPPORT_TICKET_CREATED", authUser, "support_ticket", result.ticket.id, {
+      subject: result.ticket.subject,
+      category: result.ticket.category,
+      priority: result.ticket.priority,
+    });
+
+    res.status(201).json({
+      ok: true,
+      ticket: result.ticket,
+      message: result.message,
+    });
+  } catch (err: any) {
+    console.error("[Support] Create ticket error:", err);
+    res.status(400).json({ detail: err?.message || "Failed to create support ticket." });
+  }
+});
+
+// 2. Get user's support tickets
+api.get("/support/tickets", authMiddleware, (req, res) => {
+  try {
+    const authUser = (req as any).user;
+    const { status, category } = req.query as { status?: string; category?: string };
+
+    const tickets = supportManager.getUserTickets(authUser.id, { status, category });
+    res.json({
+      ok: true,
+      tickets,
+      total: tickets.length,
+    });
+  } catch (err: any) {
+    console.error("[Support] List user tickets error:", err);
+    res.status(500).json({ detail: "Failed to retrieve support tickets." });
+  }
+});
+
+// 3. Get single user support ticket with message thread
+api.get("/support/tickets/:id", authMiddleware, (req, res) => {
+  try {
+    const authUser = (req as any).user;
+    const { id } = req.params;
+
+    const ticket = supportManager.getTicket(id);
+    if (!ticket || ticket.user_id !== authUser.id) {
+      return res.status(404).json({ detail: "Support ticket not found or access denied." });
+    }
+
+    // Strictly ensure internal notes are NEVER returned to user client
+    const messages = supportManager.getTicketMessages(id, false);
+    res.json({
+      ok: true,
+      ticket,
+      messages,
+    });
+  } catch (err: any) {
+    console.error("[Support] Get user ticket error:", err);
+    res.status(500).json({ detail: "Failed to retrieve support ticket." });
+  }
+});
+
+// 4. Send message to user support ticket
+api.post("/support/tickets/:id/messages", authMiddleware, (req, res) => {
+  try {
+    const authUser = (req as any).user;
+    const { id } = req.params;
+    const { message, text, attachments } = req.body || {};
+    const msgContent = message || text;
+
+    if (!msgContent || typeof msgContent !== "string" || !msgContent.trim()) {
+      return res.status(422).json({ detail: "Message text is required." });
+    }
+
+    const createdMsg = supportManager.addUserMessage({
+      ticketId: id,
+      userId: authUser.id,
+      userName: authUser.name,
+      message: msgContent.trim(),
+      attachments,
+    });
+
+    const updatedTicket = supportManager.getTicket(id);
+
+    logAudit("SUPPORT_MESSAGE_SENT", authUser, "support_ticket", id, {
+      sender_type: "USER",
+    });
+
+    res.status(201).json({
+      ok: true,
+      message: createdMsg,
+      ticket: updatedTicket,
+    });
+  } catch (err: any) {
+    console.error("[Support] Send user message error:", err);
+    if (err?.message?.includes("not found") || err?.message?.includes("Unauthorized")) {
+      return res.status(404).json({ detail: "Support ticket not found or access denied." });
+    }
+    if (err?.message?.includes("closed")) {
+      return res.status(400).json({ detail: err.message });
+    }
+    res.status(400).json({ detail: err?.message || "Failed to send message." });
+  }
+});
+
+// 5. Mark messages in a ticket as read by user
+const handleMarkRead = (req: Request, res: Response) => {
+  try {
+    const authUser = (req as any).user;
+    const { id } = req.params;
+
+    const count = supportManager.markMessagesReadByUser(id, authUser.id);
+    res.json({
+      ok: true,
+      marked_read_count: count,
+    });
+  } catch (err: any) {
+    console.error("[Support] Mark read error:", err);
+    res.status(500).json({ detail: "Failed to mark messages as read." });
+  }
+};
+
+api.post("/support/tickets/:id/messages/read", authMiddleware, handleMarkRead);
+api.post("/support/tickets/:id/read", authMiddleware, handleMarkRead);
+
+// 6. User confirms resolution & closes ticket
+api.post("/support/tickets/:id/close", authMiddleware, (req, res) => {
+  try {
+    const authUser = (req as any).user;
+    const { id } = req.params;
+    const { feedback } = req.body || {};
+
+    const ticket = supportManager.userCloseTicket(id, authUser.id, feedback);
+
+    logAudit("SUPPORT_TICKET_USER_CLOSED", authUser, "support_ticket", id, {
+      feedback,
+    });
+
+    res.json({
+      ok: true,
+      ticket,
+    });
+  } catch (err: any) {
+    console.error("[Support] User close ticket error:", err);
+    if (err?.message?.includes("not found") || err?.message?.includes("Unauthorized")) {
+      return res.status(404).json({ detail: "Support ticket not found or access denied." });
+    }
+    res.status(400).json({ detail: err?.message || "Failed to close support ticket." });
+  }
+});
+
+// 7. User reopens ticket
+api.post("/support/tickets/:id/reopen", authMiddleware, (req, res) => {
+  try {
+    const authUser = (req as any).user;
+    const { id } = req.params;
+    const { reason, message, text } = req.body || {};
+    const reasonText = reason || message || text;
+
+    const result = supportManager.userReopenTicket(id, authUser.id, reasonText);
+
+    logAudit("SUPPORT_TICKET_USER_REOPENED", authUser, "support_ticket", id, {
+      reason: reasonText,
+    });
+
+    res.json({
+      ok: true,
+      ticket: result.ticket,
+      message: result.message,
+    });
+  } catch (err: any) {
+    console.error("[Support] User reopen ticket error:", err);
+    if (err?.message?.includes("not found") || err?.message?.includes("Unauthorized")) {
+      return res.status(404).json({ detail: "Support ticket not found or access denied." });
+    }
+    res.status(400).json({ detail: err?.message || "Failed to reopen support ticket." });
+  }
+});
+
+// --- ADMIN SUPPORT ENDPOINTS ---
+
+// 1. Admin: List all tickets
+api.get("/admin/support/tickets", adminMiddleware, (req, res) => {
+  try {
+    const { status, category, priority, search, user_id, assigned_admin_id } = req.query as Record<string, string>;
+
+    const result = supportManager.getAdminTickets({
+      status,
+      category,
+      priority,
+      search,
+      userId: user_id,
+      assignedAdminId: assigned_admin_id,
+    });
+
+    res.json({
+      ok: true,
+      ...result,
+    });
+  } catch (err: any) {
+    console.error("[Support] Admin list tickets error:", err);
+    res.status(500).json({ detail: "Failed to retrieve support tickets for admin." });
+  }
+});
+
+// 2. Admin: View single ticket with thread and user profile
+api.get("/admin/support/tickets/:id", adminMiddleware, (req, res) => {
+  try {
+    const { id } = req.params;
+    const ticket = supportManager.getTicket(id);
+
+    if (!ticket) {
+      return res.status(404).json({ detail: "Support ticket not found." });
+    }
+
+    const messages = supportManager.getTicketMessages(id);
+    const user = cleanUser(db.users.get(ticket.user_id));
+
+    res.json({
+      ok: true,
+      ticket,
+      messages,
+      user,
+    });
+  } catch (err: any) {
+    console.error("[Support] Admin get ticket error:", err);
+    res.status(500).json({ detail: "Failed to retrieve ticket details." });
+  }
+});
+
+// 3. Admin: Reply to ticket
+const handleAdminReply = (req: Request, res: Response) => {
+  try {
+    const authAdmin = (req as any).user;
+    const { id } = req.params;
+    const { message, text, status, attachments } = req.body || {};
+    const msgContent = message || text;
+
+    if (!msgContent || typeof msgContent !== "string" || !msgContent.trim()) {
+      return res.status(422).json({ detail: "Reply message is required." });
+    }
+
+    const createdMsg = supportManager.addAdminReply({
+      ticketId: id,
+      adminId: authAdmin.id,
+      adminName: authAdmin.name || "EasyX Support",
+      message: msgContent.trim(),
+      newStatus: status,
+      attachments,
+    });
+
+    const updatedTicket = supportManager.getTicket(id);
+
+    logAudit("SUPPORT_ADMIN_REPLY", authAdmin, "support_ticket", id, {
+      status: updatedTicket?.status,
+    });
+
+    res.status(201).json({
+      ok: true,
+      message: createdMsg,
+      ticket: updatedTicket,
+    });
+  } catch (err: any) {
+    console.error("[Support] Admin reply error:", err);
+    res.status(400).json({ detail: err?.message || "Failed to submit admin reply." });
+  }
+};
+
+api.post("/admin/support/tickets/:id/reply", adminMiddleware, handleAdminReply);
+api.post("/admin/support/tickets/:id/messages", adminMiddleware, handleAdminReply);
+
+// 4. Admin: Update ticket status
+const handleAdminStatusUpdate = (req: Request, res: Response) => {
+  try {
+    const authAdmin = (req as any).user;
+    const { id } = req.params;
+    const { status, note } = req.body || {};
+
+    if (!status) {
+      return res.status(422).json({ detail: "Status is required." });
+    }
+
+    const updatedTicket = supportManager.updateTicketStatus({
+      ticketId: id,
+      adminId: authAdmin.id,
+      adminName: authAdmin.name || "Admin",
+      status,
+      systemNote: note,
+    });
+
+    logAudit("SUPPORT_STATUS_UPDATE", authAdmin, "support_ticket", id, {
+      status: updatedTicket.status,
+      note,
+    });
+
+    res.json({
+      ok: true,
+      ticket: updatedTicket,
+    });
+  } catch (err: any) {
+    console.error("[Support] Admin update status error:", err);
+    res.status(400).json({ detail: err?.message || "Failed to update ticket status." });
+  }
+};
+
+api.patch("/admin/support/tickets/:id/status", adminMiddleware, handleAdminStatusUpdate);
+api.put("/admin/support/tickets/:id/status", adminMiddleware, handleAdminStatusUpdate);
+
+// 5. Admin: Assign ticket
+const handleAdminAssign = (req: Request, res: Response) => {
+  try {
+    const authAdmin = (req as any).user;
+    const { id } = req.params;
+    const { admin_id } = req.body || {};
+
+    let targetAdminName: string | null = null;
+    let targetAdminId: string | null = null;
+
+    if (admin_id) {
+      const targetAdmin = db.users.get(admin_id);
+      if (!targetAdmin || targetAdmin.role !== "admin") {
+        return res.status(400).json({ detail: "Invalid admin user selected for assignment." });
+      }
+      targetAdminName = targetAdmin.name || targetAdmin.email;
+      targetAdminId = targetAdmin.id;
+    }
+
+    const updatedTicket = supportManager.assignTicket({
+      ticketId: id,
+      adminId: targetAdminId,
+      adminName: targetAdminName,
+      assignedByAdminName: authAdmin.name || "Admin",
+    });
+
+    logAudit("SUPPORT_TICKET_ASSIGNED", authAdmin, "support_ticket", id, {
+      assigned_to: targetAdminName,
+      assigned_to_id: targetAdminId,
+    });
+
+    res.json({
+      ok: true,
+      ticket: updatedTicket,
+    });
+  } catch (err: any) {
+    console.error("[Support] Admin assign ticket error:", err);
+    res.status(400).json({ detail: err?.message || "Failed to assign ticket." });
+  }
+};
+
+api.patch("/admin/support/tickets/:id/assign", adminMiddleware, handleAdminAssign);
+api.put("/admin/support/tickets/:id/assign", adminMiddleware, handleAdminAssign);
+
+// 6. Admin: Add internal note (strictly hidden from user)
+api.post("/admin/support/tickets/:id/notes", adminMiddleware, (req, res) => {
+  try {
+    const authAdmin = (req as any).user;
+    const { id } = req.params;
+    const { note, message, attachments } = req.body || {};
+    const noteText = note || message;
+
+    if (!noteText || typeof noteText !== "string" || !noteText.trim()) {
+      return res.status(422).json({ detail: "Internal note text is required." });
+    }
+
+    const createdMsg = supportManager.addAdminInternalNote({
+      ticketId: id,
+      adminId: authAdmin.id,
+      adminName: authAdmin.name || "Support Admin",
+      note: noteText.trim(),
+      attachments,
+    });
+
+    logAudit("SUPPORT_INTERNAL_NOTE_ADDED", authAdmin, "support_ticket", id, {
+      is_internal_note: true,
+    });
+
+    res.status(201).json({
+      ok: true,
+      message: createdMsg,
+    });
+  } catch (err: any) {
+    console.error("[Support] Admin add internal note error:", err);
+    res.status(400).json({ detail: err?.message || "Failed to add internal note." });
+  }
+});
+
+// 7. Admin: Update priority
+api.patch("/admin/support/tickets/:id/priority", adminMiddleware, (req, res) => {
+  try {
+    const authAdmin = (req as any).user;
+    const { id } = req.params;
+    const { priority } = req.body || {};
+
+    if (!priority) {
+      return res.status(422).json({ detail: "Priority is required." });
+    }
+
+    const updatedTicket = supportManager.updateTicketPriority({
+      ticketId: id,
+      adminId: authAdmin.id,
+      adminName: authAdmin.name || "Admin",
+      priority,
+    });
+
+    logAudit("SUPPORT_PRIORITY_UPDATED", authAdmin, "support_ticket", id, {
+      priority: updatedTicket.priority,
+    });
+
+    res.json({
+      ok: true,
+      ticket: updatedTicket,
+    });
+  } catch (err: any) {
+    console.error("[Support] Admin update priority error:", err);
+    res.status(400).json({ detail: err?.message || "Failed to update ticket priority." });
+  }
+});
+
+// ==================== FAQ & HELP CENTER ENDPOINTS ====================
+
+// 1. User/Public: Get FAQs (Published only) with search & category filtering
+const handleGetFaqs = (req: Request, res: Response) => {
+  try {
+    const { category, search, q, is_popular, popular, limit } = req.query as Record<string, string>;
+    const searchQuery = search || q;
+    const isPopular = is_popular === "true" || is_popular === "1" || popular === "true" || popular === "1";
+    const numLimit = limit ? parseInt(limit, 10) : undefined;
+
+    // Optional user ID if authenticated
+    let userId: string | undefined = undefined;
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      try {
+        const token = authHeader.split(" ")[1];
+        const payload = jwt.verify(token, JWT_SECRET) as any;
+        if (payload?.sub) userId = payload.sub;
+      } catch {
+        // Optional auth, ignore invalid token
+      }
+    }
+
+    const result = supportManager.getFaqs({
+      category,
+      search: searchQuery,
+      isPublishedOnly: true,
+      isPopular,
+      limit: numLimit,
+      userId,
+    });
+
+    res.json({
+      ok: true,
+      faqs: result.faqs,
+      total: result.total,
+      categories: result.categories,
+      popular: result.popular,
+    });
+  } catch (err: any) {
+    console.error("[FAQ] List FAQs error:", err);
+    res.status(500).json({ detail: "Failed to retrieve FAQ articles." });
+  }
+};
+
+api.get("/support/faqs", handleGetFaqs);
+api.get("/support/faq", handleGetFaqs);
+api.get("/faq", handleGetFaqs);
+
+// 2. User/Public: Get categories list
+api.get("/support/faqs/categories", (_req, res) => {
+  try {
+    const result = supportManager.getFaqs({ isPublishedOnly: true });
+    res.json({
+      ok: true,
+      categories: result.categories,
+    });
+  } catch (err: any) {
+    console.error("[FAQ] Get categories error:", err);
+    res.status(500).json({ detail: "Failed to retrieve FAQ categories." });
+  }
+});
+
+// 3. User/Public: Get single FAQ article & increment views
+api.get("/support/faqs/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    const { no_increment } = req.query;
+    const faq = supportManager.getFaq(id, true, no_increment !== "true" && no_increment !== "1");
+
+    if (!faq) {
+      return res.status(404).json({ detail: "FAQ article not found." });
+    }
+
+    res.json({
+      ok: true,
+      faq,
+    });
+  } catch (err: any) {
+    console.error("[FAQ] Get single FAQ error:", err);
+    res.status(500).json({ detail: "Failed to retrieve FAQ article." });
+  }
+});
+
+// 4. User/Public: Record explicit view on FAQ article
+api.post("/support/faqs/:id/view", (req, res) => {
+  try {
+    const { id } = req.params;
+    const faq = supportManager.recordFaqView(id);
+    if (!faq) {
+      return res.status(404).json({ detail: "FAQ article not found." });
+    }
+    res.json({ ok: true, views_count: faq.views_count });
+  } catch (err: any) {
+    console.error("[FAQ] Record view error:", err);
+    res.status(500).json({ detail: "Failed to record article view." });
+  }
+});
+
+// --- ADMIN FAQ MANAGEMENT ENDPOINTS ---
+
+// 1. Admin: List all FAQs (including drafts) with category and status filter
+api.get("/admin/support/faqs", adminMiddleware, (req, res) => {
+  try {
+    const { category, status, search, q } = req.query as Record<string, string>;
+    const searchQuery = search || q;
+
+    const result = supportManager.getFaqs({
+      category: category && category !== "ALL" ? category : undefined,
+      search: searchQuery,
+      isPublishedOnly: false,
+    });
+
+    let filteredFaqs = result.faqs;
+    if (status === "PUBLISHED") {
+      filteredFaqs = filteredFaqs.filter((f) => f.is_published);
+    } else if (status === "DRAFT") {
+      filteredFaqs = filteredFaqs.filter((f) => !f.is_published);
+    }
+
+    res.json({
+      ok: true,
+      faqs: filteredFaqs,
+      total: filteredFaqs.length,
+      categories: result.categories,
+      analytics_summary: {
+        total: result.faqs.length,
+        published: result.faqs.filter((f) => f.is_published).length,
+        drafts: result.faqs.filter((f) => !f.is_published).length,
+      },
+    });
+  } catch (err: any) {
+    console.error("[Admin FAQ] List FAQs error:", err);
+    res.status(500).json({ detail: "Failed to retrieve FAQ articles for admin." });
+  }
+});
+
+// 2. Admin: Get FAQ Analytics
+api.get("/admin/support/faqs/analytics", adminMiddleware, (_req, res) => {
+  try {
+    const analytics = supportManager.getFaqAnalytics();
+    res.json({
+      ok: true,
+      analytics,
+    });
+  } catch (err: any) {
+    console.error("[Admin FAQ] Get analytics error:", err);
+    res.status(500).json({ detail: "Failed to retrieve FAQ analytics." });
+  }
+});
+
+// 3. Admin: Get single FAQ for editing
+api.get("/admin/support/faqs/:id", adminMiddleware, (req, res) => {
+  try {
+    const { id } = req.params;
+    const faq = supportManager.getFaq(id, false, false);
+
+    if (!faq) {
+      return res.status(404).json({ detail: "FAQ article not found." });
+    }
+
+    res.json({
+      ok: true,
+      faq,
+    });
+  } catch (err: any) {
+    console.error("[Admin FAQ] Get FAQ error:", err);
+    res.status(500).json({ detail: "Failed to retrieve FAQ article." });
+  }
+});
+
+// 4. Admin: Create new FAQ article
+api.post("/admin/support/faqs", adminMiddleware, (req, res) => {
+  try {
+    const authAdmin = (req as any).user;
+    const { title, question, answer, category, keywords, related_article_ids, is_published, display_order } = req.body || {};
+
+    const cleanTitle = title || question;
+    if (!cleanTitle || typeof cleanTitle !== "string" || !cleanTitle.trim()) {
+      return res.status(422).json({ detail: "Question title is required." });
+    }
+    if (!answer || typeof answer !== "string" || !answer.trim()) {
+      return res.status(422).json({ detail: "Answer content is required." });
+    }
+
+    const createdFaq = supportManager.createFaq({
+      title: cleanTitle.trim(),
+      answer: answer.trim(),
+      category,
+      keywords,
+      related_article_ids,
+      is_published: is_published !== undefined ? Boolean(is_published) : true,
+      display_order: display_order !== undefined ? Number(display_order) : 10,
+      adminUser: authAdmin,
+    });
+
+    logAudit("SUPPORT_FAQ_CREATED", authAdmin, "support_faq", createdFaq.id, {
+      title: createdFaq.title,
+      category: createdFaq.category,
+      is_published: createdFaq.is_published,
+    });
+
+    res.status(201).json({
+      ok: true,
+      faq: createdFaq,
+      message: "FAQ article created successfully.",
+    });
+  } catch (err: any) {
+    console.error("[Admin FAQ] Create FAQ error:", err);
+    res.status(400).json({ detail: err?.message || "Failed to create FAQ article." });
+  }
+});
+
+// 5. Admin: Update FAQ article
+api.put("/admin/support/faqs/:id", adminMiddleware, (req, res) => {
+  try {
+    const authAdmin = (req as any).user;
+    const { id } = req.params;
+    const { title, question, answer, category, keywords, related_article_ids, is_published, display_order } = req.body || {};
+
+    const cleanTitle = title !== undefined ? title : question;
+
+    const updatedFaq = supportManager.updateFaq(id, {
+      title: cleanTitle !== undefined ? cleanTitle.trim() : undefined,
+      answer: answer !== undefined ? answer.trim() : undefined,
+      category,
+      keywords,
+      related_article_ids,
+      is_published,
+      display_order: display_order !== undefined ? Number(display_order) : undefined,
+      adminUser: authAdmin,
+    });
+
+    logAudit("SUPPORT_FAQ_UPDATED", authAdmin, "support_faq", id, {
+      title: updatedFaq.title,
+      category: updatedFaq.category,
+      is_published: updatedFaq.is_published,
+    });
+
+    res.json({
+      ok: true,
+      faq: updatedFaq,
+      message: "FAQ article updated successfully.",
+    });
+  } catch (err: any) {
+    console.error("[Admin FAQ] Update FAQ error:", err);
+    res.status(400).json({ detail: err?.message || "Failed to update FAQ article." });
+  }
+});
+
+// 6. Admin: Toggle publish status
+api.patch("/admin/support/faqs/:id/publish", adminMiddleware, (req, res) => {
+  try {
+    const authAdmin = (req as any).user;
+    const { id } = req.params;
+    const { is_published } = req.body || {};
+
+    const updatedFaq = supportManager.toggleFaqPublish(id, is_published, authAdmin);
+
+    logAudit("SUPPORT_FAQ_STATUS_TOGGLED", authAdmin, "support_faq", id, {
+      is_published: updatedFaq.is_published,
+    });
+
+    res.json({
+      ok: true,
+      faq: updatedFaq,
+      message: `FAQ article ${updatedFaq.is_published ? "published" : "unpublished"} successfully.`,
+    });
+  } catch (err: any) {
+    console.error("[Admin FAQ] Toggle publish error:", err);
+    res.status(400).json({ detail: err?.message || "Failed to toggle FAQ publish status." });
+  }
+});
+
+// 7. Admin: Delete FAQ article
+api.delete("/admin/support/faqs/:id", adminMiddleware, (req, res) => {
+  try {
+    const authAdmin = (req as any).user;
+    const { id } = req.params;
+
+    supportManager.deleteFaq(id);
+
+    logAudit("SUPPORT_FAQ_DELETED", authAdmin, "support_faq", id);
+
+    res.json({
+      ok: true,
+      message: "FAQ article deleted successfully.",
+    });
+  } catch (err: any) {
+    console.error("[Admin FAQ] Delete FAQ error:", err);
+    res.status(400).json({ detail: err?.message || "Failed to delete FAQ article." });
   }
 });
 

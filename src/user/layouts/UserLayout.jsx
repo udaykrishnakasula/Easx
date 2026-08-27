@@ -15,12 +15,14 @@ import {
   Menu,
   AlertTriangle,
   Wrench,
+  LifeBuoy,
 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/shared/ui/sheet";
 import { useAuth } from "@/shared/context/AuthContext";
-import { useUnreadCount, usePublicMaintenance } from "@/user/api";
+import { useUnreadCount, usePublicMaintenance, useSupportTickets } from "@/user/api";
+import { useRealtimeNotifications } from "@/shared/hooks/useRealtimeNotifications";
 import NotificationBell from "@/user/components/NotificationBell";
 
 const USER_NAV = [
@@ -33,10 +35,11 @@ const USER_NAV = [
   { to: "/kyc", label: "KYC", icon: ShieldCheck },
   { to: "/transactions", label: "Transactions", icon: ReceiptText },
   { to: "/notifications", label: "Notifications", icon: Bell },
+  { to: "/support", label: "Support & Help", icon: LifeBuoy },
   { to: "/profile", label: "Profile", icon: User },
 ];
 
-function NavItems({ onNavigate, unreadCount = 0 }) {
+function NavItems({ onNavigate, unreadCount = 0, supportUnread = 0 }) {
   return (
     <nav className="flex flex-col gap-1" data-testid="dashboard-nav">
       {USER_NAV.map(({ to, label, icon: Icon }) => (
@@ -62,6 +65,14 @@ function NavItems({ onNavigate, unreadCount = 0 }) {
               {unreadCount > 99 ? "99+" : unreadCount}
             </span>
           )}
+          {to === "/support" && supportUnread > 0 && (
+            <span
+              className="grid min-w-5 h-5 place-items-center rounded-full bg-ex-lav-400 px-1.5 text-[11px] font-bold text-ex-ink animate-pulse"
+              data-testid="nav-support-unread-badge"
+            >
+              {supportUnread > 99 ? "99+" : supportUnread}
+            </span>
+          )}
         </NavLink>
       ))}
     </nav>
@@ -84,7 +95,10 @@ export default function UserLayout() {
   const navigate = useNavigate();
   const [openMobile, setOpenMobile] = useState(false);
   const { data: unreadCount = 0 } = useUnreadCount();
+  const { data: supportTicketsData } = useSupportTickets();
+  const supportUnread = supportTicketsData?.unread_total || 0;
   const { data: maintenance } = usePublicMaintenance();
+  useRealtimeNotifications();
 
   const handleLogout = () => {
     logout();
@@ -109,7 +123,7 @@ export default function UserLayout() {
       <aside className="hidden lg:flex fixed inset-y-0 left-0 z-20 w-64 flex-col border-r border-white/8 bg-ex-surface2 p-4">
         <Brand />
         <div className="mt-7 flex-1 overflow-y-auto pr-1">
-          <NavItems unreadCount={unreadCount} />
+          <NavItems unreadCount={unreadCount} supportUnread={supportUnread} />
         </div>
         <button
           onClick={handleLogout}
@@ -135,7 +149,11 @@ export default function UserLayout() {
             <SheetTitle className="sr-only">EasyX navigation</SheetTitle>
             <Brand />
             <div className="mt-7">
-              <NavItems onNavigate={() => setOpenMobile(false)} unreadCount={unreadCount} />
+              <NavItems
+                onNavigate={() => setOpenMobile(false)}
+                unreadCount={unreadCount}
+                supportUnread={supportUnread}
+              />
             </div>
             <button onClick={handleLogout} className="ex-btn ex-btn-ghost mt-4 h-11 w-full">
               <LogOut className="mr-2 h-4 w-4" /> Logout

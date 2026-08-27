@@ -138,6 +138,43 @@ export function useMarkAllNotificationsRead() {
   });
 }
 
+export function useNotificationPreferences() {
+  return useQuery({
+    queryKey: ["user-notification-preferences"],
+    queryFn: async () => (await api.get("/user/notification-preferences")).data,
+  });
+}
+
+export function useSaveNotificationPreferences() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (prefs) => (await api.put("/user/notification-preferences", prefs)).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["user-notification-preferences"] });
+    },
+  });
+}
+
+export function useSubscribePush() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (subscription) => (await api.post("/user/push-subscription", { subscription })).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["user-notification-preferences"] });
+    },
+  });
+}
+
+export function useUnsubscribePush() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async () => (await api.delete("/user/push-subscription")).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["user-notification-preferences"] });
+    },
+  });
+}
+
 export function useBuyPlan() {
   const qc = useQueryClient();
   return useMutation({
@@ -205,4 +242,135 @@ export function usePublicMaintenance() {
   });
 }
 
+/* -------------------- User Profile & Account Settings -------------------- */
+
+export const updateUserProfile = async (payload) => {
+  const res = await api.put("/user/profile", payload);
+  return res.data;
+};
+
+export const changeUserPassword = async (payload) => {
+  const res = await api.post("/user/change-password", payload);
+  return res.data;
+};
+
 export const money = (v) => `$${Number(v ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+/* -------------------- User Support Hooks -------------------- */
+
+export function useSupportTickets(filters = {}) {
+  return useQuery({
+    queryKey: ["support-tickets", filters],
+    queryFn: async () => (await api.get("/support/tickets", { params: filters })).data,
+    refetchInterval: 10000,
+  });
+}
+
+export function useSupportTicket(ticketId) {
+  return useQuery({
+    queryKey: ["support-ticket", ticketId],
+    queryFn: async () => (await api.get(`/support/tickets/${ticketId}`)).data,
+    enabled: Boolean(ticketId),
+    refetchInterval: 5000,
+  });
+}
+
+export function useCreateSupportTicket() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload) => (await api.post("/support/tickets", payload)).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["support-tickets"] });
+    },
+  });
+}
+
+export function useSendSupportMessage() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ticketId, message, text, attachments }) =>
+      (await api.post(`/support/tickets/${ticketId}/messages`, { message, text, attachments })).data,
+    onSuccess: (_, variables) => {
+      qc.invalidateQueries({ queryKey: ["support-ticket", variables.ticketId] });
+      qc.invalidateQueries({ queryKey: ["support-tickets"] });
+    },
+  });
+}
+
+export function useMarkSupportTicketRead() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (ticketId) =>
+      (await api.post(`/support/tickets/${ticketId}/messages/read`)).data,
+    onSuccess: (_, ticketId) => {
+      qc.invalidateQueries({ queryKey: ["support-ticket", ticketId] });
+      qc.invalidateQueries({ queryKey: ["support-tickets"] });
+    },
+  });
+}
+
+export function useCloseSupportTicket() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ticketId, feedback }) =>
+      (await api.post(`/support/tickets/${ticketId}/close`, { feedback })).data,
+    onSuccess: (_, variables) => {
+      qc.invalidateQueries({ queryKey: ["support-ticket", variables.ticketId] });
+      qc.invalidateQueries({ queryKey: ["support-tickets"] });
+    },
+  });
+}
+
+export function useReopenSupportTicket() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ ticketId, reason, message }) =>
+      (await api.post(`/support/tickets/${ticketId}/reopen`, { reason, message })).data,
+    onSuccess: (_, variables) => {
+      qc.invalidateQueries({ queryKey: ["support-ticket", variables.ticketId] });
+      qc.invalidateQueries({ queryKey: ["support-tickets"] });
+    },
+  });
+}
+
+// ==================== FAQ & HELP CENTER HOOKS ====================
+
+export function useSupportFaqs(params = {}) {
+  const { category, search, popular, limit } = params;
+  return useQuery({
+    queryKey: ["support-faqs", category || "ALL", search || "", popular || false, limit || 0],
+    queryFn: async () => {
+      const queryParams = {};
+      if (category && category !== "ALL") queryParams.category = category;
+      if (search && search.trim()) queryParams.search = search.trim();
+      if (popular) queryParams.popular = "true";
+      if (limit) queryParams.limit = limit;
+      return (await api.get("/support/faqs", { params: queryParams })).data;
+    },
+    staleTime: 30000,
+  });
+}
+
+export function useSupportFaqCategories() {
+  return useQuery({
+    queryKey: ["support-faq-categories"],
+    queryFn: async () => (await api.get("/support/faqs/categories")).data,
+    staleTime: 60000,
+  });
+}
+
+export function useSupportFaq(id) {
+  return useQuery({
+    queryKey: ["support-faq", id],
+    queryFn: async () => (await api.get(`/support/faqs/${id}`)).data,
+    enabled: Boolean(id),
+  });
+}
+
+export function useRecordFaqView() {
+  return useMutation({
+    mutationFn: async (id) => (await api.post(`/support/faqs/${id}/view`)).data,
+  });
+}
+
+

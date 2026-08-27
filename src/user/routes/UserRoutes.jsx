@@ -12,6 +12,7 @@ import KYCPage from "@/user/pages/KYCPage";
 import NotificationsPage from "@/user/pages/NotificationsPage";
 import TransactionsPage from "@/user/pages/TransactionsPage";
 import ProfilePage from "@/user/pages/ProfilePage";
+import SupportPage from "@/user/pages/SupportPage";
 import ComingSoon from "@/shared/components/ComingSoon";
 
 export default function UserRoutes() {
@@ -30,6 +31,9 @@ export default function UserRoutes() {
         <Route path="kyc" element={<KYCPage />} />
         <Route path="notifications" element={<NotificationsPage />} />
         <Route path="transactions" element={<TransactionsPage />} />
+        <Route path="support" element={<SupportPage />} />
+        <Route path="support/tickets/:id" element={<SupportPage />} />
+        <Route path="help" element={<Navigate to="/support" replace />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="security" element={<ComingSoon title="Security" note="Password change and session security controls are coming soon." />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />

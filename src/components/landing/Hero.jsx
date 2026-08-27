@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import localCoinMp4 from "@/assets/coin.mp4";
-import VideoPositionControls, { useVideoPositionConfig } from "./VideoPositionControls";
 
 const EasyxMark = () => (
   <svg width="60%" height="60%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
@@ -24,7 +23,6 @@ export default function Hero() {
   const videoRef = useRef(null);
   const [videoSrc, setVideoSrc] = useState(RAW_VIDEO_URL);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const { config, setConfig, resetConfig } = useVideoPositionConfig();
 
   useEffect(() => {
     const video = videoRef.current;
@@ -62,13 +60,13 @@ export default function Hero() {
     setIsVideoLoaded(true);
   };
 
-  // Compute dynamic inline styles based on position, transform adjustments, and loading fade-in
+  // Fixed optimal position and transform styles with smooth loading fade-in
   const dynamicVideoStyle = {
-    objectFit: config.objectFit || "cover",
-    objectPosition: `${config.posX}% ${config.posY}%`,
-    transform: `scale(${config.scale || 1}) translate(${config.offsetX || 0}px, ${config.offsetY || 0}px)`,
-    opacity: isVideoLoaded ? (config.opacity || 100) / 100 : 0,
-    transition: "opacity 0.6s ease-out, object-position 0.15s ease-out, transform 0.15s ease-out",
+    objectFit: "cover",
+    objectPosition: "2% 3%",
+    transform: "scale(1) translate(0px, 0px)",
+    opacity: isVideoLoaded ? 1 : 0,
+    transition: "opacity 0.6s ease-out",
   };
 
   return (
@@ -94,7 +92,7 @@ export default function Hero() {
         )}
       </AnimatePresence>
 
-      {/* Absolute full-coverage looping background video with adjustable position */}
+      {/* Absolute full-coverage looping background video */}
       <video
         ref={videoRef}
         src={videoSrc}
@@ -130,13 +128,6 @@ export default function Hero() {
           <span className="nav__name">Easyx</span>
         </a>
       </nav>
-
-      {/* Interactive Background Video Position Toolbar */}
-      <VideoPositionControls
-        config={config}
-        setConfig={setConfig}
-        onReset={resetConfig}
-      />
 
       {/* Text & CTA Container sitting cleanly in front of video (z-index: 2) */}
       <div className="hero__content">

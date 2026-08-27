@@ -1,6 +1,6 @@
 {
   "name": "EasyX",
-  "description": "High-yield investment and wealth management platform with tiered investment plans, wallet management, referral system, and admin controls.",
+  "description": "High-yield investment and wealth management platform with tiered investment plans, wallet management, referral system, admin controls, and smart automated reminder notifications.",
   "prompt": "EasyX wealth management platform",
   "permissions": [],
   "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
